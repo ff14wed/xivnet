@@ -3,32 +3,32 @@ package datatypes
 // ModelInfo enumerates all of the different options for customizing
 // the character model
 type ModelInfo struct {
-	Race               byte // 2 Elezen, 3 Lalafell, 4 Miqo'te, 5 Roe, 6 Au Ra, else Hyur
-	Gender             byte // 0 is male, 1 is female
-	BodyType           byte // CHANGE AT OWN RISK
-	Height             byte // Scale from 0-100
-	Tribe              byte
-	Face               byte
-	Hairstyle          byte
-	HairHighlight      byte // 8th bit toggles highlight
-	SkinTone           byte
-	OddEyeColor        byte
-	HairColor          byte
-	HairHighlightColor byte
-	FacialFeatures     byte // Race specific toggles. i.e. 6th bit toggles right limbal ring. 7th bit toggles left limbal ring.
-	FacialfeatureColor byte
-	Eyebrows           byte
-	EyeColor           byte
-	EyeShape           byte
-	Nose               byte
-	Jaw                byte
-	Mouth              byte // Bitfield toggles light/dark/none lip color
-	LipColor           byte
-	TailLength         byte // Scale from 1-100
-	TailType           byte
-	BustSize           byte // Scale from 1-100
-	FacePaintType      byte
-	FacePaintColor     byte
+	Race                byte // 2 Elezen, 3 Lalafell, 4 Miqo'te, 5 Roe, 6 Au Ra, else Hyur
+	Gender              byte // 0 is male, 1 is female
+	BodyType            byte // CHANGE AT OWN RISK
+	Height              byte // Scale from 0-100
+	Tribe               byte
+	Face                byte
+	Hairstyle           byte
+	HairHighlight       byte // 8th bit toggles highlight
+	SkinTone            byte
+	OddEyeColor         byte
+	HairColor           byte
+	HairHighlightColor  byte
+	FacialFeatures      byte // Race specific toggles. i.e. 6th bit toggles right limbal ring. 7th bit toggles left limbal ring.
+	FacialFeaturesColor byte
+	Eyebrows            byte
+	EyeColor            byte
+	EyeShape            byte
+	Nose                byte
+	Jaw                 byte
+	Mouth               byte // Bitfield toggles light/dark/none lip color
+	LipColor            byte
+	TailLength          byte // Scale from 1-100
+	TailType            byte
+	BustSize            byte // Scale from 1-100
+	FacePaintType       byte
+	FacePaintColor      byte
 }
 
 // MountInfo enumerates the fields for mount information
