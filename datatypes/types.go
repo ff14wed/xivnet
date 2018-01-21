@@ -70,7 +70,7 @@ var _ = registerInBlockData(XWorldPartyListOpcode, new(XWorldPartyList))
 
 // Opcodes that define the datatypes of outgoing (to server) network blocks
 const (
-	MyActionOpcode    = 0x11F // Updated for 4.18
+	MyActionOpcode    = 0x111 // Updated for 4.18
 	MyMovementOpcode  = 0x118 // Updated for 4.1
 	MyMovement2Opcode = 0x157 // Updated for 4.18
 )
