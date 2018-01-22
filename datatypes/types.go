@@ -28,6 +28,7 @@ const (
 	HateRankingOpcode     = 0x126 // Updated for 4.1
 	InitZoneOpcode        = 0x19A // Unchanged 4.1
 	MapChangeOpcode       = 0x248 // Updated for 4.1
+	MountOpcode           = 0x19F // Updated for 4.18
 	MovementOpcode        = 0x11E // Updated for 4.1
 	NotifyOpcode          = 0x142 // Unchanged 4.1
 	Notify3Opcode         = 0x143 // Unchanged 4.1
@@ -39,6 +40,7 @@ const (
 	TargetOpcode          = 0x144 // Unchanged 4.1
 	UpdateHPMPTPOpcode    = 0x145 // Unchanged 4.1
 	UpdateStatusesOpcode  = 0xFA  // Updated 4.1
+	WeatherChangeOpcode   = 0x1BC // Updated 4.18
 	XWorldPartyListOpcode = 0xA1  // Updated 4.18
 )
 
@@ -55,6 +57,7 @@ var _ = registerInBlockData(HateListOpcode, new(HateList))
 var _ = registerInBlockData(HateRankingOpcode, new(HateRanking))
 var _ = registerInBlockData(InitZoneOpcode, new(InitZone))
 var _ = registerInBlockData(MapChangeOpcode, new(MapChange))
+var _ = registerInBlockData(MountOpcode, new(Mount))
 var _ = registerInBlockData(MovementOpcode, new(Movement))
 var _ = registerInBlockData(NotifyOpcode, new(Notify))
 var _ = registerInBlockData(Notify3Opcode, new(Notify3))
@@ -66,6 +69,7 @@ var _ = registerInBlockData(SetPosOpcode, new(SetPos))
 var _ = registerInBlockData(TargetOpcode, new(Target))
 var _ = registerInBlockData(UpdateHPMPTPOpcode, new(UpdateHPMPTP))
 var _ = registerInBlockData(UpdateStatusesOpcode, new(UpdateStatuses))
+var _ = registerInBlockData(WeatherChangeOpcode, new(WeatherChange))
 var _ = registerInBlockData(XWorldPartyListOpcode, new(XWorldPartyList))
 
 // Opcodes that define the datatypes of outgoing (to server) network blocks
@@ -73,11 +77,13 @@ const (
 	MyActionOpcode    = 0x111 // Updated for 4.18
 	MyMovementOpcode  = 0x118 // Updated for 4.1
 	MyMovement2Opcode = 0x157 // Updated for 4.18
+	MyPerformOpcode   = 0x160 // Updated for 4.18
 )
 
 var _ = registerOutBlockData(MyActionOpcode, new(MyAction))
 var _ = registerOutBlockData(MyMovementOpcode, new(MyMovement))
 var _ = registerOutBlockData(MyMovement2Opcode, new(MyMovement2))
+var _ = registerOutBlockData(MyPerformOpcode, new(Perform))
 
 // NewBlockData is a factory for BlockData that uses the opcode to
 // determine which BlockData to create
