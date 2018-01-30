@@ -40,7 +40,7 @@ const (
 	TargetOpcode          = 0x144 // Unchanged 4.2
 	UpdateHPMPTPOpcode    = 0x145 // Unchanged 4.2
 	UpdateStatusesOpcode  = 0x125 // Updated 4.2
-	WeatherChangeOpcode   = 0x1DD // DOESN'T WORK
+	WeatherChangeOpcode   = 0x1EA // Updated 4.2
 	XWorldPartyListOpcode = 0xA1  // Updated 4.18
 )
 
@@ -69,8 +69,7 @@ var _ = registerInBlockData(SetPosOpcode, new(SetPos))
 var _ = registerInBlockData(TargetOpcode, new(Target))
 var _ = registerInBlockData(UpdateHPMPTPOpcode, new(UpdateHPMPTP))
 var _ = registerInBlockData(UpdateStatusesOpcode, new(UpdateStatuses))
-
-// var _ = registerInBlockData(WeatherChangeOpcode, new(WeatherChange))
+var _ = registerInBlockData(WeatherChangeOpcode, new(WeatherChange))
 
 // var _ = registerInBlockData(XWorldPartyListOpcode, new(XWorldPartyList))
 
