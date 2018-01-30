@@ -53,10 +53,10 @@ type PlayerSpawn struct {
 	U4                      uint32
 	TargetID                uint64
 
-	U6, U7 uint32
-	Weapon WeaponGear
+	U6, U7    uint32
+	Weapon    WeaponGear
+	CraftTool WeaponGear
 
-	U12, U13, U14, U15 uint32
 	BNPCBase, BNPCName uint32
 	U18, U19, U20      uint32
 	OwnerID            uint32
@@ -89,6 +89,7 @@ type PlayerSpawn struct {
 
 	MountInfo MountInfo
 	U28b      byte
+	U28c      uint32
 	U29       uint32
 	Statuses  [30]StatusEffect
 	X         float32
@@ -110,5 +111,5 @@ type PlayerSpawn struct {
 	Model ModelInfo
 
 	FCTag FCTag
-	U30   uint32
+	U30   uint64
 }

@@ -15,32 +15,32 @@ var outTypeRegistry = make(map[uint16]xivnet.BlockData)
 
 // Opcodes that define the datatypes of incoming (from server) network blocks
 const (
-	AddStatusOpcode       = 0x141 // Updated for 4.1
-	ActionOpcode          = 0xFB  // Updated for 4.1
-	AoEAction8Opcode      = 0xFE  // Updated for 4.1
-	AoEAction16Opcode     = 0xFF  // Updated for 4.1
-	AoEAction24Opcode     = 0x100 // Updated for 4.1
-	AoEAction32Opcode     = 0x101 // Updated for 4.1
-	CastingOpcode         = 0x123 // Updated for 4.1
-	EquipChangeOpcode     = 0x13C // Updated for 4.1
-	GaugeOpcode           = 0x249 // Updated for 4.1
-	HateListOpcode        = 0x127 // Updated for 4.1
-	HateRankingOpcode     = 0x126 // Updated for 4.1
-	InitZoneOpcode        = 0x19A // Unchanged 4.1
-	MapChangeOpcode       = 0x248 // Updated for 4.1
-	MountOpcode           = 0x19F // Updated for 4.18
-	MovementOpcode        = 0x11E // Updated for 4.1
-	NotifyOpcode          = 0x142 // Unchanged 4.1
-	Notify3Opcode         = 0x143 // Unchanged 4.1
-	NPCSpawnOpcode        = 0x11D // Updated for 4.1
-	PerformOpcode         = 0x252 // Updated for 4.15
-	PlayerSpawnOpcode     = 0x11C // Updated for 4.1
-	RemoveEntityOpcode    = 0x191 // Unchanged 4.1
-	SetPosOpcode          = 0x120 // Updated for 4.1
-	TargetOpcode          = 0x144 // Unchanged 4.1
-	UpdateHPMPTPOpcode    = 0x145 // Unchanged 4.1
-	UpdateStatusesOpcode  = 0xFA  // Updated 4.1
-	WeatherChangeOpcode   = 0x1BC // Updated 4.18
+	AddStatusOpcode       = 0x141 // Unchanged for 4.2
+	ActionOpcode          = 0x128 // Updated for 4.2
+	AoEAction8Opcode      = 0x129 // Updated for 4.2
+	AoEAction16Opcode     = 0x12A // Updated for 4.2
+	AoEAction24Opcode     = 0x12B // Updated for 4.2
+	AoEAction32Opcode     = 0x12C // Updated for 4.2
+	CastingOpcode         = 0x162 // Updated for 4.2
+	EquipChangeOpcode     = 0x170 // Updated for 4.2
+	GaugeOpcode           = 0x27D // Updated for 4.2
+	HateListOpcode        = 0x166 // Updated for 4.2
+	HateRankingOpcode     = 0x165 // Updated for 4.2
+	InitZoneOpcode        = 0x19A // Unchanged 4.2
+	MapChangeOpcode       = 0x27C // Updated for 4.2
+	MountOpcode           = 0x1CD // Updated for 4.2
+	MovementOpcode        = 0x15E // Updated for 4.2
+	NotifyOpcode          = 0x142 // Unchanged 4.2
+	Notify3Opcode         = 0x143 // Unchanged 4.2
+	NPCSpawnOpcode        = 0x15D // Updated for 4.2
+	PerformOpcode         = 0x286 // Updated for 4.2
+	PlayerSpawnOpcode     = 0x15C // Updated for 4.2
+	RemoveEntityOpcode    = 0x191 // Unchanged 4.2
+	SetPosOpcode          = 0x160 // Updated for 4.2
+	TargetOpcode          = 0x144 // Unchanged 4.2
+	UpdateHPMPTPOpcode    = 0x145 // Unchanged 4.2
+	UpdateStatusesOpcode  = 0x125 // Updated 4.2
+	WeatherChangeOpcode   = 0x1DD // Updated 4.2
 	XWorldPartyListOpcode = 0xA1  // Updated 4.18
 )
 
@@ -70,14 +70,15 @@ var _ = registerInBlockData(TargetOpcode, new(Target))
 var _ = registerInBlockData(UpdateHPMPTPOpcode, new(UpdateHPMPTP))
 var _ = registerInBlockData(UpdateStatusesOpcode, new(UpdateStatuses))
 var _ = registerInBlockData(WeatherChangeOpcode, new(WeatherChange))
-var _ = registerInBlockData(XWorldPartyListOpcode, new(XWorldPartyList))
+
+// var _ = registerInBlockData(XWorldPartyListOpcode, new(XWorldPartyList))
 
 // Opcodes that define the datatypes of outgoing (to server) network blocks
 const (
-	MyActionOpcode    = 0x111 // Updated for 4.18
-	MyMovementOpcode  = 0x118 // Updated for 4.1
-	MyMovement2Opcode = 0x157 // Updated for 4.18
-	MyPerformOpcode   = 0x160 // Updated for 4.18
+	MyActionOpcode    = 0x131 // Updated for 4.18
+	MyMovementOpcode  = 0x138 // Updated for 4.2
+	MyMovement2Opcode = 0x177 // Updated for 4.2
+	MyPerformOpcode   = 0x180 // Updated for 4.18
 )
 
 var _ = registerOutBlockData(MyActionOpcode, new(MyAction))
