@@ -17,10 +17,10 @@ var outTypeRegistry = make(map[uint16]xivnet.BlockData)
 const (
 	AddStatusOpcode       = 0x141 // Unchanged for 4.2
 	ActionOpcode          = 0x128 // Updated for 4.2
-	AoEAction8Opcode      = 0x129 // Updated for 4.2
-	AoEAction16Opcode     = 0x12A // Updated for 4.2
-	AoEAction24Opcode     = 0x12B // Updated for 4.2
-	AoEAction32Opcode     = 0x12C // Updated for 4.2
+	AoEAction8Opcode      = 0x12B // Updated for 4.2
+	AoEAction16Opcode     = 0x138 // Updated for 4.2
+	AoEAction24Opcode     = 0x139 // Updated for 4.2
+	AoEAction32Opcode     = 0x13A // Updated for 4.2
 	CastingOpcode         = 0x162 // Updated for 4.2
 	EquipChangeOpcode     = 0x170 // Updated for 4.2
 	GaugeOpcode           = 0x27D // Updated for 4.2
@@ -40,7 +40,7 @@ const (
 	TargetOpcode          = 0x144 // Unchanged 4.2
 	UpdateHPMPTPOpcode    = 0x145 // Unchanged 4.2
 	UpdateStatusesOpcode  = 0x125 // Updated 4.2
-	WeatherChangeOpcode   = 0x1DD // Updated 4.2
+	WeatherChangeOpcode   = 0x1DD // DOESN'T WORK
 	XWorldPartyListOpcode = 0xA1  // Updated 4.18
 )
 
@@ -69,7 +69,8 @@ var _ = registerInBlockData(SetPosOpcode, new(SetPos))
 var _ = registerInBlockData(TargetOpcode, new(Target))
 var _ = registerInBlockData(UpdateHPMPTPOpcode, new(UpdateHPMPTP))
 var _ = registerInBlockData(UpdateStatusesOpcode, new(UpdateStatuses))
-var _ = registerInBlockData(WeatherChangeOpcode, new(WeatherChange))
+
+// var _ = registerInBlockData(WeatherChangeOpcode, new(WeatherChange))
 
 // var _ = registerInBlockData(XWorldPartyListOpcode, new(XWorldPartyList))
 
