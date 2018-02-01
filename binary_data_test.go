@@ -22,7 +22,7 @@ var zlibPacket = []byte{
 }
 
 var jsonZlibFrameHeader string = `"52 52 a0 41 ff 5d 46 e2 7f 2a 64 4d 7b 99 c4 75"`
-var jsonZlibBlock0Header string = `{"SubjectID":123456789,"CurrentID":123456789,"U1":12,"U2":20,"Opcode":322,"U3":34,"Time":"2017-01-26T03:40:47-08:00","U4":0}`
+var jsonZlibBlock0Header string = `{"SubjectID":123456789,"CurrentID":123456789,"U1":12,"U2":20,"Opcode":322,"Route":34,"Time":"2017-01-26T03:40:47-08:00","U4":0}`
 var jsonZlibBlock0Data string = `"00 00 cd e1 00 00 00 00 01 00 00 00 01 00 00 00 00 00 00 00 20 00 00 00"`
 var bytesZlibBlock0 = []byte{
 	0x38, 0x00, 0x00, 0x00, // Length
@@ -30,7 +30,7 @@ var bytesZlibBlock0 = []byte{
 	0x15, 0xCD, 0x5B, 0x07, // CurrentID
 	0x0C, 0x00, 0x00, 0x00, // U1
 	0x14, 0x00, 0x42, 0x01, // U2 and Opcode
-	0x22, 0x00, 0x00, 0x00, // U3
+	0x22, 0x00, 0x00, 0x00, // Route
 	0x3f, 0xe0, 0x89, 0x58, // Time
 	0x00, 0x00, 0x00, 0x00, // U4
 	0x00, 0x00, 0xcd, 0xe1, 0x00, 0x00, 0x00, 0x00, 0x01, 0x00, 0x00, 0x00,
@@ -55,7 +55,7 @@ var expectedZlibFrame = xivnet.Frame{
 				U1:        12,
 				U2:        20,
 				Opcode:    0x142,
-				U3:        34,
+				Route:     34,
 				Time:      time.Unix(0x5889e03f, 0),
 				U4:        0,
 			},
@@ -72,7 +72,7 @@ var expectedZlibFrame = xivnet.Frame{
 				U1:        12,
 				U2:        20,
 				Opcode:    0x156,
-				U3:        34,
+				Route:     34,
 				Time:      time.Unix(0x5889e03f, 0),
 				U4:        0,
 			},
@@ -89,7 +89,7 @@ var expectedZlibFrame = xivnet.Frame{
 				U1:        12,
 				U2:        20,
 				Opcode:    0x11b,
-				U3:        34,
+				Route:     34,
 				Time:      time.Unix(0x5889e03f, 0),
 				U4:        0,
 			},
@@ -106,7 +106,7 @@ var expectedZlibFrame = xivnet.Frame{
 				U1:        12,
 				U2:        20,
 				Opcode:    0x14d,
-				U3:        34,
+				Route:     34,
 				Time:      time.Unix(0x5889e03f, 0),
 				U4:        0,
 			},

@@ -176,7 +176,7 @@ type BlockHeader struct {
 	U1        uint32
 	U2        uint16
 	Opcode    uint16
-	U3        uint32
+	Route     uint32
 	Time      time.Time
 	U4        uint32
 }

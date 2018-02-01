@@ -87,24 +87,27 @@ type PlayerSpawn struct {
 	U26d      byte
 	U27a      uint16
 
-	MountInfo MountInfo
-	U28b      byte
-	U28c      uint32
-	U29       uint32
-	Statuses  [30]StatusEffect
-	X         float32
-	Z         float32
-	Y         float32
-	Head      Gear
-	Body      Gear
-	Hand      Gear
-	Leg       Gear
-	Foot      Gear
-	Ear       Gear
-	Neck      Gear
-	Wrist     Gear
-	Ring1     Gear
-	Ring2     Gear
+	MountInfo     MountInfo
+	StatusLoopVFX byte
+	U28c          uint32
+	U29           uint32
+
+	Statuses [30]StatusEffect
+
+	X float32
+	Z float32
+	Y float32
+
+	Head  Gear
+	Body  Gear
+	Hand  Gear
+	Leg   Gear
+	Foot  Gear
+	Ear   Gear
+	Neck  Gear
+	Wrist Gear
+	Ring1 Gear
+	Ring2 Gear
 
 	Name EntityName
 

@@ -150,7 +150,7 @@ func decodeBlock(blocksBytes []byte) (*Block, error) {
 		block.Header.U1 = binary.LittleEndian.Uint32(blocksBytes[12:16])
 		block.Header.U2 = binary.LittleEndian.Uint16(blocksBytes[16:18])
 		block.Header.Opcode = binary.LittleEndian.Uint16(blocksBytes[18:20])
-		block.Header.U3 = binary.LittleEndian.Uint32(blocksBytes[20:24])
+		block.Header.Route = binary.LittleEndian.Uint32(blocksBytes[20:24])
 		block.Header.Time = time.Unix(int64(binary.LittleEndian.Uint32(blocksBytes[24:28])), 0)
 		block.Header.U4 = binary.LittleEndian.Uint32(blocksBytes[28:32])
 		blockData = make([]byte, length-32)

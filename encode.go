@@ -46,7 +46,7 @@ func (b *Block) Encode(w io.Writer) error {
 	binary.LittleEndian.PutUint32(buf[12:16], b.Header.U1)
 	binary.LittleEndian.PutUint16(buf[16:18], b.Header.U2)
 	binary.LittleEndian.PutUint16(buf[18:20], b.Header.Opcode)
-	binary.LittleEndian.PutUint32(buf[20:24], b.Header.U3)
+	binary.LittleEndian.PutUint32(buf[20:24], b.Header.Route)
 	time := uint32(b.Header.Time.Unix())
 	binary.LittleEndian.PutUint32(buf[24:28], time)
 	binary.LittleEndian.PutUint32(buf[28:32], b.Header.U4)
