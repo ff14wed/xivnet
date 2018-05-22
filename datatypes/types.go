@@ -45,12 +45,11 @@ const (
 )
 
 var _ = registerInBlockData(AddStatusOpcode, new(AddStatus))
-
-// var _ = registerInBlockData(ActionOpcode, new(Action))
-// var _ = registerInBlockData(AoEAction8Opcode, new(AoEAction8))
-// var _ = registerInBlockData(AoEAction16Opcode, new(AoEAction16))
-// var _ = registerInBlockData(AoEAction24Opcode, new(AoEAction24))
-// var _ = registerInBlockData(AoEAction32Opcode, new(AoEAction32))
+var _ = registerInBlockData(ActionOpcode, new(Action))
+var _ = registerInBlockData(AoEAction8Opcode, new(AoEAction8))
+var _ = registerInBlockData(AoEAction16Opcode, new(AoEAction16))
+var _ = registerInBlockData(AoEAction24Opcode, new(AoEAction24))
+var _ = registerInBlockData(AoEAction32Opcode, new(AoEAction32))
 var _ = registerInBlockData(CastingOpcode, new(Casting))
 var _ = registerInBlockData(EquipChangeOpcode, new(EquipChange))
 var _ = registerInBlockData(GaugeOpcode, new(Gauge))

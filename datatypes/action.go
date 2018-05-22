@@ -7,22 +7,26 @@ type Action struct {
 	ActionIDName uint32
 	U2           uint32
 	U3           uint32
-	U4           uint32
 	UnkID1       uint32
+	U4           uint16
 	Direction    uint16 // Quantized direction 0x0000 ~ 0xFFFF, NWSE <=> 0,0x4000,0x8000,0xC000
 	ActionID     uint16
+	U5           uint16
 
 	U6a         byte
-	U6b         byte
-	U7a         byte
 	NumAffected byte
+	U6b         uint16
+	U7          uint32
+	U8          uint16
 
-	Pad1    uint32
 	Effects ActionEffects
 
+	U9  uint32
+	U10 uint16
+
 	TargetID2 uint32 // Target of effects
-	U9        uint32
-	U10       uint32
+	U11       uint32
+	U12       uint32
 }
 
 // ActionEffects defines a block of 8 action effects
@@ -30,13 +34,14 @@ type ActionEffects [8]ActionEffect
 
 // ActionEffect defines the data array for an effect that resulted from the action
 type ActionEffect struct {
-	Type byte
-	P1   byte
-	P2   byte
-	P3   byte // Usually affects percentage message in battle log
-	P4   uint16
-	P5   byte // 0 affects target, 128 affects self
-	P6   byte
+	Type        byte
+	HitSeverity byte
+	P3          byte
+	Percentage  byte
+	// Total Damage = 65535 * Multiplier * (Flags & 0x40) + Damage
+	Multiplier byte
+	Flags      byte // (Flags & 0xA0) means attacker receives damage instead
+	Damage     uint16
 }
 
 /*

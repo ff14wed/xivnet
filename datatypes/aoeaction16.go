@@ -7,22 +7,26 @@ type AoEAction16 struct {
 	ActionIDName uint32
 	U2           uint32
 	U3           uint32
-	U4           uint32
 	UnkID1       uint32
+	U4           uint16
 	Direction    uint16 // Quantized direction 0x0000 ~ 0xFFFF, NWSE <=> 0,0x4000,0x8000,0xC000
 	ActionID     uint16
+	U5           uint16
 
 	U6a         byte
-	U6b         byte
-	U7a         byte
 	NumAffected byte
+	U6b         uint16
+	U7          uint32
+	U8          uint16
 
-	Pad1        uint32
 	EffectsList [16]ActionEffects
+
+	U9  uint32
+	U10 uint16
 
 	Targets [16]uint64
 
 	Position PackedPosition
-	U9       uint16
-	U10      uint32
+	U11      uint16
+	U12      uint32
 }
