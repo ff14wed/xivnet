@@ -34,7 +34,7 @@ const (
 	Notify3Opcode         = 0x143 // Unchanged 4.3
 	Notify4Opcode         = 0x144 // Unchanged 4.3
 	NPCSpawnOpcode        = 0x173 // Updated for 4.3
-	PerformOpcode         = 0x286 // Updated for 4.3
+	PerformOpcode         = 0x29B // Updated for 4.3
 	PlayerSpawnOpcode     = 0x172 // Updated for 4.3
 	RemoveEntityOpcode    = 0x191 // Unchanged 4.3
 	SetPosOpcode          = 0x176 // Updated for 4.3
@@ -78,7 +78,7 @@ const (
 	MyActionOpcode    = 0x13D // Updated for 4.3
 	MyMovementOpcode  = 0x144 // Updated for 4.3
 	MyMovement2Opcode = 0x183 // Updated for 4.3
-	MyPerformOpcode   = 0x180 // Updated for 4.18
+	MyPerformOpcode   = 0x18D // Updated for 4.3
 )
 
 var _ = registerOutBlockData(MyActionOpcode, new(MyAction))
