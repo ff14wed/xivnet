@@ -8,7 +8,7 @@ type AoEAction24 struct {
 	U2           uint32
 	U3           uint32
 	UnkID1       uint32
-	U4           uint32
+	U4           uint16
 	Direction    uint16 // Quantized direction 0x0000 ~ 0xFFFF, NWSE <=> 0,0x4000,0x8000,0xC000
 	ActionID     uint16
 	U5           uint16
