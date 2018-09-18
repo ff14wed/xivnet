@@ -11,7 +11,8 @@ type InitZone struct {
 	WeatherID, Bitmask byte
 	U5b                uint16
 
-	U6, U7, U8, U9 uint32
+	U6, U7, U8, U9, U10 uint32
 
 	X, Z, Y float32
+	U11     uint32
 }
