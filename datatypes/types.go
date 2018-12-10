@@ -22,12 +22,14 @@ const (
 	AoEAction24Opcode     = 0x151 // Updated for 4.4
 	AoEAction32Opcode     = 0x152 // Updated for 4.4
 	CastingOpcode         = 0x174 // Updated for 4.4
+	CraftStateOpcode      = 0x1a6 // Updated for 4.4
 	EquipChangeOpcode     = 0x182 // Updated for 4.4
 	GaugeOpcode           = 0x290 // Updated for 4.4
 	HateListOpcode        = 0x177 // Updated for 4.4
 	HateRankingOpcode     = 0x178 // Updated for 4.4
 	InitZoneOpcode        = 0x19A // Unchanged 4.4
 	MapChangeOpcode       = 0x28F // Updated for 4.4
+	MarkerOpcode          = 0x25D // Updated for 4.4
 	MountOpcode           = 0x1DF // Updated for 4.4
 	MovementOpcode        = 0x170 // Updated for 4.4
 	NotifyOpcode          = 0x142 // Unchanged 4.4
@@ -51,12 +53,14 @@ var _ = registerInBlockData(AoEAction16Opcode, new(AoEAction16))
 var _ = registerInBlockData(AoEAction24Opcode, new(AoEAction24))
 var _ = registerInBlockData(AoEAction32Opcode, new(AoEAction32))
 var _ = registerInBlockData(CastingOpcode, new(Casting))
+var _ = registerInBlockData(CraftStateOpcode, new(CraftState))
 var _ = registerInBlockData(EquipChangeOpcode, new(EquipChange))
 var _ = registerInBlockData(GaugeOpcode, new(Gauge))
 var _ = registerInBlockData(HateListOpcode, new(HateList))
 var _ = registerInBlockData(HateRankingOpcode, new(HateRanking))
 var _ = registerInBlockData(InitZoneOpcode, new(InitZone))
 var _ = registerInBlockData(MapChangeOpcode, new(MapChange))
+var _ = registerInBlockData(MarkerOpcode, new(Marker))
 var _ = registerInBlockData(MountOpcode, new(Mount))
 var _ = registerInBlockData(MovementOpcode, new(Movement))
 var _ = registerInBlockData(NotifyOpcode, new(Notify))
@@ -75,16 +79,18 @@ var _ = registerInBlockData(WeatherChangeOpcode, new(WeatherChange))
 
 // Opcodes that define the datatypes of outgoing (to server) network blocks
 const (
-	MyActionOpcode    = 0x134 // Updated for 4.4
-	MyMovementOpcode  = 0x13B // Updated for 4.4
-	MyMovement2Opcode = 0x17A // Updated for 4.4
-	MyPerformOpcode   = 0x184 // Updated for 4.4
+	MyActionOpcode      = 0x134 // Updated for 4.4
+	MyMovementOpcode    = 0x13B // Updated for 4.4
+	MyMovement2Opcode   = 0x17A // Updated for 4.4
+	MyPerformOpcode     = 0x184 // Updated for 4.4
+	BeginCraftingOpcode = 0x159 // Updated for 4.4
 )
 
 var _ = registerOutBlockData(MyActionOpcode, new(MyAction))
 var _ = registerOutBlockData(MyMovementOpcode, new(MyMovement))
 var _ = registerOutBlockData(MyMovement2Opcode, new(MyMovement2))
 var _ = registerOutBlockData(MyPerformOpcode, new(Perform))
+var _ = registerOutBlockData(BeginCraftingOpcode, new(BeginCrafting))
 
 // NewBlockData is a factory for BlockData that uses the opcode to
 // determine which BlockData to create
