@@ -129,3 +129,26 @@ func registerOutBlockData(opcode uint16, blockData xivnet.BlockData) struct{} {
 	outTypeRegistry[opcode] = blockData
 	return struct{}{}
 }
+
+// ParseBlock takes in raw, unparsed blocks and returns a parsed block if
+// possible.
+// isOut toggles whether we should parse this block as an outgoing block (sent
+// packet) or as an incoming block (recv'd packet)
+func ParseBlock(block *xivnet.Block, isOut bool) (*xivnet.Block, error) {
+	data, ok := block.Data.(*xivnet.GenericBlockData)
+	if !ok {
+		return block, nil
+	}
+	blockBytes, _ := data.MarshalBytes()
+	bd := NewBlockData(block.Header.Opcode, isOut)
+	if bd == nil {
+		return block, nil
+	}
+	err := UnmarshalBlockBytes(blockBytes, bd)
+	if err != nil {
+		return block, err
+	}
+	newB := *block
+	newB.Data = bd
+	return &newB, nil
+}
