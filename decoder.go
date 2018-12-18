@@ -179,7 +179,7 @@ func strictIsValidHeader(header []byte) bool {
 // DiscardDataUntilValid will trim off invalid data on the buffered input
 // until it reaches a header that is valid or the buffer has insufficient data.
 // This is useful for when the input stream has been corrupted with some invalid bytes.
-func DiscardDataUntilValid(buf *bufio.Reader) {
+func (d *Decoder) DiscardDataUntilValid(buf *bufio.Reader) {
 	for {
 		header, err := buf.Peek(28)
 		if err != nil {

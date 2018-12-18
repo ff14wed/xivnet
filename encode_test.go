@@ -18,13 +18,11 @@ var _ = Describe("Encoder", func() {
 	Describe("Frame", func() {
 		var (
 			incorrectFrame   xivnet.Frame
-			realFrameLength  uint32
 			realBlockLengths []uint32
 		)
 
 		BeforeEach(func() {
 			incorrectFrame = expectedZlibFrame
-			realFrameLength = incorrectFrame.Length
 			incorrectFrame.Blocks = nil
 			incorrectFrame.Length = 0
 

@@ -172,17 +172,18 @@ var _ = Describe("Decoder", func() {
 			It("does nothing to the buffer", func() {
 				byteBuf := bytes.NewBuffer(nil)
 				buf := bufio.NewReader(byteBuf)
-				xivnet.DiscardDataUntilValid(buf)
+				d := xivnet.NewDecoder(32768, logger)
+				d.DiscardDataUntilValid(buf)
 				Expect(byteBuf.Len()).To(Equal(0))
 			})
 		})
 
 		Context("with an invalid header at the head of the buffer", func() {
-			It("returns an error", func() {
+			It("discards the invalid data and allows the next decode operation to succeed with valid data", func() {
 				byteBuf := bytes.NewBuffer(append(invalidHeaderPacket, zeroBlockPacket...))
 				buf := bufio.NewReader(byteBuf)
-				xivnet.DiscardDataUntilValid(buf)
 				d := xivnet.NewDecoder(32768, logger)
+				d.DiscardDataUntilValid(buf)
 				f, err := d.Decode(buf)
 				Expect(err).ToNot(HaveOccurred())
 				Expect(f.Length).To(Equal(uint32(48)))
