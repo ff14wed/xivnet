@@ -25,8 +25,8 @@ const (
 	CraftStateOpcode      = 0x1a6 // Updated for 4.4
 	EquipChangeOpcode     = 0x182 // Updated for 4.4
 	GaugeOpcode           = 0x290 // Updated for 4.4
-	HateListOpcode        = 0x177 // Updated for 4.4
-	HateRankingOpcode     = 0x178 // Updated for 4.4
+	HateRankingOpcode     = 0x177 // Updated for 4.4
+	HateListOpcode        = 0x178 // Updated for 4.4
 	InitZoneOpcode        = 0x19A // Unchanged 4.4
 	MapChangeOpcode       = 0x28F // Updated for 4.4
 	MarkerOpcode          = 0x25D // Updated for 4.4
