@@ -15,34 +15,34 @@ var outTypeRegistry = make(map[uint16]xivnet.BlockData)
 
 // Opcodes that define the datatypes of incoming (from server) network blocks
 const (
-	AddStatusOpcode       = 0x141 // Unchanged for 4.4
-	ActionOpcode          = 0x14C // Updated for 4.4
-	AoEAction8Opcode      = 0x14F // Updated for 4.4
-	AoEAction16Opcode     = 0x150 // Updated for 4.4
-	AoEAction24Opcode     = 0x151 // Updated for 4.4
-	AoEAction32Opcode     = 0x152 // Updated for 4.4
-	CastingOpcode         = 0x174 // Updated for 4.4
-	CraftStateOpcode      = 0x1a6 // Updated for 4.4
-	EquipChangeOpcode     = 0x182 // Updated for 4.4
-	GaugeOpcode           = 0x290 // Updated for 4.4
-	HateRankingOpcode     = 0x177 // Updated for 4.4
-	HateListOpcode        = 0x178 // Updated for 4.4
-	InitZoneOpcode        = 0x19A // Unchanged 4.4
-	MapChangeOpcode       = 0x28F // Updated for 4.4
-	MarkerOpcode          = 0x25D // Updated for 4.4
-	MountOpcode           = 0x1DF // Updated for 4.4
-	MovementOpcode        = 0x170 // Updated for 4.4
-	NotifyOpcode          = 0x142 // Unchanged 4.4
-	Notify3Opcode         = 0x143 // Unchanged 4.4
-	Notify4Opcode         = 0x144 // Unchanged 4.4
-	NPCSpawnOpcode        = 0x16E // Updated for 4.4
+	AddStatusOpcode       = 0x141 // Unchanged for 4.5
+	ActionOpcode          = 0x154 // Updated for 4.5
+	AoEAction8Opcode      = 0x157 // Updated for 4.5
+	AoEAction16Opcode     = 0x158 // Updated for 4.5
+	AoEAction24Opcode     = 0x159 // Updated for 4.5
+	AoEAction32Opcode     = 0x15A // Updated for 4.5
+	CastingOpcode         = 0x17C // Updated for 4.5
+	CraftStateOpcode      = 0x1AF // Updated for 4.5
+	EquipChangeOpcode     = 0x18B // Updated for 4.5
+	GaugeOpcode           = 0x29A // Updated for 4.5
+	HateRankingOpcode     = 0x17F // Updated for 4.5
+	HateListOpcode        = 0x180 // Updated for 4.5
+	InitZoneOpcode        = 0x19A // Updated for 4.5
+	MapChangeOpcode       = 0x299 // Updated for 4.5
+	MarkerOpcode          = 0x267 // Updated for 4.5
+	MountOpcode           = 0x1E8 // Updated for 4.5
+	MovementOpcode        = 0x178 // Updated for 4.5
+	NotifyOpcode          = 0x142 // Unchanged 4.5
+	Notify3Opcode         = 0x143 // Unchanged 4.5
+	Notify4Opcode         = 0x144 // Unchanged 4.5
+	NPCSpawnOpcode        = 0x176 // Updated for 4.5
 	PerformOpcode         = 0x299 // Updated for 4.4
-	PlayerSpawnOpcode     = 0x16D // Updated for 4.4
-	RemoveEntityOpcode    = 0x191 // Unchanged 4.4
-	SetPosOpcode          = 0x172 // Updated for 4.4
-	UpdateHPMPTPOpcode    = 0x145 // Unchanged 4.4
-	UpdateStatusesOpcode  = 0x149 // Updated for 4.4
-	WeatherChangeOpcode   = 0x1FC // Updated for 4.4
+	PlayerSpawnOpcode     = 0x175 // Updated for 4.5
+	RemoveEntityOpcode    = 0x191 // Unchanged 4.5
+	SetPosOpcode          = 0x17A // Updated for 4.5
+	UpdateHPMPTPOpcode    = 0x145 // Unchanged 4.5
+	UpdateStatusesOpcode  = 0x151 // Updated for 4.5
+	WeatherChangeOpcode   = 0x205 // Updated for 4.5
 	XWorldPartyListOpcode = 0xA1  // Updated 4.18
 )
 
@@ -67,7 +67,8 @@ var _ = registerInBlockData(NotifyOpcode, new(Notify))
 var _ = registerInBlockData(Notify3Opcode, new(Notify3))
 var _ = registerInBlockData(Notify4Opcode, new(Notify4))
 var _ = registerInBlockData(NPCSpawnOpcode, new(NPCSpawn))
-var _ = registerInBlockData(PerformOpcode, new(Perform))
+
+// var _ = registerInBlockData(PerformOpcode, new(Perform))
 var _ = registerInBlockData(PlayerSpawnOpcode, new(PlayerSpawn))
 var _ = registerInBlockData(RemoveEntityOpcode, new(RemoveEntity))
 var _ = registerInBlockData(SetPosOpcode, new(SetPos))
@@ -79,11 +80,11 @@ var _ = registerInBlockData(WeatherChangeOpcode, new(WeatherChange))
 
 // Opcodes that define the datatypes of outgoing (to server) network blocks
 const (
-	MyActionOpcode      = 0x134 // Updated for 4.4
-	MyMovementOpcode    = 0x13B // Updated for 4.4
-	MyMovement2Opcode   = 0x17A // Updated for 4.4
-	MyPerformOpcode     = 0x184 // Updated for 4.4
-	BeginCraftingOpcode = 0x159 // Updated for 4.4
+	MyActionOpcode      = 0x138 // Updated for 4.5
+	MyMovementOpcode    = 0x13F // Updated for 4.5
+	MyMovement2Opcode   = 0x17E // Updated for 4.5
+	MyPerformOpcode     = 0x188 // Updated for 4.5
+	BeginCraftingOpcode = 0x15D // Updated for 4.5
 )
 
 var _ = registerOutBlockData(MyActionOpcode, new(MyAction))
