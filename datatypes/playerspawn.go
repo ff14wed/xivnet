@@ -44,10 +44,8 @@ type MountInfo struct {
 type PlayerSpawn struct {
 	Title                   uint16
 	U1b                     uint16
-	U2b                     byte
-	U2ab                    byte
-	GMRank                  byte
-	U3b                     byte
+	CurrentWorld            uint16
+	HomeWorld               uint16
 	MobAggressive           byte
 	OnlineStatus, Pose, U3d byte
 	U4                      uint32
