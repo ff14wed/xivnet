@@ -36,7 +36,7 @@ const (
 	Notify3Opcode         = 0x143 // Unchanged 4.5
 	Notify4Opcode         = 0x144 // Unchanged 4.5
 	NPCSpawnOpcode        = 0x176 // Updated for 4.5
-	PerformOpcode         = 0x299 // Updated for 4.4
+	PerformOpcode         = 0x2A5 // Updated for 4.5
 	PlayerSpawnOpcode     = 0x175 // Updated for 4.5
 	RemoveEntityOpcode    = 0x191 // Unchanged 4.5
 	SetPosOpcode          = 0x17A // Updated for 4.5
@@ -67,8 +67,7 @@ var _ = registerInBlockData(NotifyOpcode, new(Notify))
 var _ = registerInBlockData(Notify3Opcode, new(Notify3))
 var _ = registerInBlockData(Notify4Opcode, new(Notify4))
 var _ = registerInBlockData(NPCSpawnOpcode, new(NPCSpawn))
-
-// var _ = registerInBlockData(PerformOpcode, new(Perform))
+var _ = registerInBlockData(PerformOpcode, new(Perform))
 var _ = registerInBlockData(PlayerSpawnOpcode, new(PlayerSpawn))
 var _ = registerInBlockData(RemoveEntityOpcode, new(RemoveEntity))
 var _ = registerInBlockData(SetPosOpcode, new(SetPos))
