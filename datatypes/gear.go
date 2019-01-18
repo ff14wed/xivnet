@@ -2,8 +2,7 @@ package datatypes
 
 // WeaponGear defines the data struct for a weapon gear
 type WeaponGear struct {
-	ModelMain1, ModelMain2, ModelMain3, ModelMain4 uint16
-	ModelSub1, ModelSub2, ModelSub3, ModelSub4     uint16
+	Model1, Model2, Model3, Model4 uint16
 }
 
 // Gear defines the data struct for a normal gear

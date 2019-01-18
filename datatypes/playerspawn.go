@@ -42,25 +42,31 @@ type MountInfo struct {
 
 // PlayerSpawn defines the data array for a new entity block
 type PlayerSpawn struct {
-	Title                   uint16
-	U1b                     uint16
-	CurrentWorld            uint16
-	HomeWorld               uint16
-	MobAggressive           byte
-	OnlineStatus, Pose, U3d byte
-	U4                      uint32
-	TargetID                uint64
+	Title        uint16
+	U1b          uint16
+	CurrentWorld uint16
+	HomeWorld    uint16
 
-	U6, U7    uint32
-	Weapon    WeaponGear
-	CraftTool WeaponGear
+	GMRank       byte
+	U3c, U4      byte
+	OnlineStatus byte
 
-	BNPCBase, BNPCName uint32
-	U18, U19, U20      uint32
-	OwnerID            uint32
-	UnkID3             uint32
+	Pose          byte
+	U5a, U5b, U5c byte
 
-	CurrentHP, MaxHP uint32
+	TargetID   uint64
+	U6, U7     uint32
+	WeaponMain WeaponGear
+	WeaponSub  WeaponGear
+	CraftSub   WeaponGear
+
+	U14, U15             uint32
+	BNPCBase, BNPCName   uint32
+	U18, U19, DirectorID uint32
+	OwnerID              uint32
+	UnkID3               uint32
+
+	MaxHP, CurrentHP uint32
 	DisplayFlags     uint32
 	FateID           uint16
 	CurrentMP        uint16
@@ -76,7 +82,7 @@ type PlayerSpawn struct {
 	Emote      byte // Applies for when State is 3
 	Type       byte // 1 for player, 2 for NPC, else furniture
 	Subtype    byte // 4 for players, 2 pet, 3 companion, 5 mob, 7 minion
-	U25b       byte
+	Voice      byte
 	U25c       uint16
 
 	EnemyType byte // 0 for friendly, anything else is an enemy
