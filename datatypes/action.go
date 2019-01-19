@@ -1,32 +1,39 @@
 package datatypes
 
-// Action defines the data array for an ability block
-type Action struct {
-	TargetID     uint32 // Target of actions
-	U1           uint32
-	ActionIDName uint32
-	U2           uint32
-	U3           uint32
-	UnkID1       uint32
-	U4           uint16
-	Direction    uint16 // Quantized direction 0x0000 ~ 0xFFFF, NWSE <=> 0,0x4000,0x8000,0xC000
-	ActionID     uint16
-	U5           uint16
+// ActionHeader defines the header for an action packet. This is common
+// for single target or multi-target action packets.
+type ActionHeader struct {
+	TargetID          uint32 // Target of actions
+	U1                uint32
+	ActionIDName      uint32
+	GlobalCounter     uint32
+	AnimationLockTime float32
+	UnkID1            uint32
+	HiddenAnimation   uint16
+	Direction         uint16 // Quantized direction 0x0000 ~ 0xFFFF, NWSE <=> 0,0x4000,0x8000,0xC000
+	ActionID          uint16
+	Variation         byte
+	EffectDisplayType byte
 
 	U6a         byte
 	NumAffected byte
 	U6b         uint16
 	U7          uint32
 	U8          uint16
+}
+
+// Action defines the data array for an ability block
+type Action struct {
+	ActionHeader
 
 	Effects ActionEffects
 
 	U9  uint32
 	U10 uint16
 
-	TargetID2 uint32 // Target of effects
-	U11       uint32
-	U12       uint32
+	TargetID2   uint32 // Target of effects
+	EffectFlags uint32
+	U12         uint32
 }
 
 // ActionEffects defines a block of 8 action effects
