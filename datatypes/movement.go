@@ -8,3 +8,5 @@ type Movement struct {
 	Position  PackedPosition
 	U3        uint32
 }
+
+func (Movement) IsBlockData() {}

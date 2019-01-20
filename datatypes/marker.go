@@ -11,3 +11,5 @@ type Marker struct {
 	Y    float32
 	U4   uint32
 }
+
+func (Marker) IsBlockData() {}

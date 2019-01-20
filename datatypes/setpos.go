@@ -11,3 +11,5 @@ type SetPos struct {
 	Y           float32
 	U3          uint32
 }
+
+func (SetPos) IsBlockData() {}

@@ -16,3 +16,5 @@ type HateList struct {
 	Entries [32]HateEntry
 	Pad     uint32
 }
+
+func (HateList) IsBlockData() {}

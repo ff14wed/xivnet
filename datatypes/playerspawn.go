@@ -120,3 +120,5 @@ type PlayerSpawn struct {
 	FCTag FCTag
 	U30   uint64
 }
+
+func (PlayerSpawn) IsBlockData() {}

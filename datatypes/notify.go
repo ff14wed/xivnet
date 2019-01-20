@@ -29,3 +29,5 @@ Type:503 => Aggro???
   P2 is target ID
 Type:39 => Remove Entity ???
 */
+
+func (Notify) IsBlockData() {}

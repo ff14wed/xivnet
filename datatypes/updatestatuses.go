@@ -14,3 +14,5 @@ type UpdateStatuses struct {
 
 	U3 uint32
 }
+
+func (UpdateStatuses) IsBlockData() {}

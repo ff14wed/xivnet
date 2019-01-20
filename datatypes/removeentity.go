@@ -7,3 +7,5 @@ type RemoveEntity struct {
 	U2    uint16
 	ID    uint32
 }
+
+func (RemoveEntity) IsBlockData() {}

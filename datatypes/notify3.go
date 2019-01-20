@@ -12,3 +12,5 @@ type Notify3 struct {
 	P6   uint32
 	Pad2 uint32
 }
+
+func (Notify3) IsBlockData() {}

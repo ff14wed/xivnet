@@ -12,3 +12,5 @@ type Notify4 struct {
 	TargetID uint32 // 0xE0000000 means deselect target
 	U1       uint32
 }
+
+func (Notify4) IsBlockData() {}

@@ -14,3 +14,5 @@ type HateRanking struct {
 	Entries [32]HateRankingEntry
 	Pad     uint32
 }
+
+func (HateRanking) IsBlockData() {}

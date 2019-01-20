@@ -24,3 +24,5 @@ type XWorldPartyList struct {
 	PartyLeader uint64
 	Entries     [8]XWorldPlayerEntry
 }
+
+func (XWorldPartyList) IsBlockData() {}

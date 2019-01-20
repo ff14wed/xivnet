@@ -6,3 +6,5 @@ type Perform struct {
 	Data   [30]byte
 	U1     byte
 }
+
+func (Perform) IsBlockData() {}

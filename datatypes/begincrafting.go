@@ -9,3 +9,5 @@ type BeginCrafting struct {
 	U5          [3]byte
 	U6          [30]uint32
 }
+
+func (BeginCrafting) IsBlockData() {}

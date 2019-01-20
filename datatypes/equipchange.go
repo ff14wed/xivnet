@@ -20,3 +20,5 @@ type EquipChange struct {
 	Ring2      Gear
 	U2         uint32
 }
+
+func (EquipChange) IsBlockData() {}

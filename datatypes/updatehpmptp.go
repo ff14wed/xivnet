@@ -8,3 +8,5 @@ type UpdateHPMPTP struct {
 	U1 uint32
 	U2 uint32
 }
+
+func (UpdateHPMPTP) IsBlockData() {}

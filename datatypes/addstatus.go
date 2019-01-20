@@ -28,3 +28,5 @@ type AddStatus struct {
 	Entries   [4]AddStatusEntry
 	U8        uint32
 }
+
+func (AddStatus) IsBlockData() {}

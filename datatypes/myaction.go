@@ -12,3 +12,5 @@ type MyAction struct {
 	P6   uint32
 	P7   uint32
 }
+
+func (MyAction) IsBlockData() {}

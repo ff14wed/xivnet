@@ -10,3 +10,5 @@ type NPCSpawn2 struct {
 	PlayerSpawn
 	U31 [47]uint64
 }
+
+func (NPCSpawn2) IsBlockData() {}

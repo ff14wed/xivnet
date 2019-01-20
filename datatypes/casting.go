@@ -12,3 +12,5 @@ type Casting struct {
 	Position     PackedPosition
 	U3           uint16
 }
+
+func (Casting) IsBlockData() {}

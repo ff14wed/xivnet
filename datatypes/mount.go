@@ -10,3 +10,5 @@ type Mount struct {
 	U4    uint32 // Highly likely to be a Gear
 	U5    uint32 // Highly likely to be a Gear
 }
+
+func (Mount) IsBlockData() {}

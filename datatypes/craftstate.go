@@ -18,3 +18,5 @@ type CraftState struct {
 	PreviousCondition uint32
 	U6                [17]uint32
 }
+
+func (CraftState) IsBlockData() {}

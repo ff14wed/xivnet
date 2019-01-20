@@ -36,6 +36,8 @@ type Action struct {
 	U12         uint32
 }
 
+func (Action) IsBlockData() {}
+
 // ActionEffects defines a block of 8 action effects
 type ActionEffects [8]ActionEffect
 

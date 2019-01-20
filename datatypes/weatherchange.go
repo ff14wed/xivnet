@@ -8,3 +8,5 @@ type WeatherChange struct {
 	U3    byte
 	Delay float32
 }
+
+func (WeatherChange) IsBlockData() {}

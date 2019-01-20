@@ -9,3 +9,5 @@ type MyMovement struct {
 	Z         float32
 	Y         float32
 }
+
+func (MyMovement) IsBlockData() {}

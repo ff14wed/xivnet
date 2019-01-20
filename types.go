@@ -59,7 +59,9 @@ func (h *Header) UnmarshalJSON(data []byte) error {
 
 // BlockData defines the interface for the XIVWS representation of FFXIV
 // block data
-type BlockData interface{}
+type BlockData interface {
+	IsBlockData()
+}
 
 // MarshalBlockBytes returns the byte representation of the block data
 func MarshalBlockBytes(block BlockData) ([]byte, error) {
@@ -74,7 +76,7 @@ func MarshalBlockBytes(block BlockData) ([]byte, error) {
 // GenericBlockData defines the type for a variable length byte slice
 type GenericBlockData []byte
 
-var _ BlockData = new(GenericBlockData)
+func (GenericBlockData) IsBlockData() {}
 
 // GenericBlockDataFromBytes is a helper that creates a GenericBlockData from
 // raw bytes

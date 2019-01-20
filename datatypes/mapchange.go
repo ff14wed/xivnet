@@ -7,3 +7,5 @@ type MapChange struct {
 	U2              uint16
 	U3, U4          uint32
 }
+
+func (MapChange) IsBlockData() {}

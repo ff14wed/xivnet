@@ -8,3 +8,5 @@ type NPCSpawn struct {
 	PlayerSpawn
 	U31 uint64
 }
+
+func (NPCSpawn) IsBlockData() {}

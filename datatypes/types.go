@@ -5,13 +5,12 @@ import (
 	"encoding/binary"
 	"encoding/gob"
 	"fmt"
-	"reflect"
 
 	"github.com/ff14wed/xivnet"
 )
 
-var inTypeRegistry = make(map[uint16]xivnet.BlockData)
-var outTypeRegistry = make(map[uint16]xivnet.BlockData)
+var inTypeRegistry = make(map[uint16]func() xivnet.BlockData)
+var outTypeRegistry = make(map[uint16]func() xivnet.BlockData)
 
 // Opcodes that define the datatypes of incoming (from server) network blocks
 const (
@@ -47,37 +46,38 @@ const (
 	XWorldPartyListOpcode = 0xA1  // Updated 4.18
 )
 
-var _ = registerInBlockData(AddStatusOpcode, new(AddStatus))
-var _ = registerInBlockData(ActionOpcode, new(Action))
-var _ = registerInBlockData(AoEAction8Opcode, new(AoEAction8))
-var _ = registerInBlockData(AoEAction16Opcode, new(AoEAction16))
-var _ = registerInBlockData(AoEAction24Opcode, new(AoEAction24))
-var _ = registerInBlockData(AoEAction32Opcode, new(AoEAction32))
-var _ = registerInBlockData(CastingOpcode, new(Casting))
-var _ = registerInBlockData(CraftStateOpcode, new(CraftState))
-var _ = registerInBlockData(EquipChangeOpcode, new(EquipChange))
-var _ = registerInBlockData(GaugeOpcode, new(Gauge))
-var _ = registerInBlockData(HateListOpcode, new(HateList))
-var _ = registerInBlockData(HateRankingOpcode, new(HateRanking))
-var _ = registerInBlockData(InitZoneOpcode, new(InitZone))
-var _ = registerInBlockData(MapChangeOpcode, new(MapChange))
-var _ = registerInBlockData(MarkerOpcode, new(Marker))
-var _ = registerInBlockData(MountOpcode, new(Mount))
-var _ = registerInBlockData(MovementOpcode, new(Movement))
-var _ = registerInBlockData(NotifyOpcode, new(Notify))
-var _ = registerInBlockData(Notify3Opcode, new(Notify3))
-var _ = registerInBlockData(Notify4Opcode, new(Notify4))
-var _ = registerInBlockData(NPCSpawnOpcode, new(NPCSpawn))
-var _ = registerInBlockData(NPCSpawn2Opcode, new(NPCSpawn2))
-var _ = registerInBlockData(PerformOpcode, new(Perform))
-var _ = registerInBlockData(PlayerSpawnOpcode, new(PlayerSpawn))
-var _ = registerInBlockData(RemoveEntityOpcode, new(RemoveEntity))
-var _ = registerInBlockData(SetPosOpcode, new(SetPos))
-var _ = registerInBlockData(UpdateHPMPTPOpcode, new(UpdateHPMPTP))
-var _ = registerInBlockData(UpdateStatusesOpcode, new(UpdateStatuses))
-var _ = registerInBlockData(WeatherChangeOpcode, new(WeatherChange))
-
-// var _ = registerInBlockData(XWorldPartyListOpcode, new(XWorldPartyList))
+func init() {
+	registerInBlockFactory(AddStatusOpcode, func() xivnet.BlockData { return new(AddStatus) })
+	registerInBlockFactory(ActionOpcode, func() xivnet.BlockData { return new(Action) })
+	registerInBlockFactory(AoEAction8Opcode, func() xivnet.BlockData { return new(AoEAction8) })
+	registerInBlockFactory(AoEAction16Opcode, func() xivnet.BlockData { return new(AoEAction16) })
+	registerInBlockFactory(AoEAction24Opcode, func() xivnet.BlockData { return new(AoEAction24) })
+	registerInBlockFactory(AoEAction32Opcode, func() xivnet.BlockData { return new(AoEAction32) })
+	registerInBlockFactory(CastingOpcode, func() xivnet.BlockData { return new(Casting) })
+	registerInBlockFactory(CraftStateOpcode, func() xivnet.BlockData { return new(CraftState) })
+	registerInBlockFactory(EquipChangeOpcode, func() xivnet.BlockData { return new(EquipChange) })
+	registerInBlockFactory(GaugeOpcode, func() xivnet.BlockData { return new(Gauge) })
+	registerInBlockFactory(HateListOpcode, func() xivnet.BlockData { return new(HateList) })
+	registerInBlockFactory(HateRankingOpcode, func() xivnet.BlockData { return new(HateRanking) })
+	registerInBlockFactory(InitZoneOpcode, func() xivnet.BlockData { return new(InitZone) })
+	registerInBlockFactory(MapChangeOpcode, func() xivnet.BlockData { return new(MapChange) })
+	registerInBlockFactory(MarkerOpcode, func() xivnet.BlockData { return new(Marker) })
+	registerInBlockFactory(MountOpcode, func() xivnet.BlockData { return new(Mount) })
+	registerInBlockFactory(MovementOpcode, func() xivnet.BlockData { return new(Movement) })
+	registerInBlockFactory(NotifyOpcode, func() xivnet.BlockData { return new(Notify) })
+	registerInBlockFactory(Notify3Opcode, func() xivnet.BlockData { return new(Notify3) })
+	registerInBlockFactory(Notify4Opcode, func() xivnet.BlockData { return new(Notify4) })
+	registerInBlockFactory(NPCSpawnOpcode, func() xivnet.BlockData { return new(NPCSpawn) })
+	registerInBlockFactory(NPCSpawn2Opcode, func() xivnet.BlockData { return new(NPCSpawn2) })
+	registerInBlockFactory(PerformOpcode, func() xivnet.BlockData { return new(Perform) })
+	registerInBlockFactory(PlayerSpawnOpcode, func() xivnet.BlockData { return new(PlayerSpawn) })
+	registerInBlockFactory(RemoveEntityOpcode, func() xivnet.BlockData { return new(RemoveEntity) })
+	registerInBlockFactory(SetPosOpcode, func() xivnet.BlockData { return new(SetPos) })
+	registerInBlockFactory(UpdateHPMPTPOpcode, func() xivnet.BlockData { return new(UpdateHPMPTP) })
+	registerInBlockFactory(UpdateStatusesOpcode, func() xivnet.BlockData { return new(UpdateStatuses) })
+	registerInBlockFactory(WeatherChangeOpcode, func() xivnet.BlockData { return new(WeatherChange) })
+	// registerInBlockFactory(XWorldPartyListOpcode, new(XWorldPartyList))
+}
 
 // Opcodes that define the datatypes of outgoing (to server) network blocks
 const (
@@ -88,11 +88,13 @@ const (
 	BeginCraftingOpcode = 0x15D // Updated for 4.5
 )
 
-var _ = registerOutBlockData(MyActionOpcode, new(MyAction))
-var _ = registerOutBlockData(MyMovementOpcode, new(MyMovement))
-var _ = registerOutBlockData(MyMovement2Opcode, new(MyMovement2))
-var _ = registerOutBlockData(MyPerformOpcode, new(Perform))
-var _ = registerOutBlockData(BeginCraftingOpcode, new(BeginCrafting))
+func init() {
+	registerOutBlockFactory(MyActionOpcode, func() xivnet.BlockData { return new(MyAction) })
+	registerOutBlockFactory(MyMovementOpcode, func() xivnet.BlockData { return new(MyMovement) })
+	registerOutBlockFactory(MyMovement2Opcode, func() xivnet.BlockData { return new(MyMovement2) })
+	registerOutBlockFactory(MyPerformOpcode, func() xivnet.BlockData { return new(Perform) })
+	registerOutBlockFactory(BeginCraftingOpcode, func() xivnet.BlockData { return new(BeginCrafting) })
+}
 
 // NewBlockData is a factory for BlockData that uses the opcode to
 // determine which BlockData to create
@@ -101,15 +103,11 @@ func NewBlockData(opcode uint16, isOut bool) xivnet.BlockData {
 	if isOut {
 		r = outTypeRegistry
 	}
-	template, ok := r[opcode]
+	factory, ok := r[opcode]
 	if !ok {
 		return nil
 	}
-	rt := reflect.TypeOf(template)
-	if rt.Kind() == reflect.Ptr {
-		rt = rt.Elem()
-	}
-	return reflect.New(rt).Interface().(xivnet.BlockData)
+	return factory()
 }
 
 // UnmarshalBlockBytes converts raw bytes to this block data struct
@@ -120,16 +118,14 @@ func UnmarshalBlockBytes(data []byte, block xivnet.BlockData) error {
 	return binary.Read(bytes.NewReader(data), binary.LittleEndian, block)
 }
 
-func registerInBlockData(opcode uint16, blockData xivnet.BlockData) struct{} {
-	gob.Register(blockData)
-	inTypeRegistry[opcode] = blockData
-	return struct{}{}
+func registerInBlockFactory(opcode uint16, factory func() xivnet.BlockData) {
+	gob.Register(factory())
+	inTypeRegistry[opcode] = factory
 }
 
-func registerOutBlockData(opcode uint16, blockData xivnet.BlockData) struct{} {
-	gob.Register(blockData)
-	outTypeRegistry[opcode] = blockData
-	return struct{}{}
+func registerOutBlockFactory(opcode uint16, factory func() xivnet.BlockData) {
+	gob.Register(factory())
+	outTypeRegistry[opcode] = factory
 }
 
 // ParseBlock takes in raw, unparsed blocks and returns a parsed block if

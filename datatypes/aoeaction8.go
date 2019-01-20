@@ -15,3 +15,5 @@ type AoEAction8 struct {
 	U11      uint16
 	U12      uint32
 }
+
+func (AoEAction8) IsBlockData() {}

@@ -16,3 +16,5 @@ type InitZone struct {
 	X, Z, Y float32
 	U15     uint32
 }
+
+func (InitZone) IsBlockData() {}
