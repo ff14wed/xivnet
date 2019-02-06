@@ -7,7 +7,7 @@ type PackedCoord uint16
 
 // PackedPosition defines the data array for position
 type PackedPosition struct {
-	X, Z, Y PackedCoord
+	X, Y, Z PackedCoord
 }
 
 // Float returns the floating point representation of the coord

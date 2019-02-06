@@ -46,29 +46,29 @@ var _ = Describe("Packed Position Type", func() {
 		It("returns the correct coordinates", func() {
 			pp := datatypes.PackedPosition{
 				X: 0x259B,
-				Z: 0x83E7,
-				Y: 0x204E,
+				Y: 0x83E7,
+				Z: 0x204E,
 			}
 			Expect(pp.X.Float()).To(BeNumerically("~", -706.19354, 0.01))
-			Expect(pp.Z.Float()).To(BeNumerically("~", 30.5, 0.01))
-			Expect(pp.Y.Float()).To(BeNumerically("~", -747.62988, 0.02))
+			Expect(pp.Y.Float()).To(BeNumerically("~", 30.5, 0.01))
+			Expect(pp.Z.Float()).To(BeNumerically("~", -747.62988, 0.02))
 		})
 		It("sets the correct coordinates", func() {
 			pp := datatypes.PackedPosition{}
 			pp.X.SetFloat(-706.19354)
-			pp.Z.SetFloat(30.5)
-			pp.Y.SetFloat(-747.62988)
+			pp.Y.SetFloat(30.5)
+			pp.Z.SetFloat(-747.62988)
 			Expect(pp).To(Equal(datatypes.PackedPosition{
 				X: 0x259B,
-				Z: 0x83E7,
-				Y: 0x204E,
+				Y: 0x83E7,
+				Z: 0x204E,
 			}))
 		})
 		It("marshals to JSON", func() {
 			pp := datatypes.PackedPosition{
 				X: 0x259B,
-				Z: 0x83E7,
-				Y: 0x204E,
+				Y: 0x83E7,
+				Z: 0x204E,
 			}
 			jsonBytes, err := json.Marshal(pp)
 			Expect(err).ToNot(HaveOccurred())
@@ -80,14 +80,14 @@ var _ = Describe("Packed Position Type", func() {
 		It("unmarshals from JSON", func() {
 			var pp datatypes.PackedPosition
 			err := json.Unmarshal(
-				[]byte(`{"X":-706.19354,"Z":30.5,"Y":-747.62988}`),
+				[]byte(`{"X":-706.19354,"Y":30.5,"Z":-747.62988}`),
 				&pp,
 			)
 			Expect(err).ToNot(HaveOccurred())
 			Expect(pp).To(Equal(datatypes.PackedPosition{
 				X: 0x259B,
-				Z: 0x83E7,
-				Y: 0x204E,
+				Y: 0x83E7,
+				Z: 0x204E,
 			}))
 		})
 	})

@@ -99,8 +99,8 @@ type PlayerSpawn struct {
 	Statuses [30]StatusEffect
 
 	X float32
-	Z float32
 	Y float32
+	Z float32
 
 	Head  Gear
 	Body  Gear

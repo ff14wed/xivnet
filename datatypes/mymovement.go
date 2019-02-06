@@ -6,8 +6,8 @@ type MyMovement struct {
 	U1        uint32
 	U2        uint32
 	X         float32
-	Z         float32
 	Y         float32
+	Z         float32
 }
 
 func (MyMovement) IsBlockData() {}
