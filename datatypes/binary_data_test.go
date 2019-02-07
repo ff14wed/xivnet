@@ -3,7 +3,7 @@ package datatypes_test
 import (
 	"math"
 
-	"github.com/ff14wed/xivnet/datatypes"
+	"github.com/ff14wed/xivnet/v2/datatypes"
 )
 
 var movementBlockBytes = []byte{

@@ -3,7 +3,7 @@ package xivnet_test
 import (
 	"encoding/json"
 
-	"github.com/ff14wed/xivnet"
+	"github.com/ff14wed/xivnet/v2"
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
 )

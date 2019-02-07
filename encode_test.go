@@ -6,8 +6,8 @@ import (
 	"encoding/binary"
 	"time"
 
-	"github.com/ff14wed/xivnet"
-	"github.com/ff14wed/xivnet/datatypes"
+	"github.com/ff14wed/xivnet/v2"
+	"github.com/ff14wed/xivnet/v2/datatypes"
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
 )

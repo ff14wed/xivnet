@@ -6,7 +6,7 @@ import (
 	"encoding/gob"
 	"fmt"
 
-	"github.com/ff14wed/xivnet"
+	"github.com/ff14wed/xivnet/v2"
 )
 
 var inTypeRegistry = make(map[uint16]func() xivnet.BlockData)

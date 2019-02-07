@@ -4,7 +4,7 @@ import (
 	"bufio"
 	"bytes"
 
-	"github.com/ff14wed/xivnet"
+	"github.com/ff14wed/xivnet/v2"
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
 )
