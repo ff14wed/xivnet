@@ -97,7 +97,7 @@ var _ = Describe("Decoder", func() {
 
 				d := xivnet.NewDecoder(32768, logger)
 				_, err = d.Decode(buf)
-				Expect(err).To(MatchError(xivnet.ErrNotEnoughData))
+				Expect(err).To(MatchError("peeking data failed reading 148 bytes from buffer: EOF"))
 
 				_, err = byteBuf.Write(zlibPacket[69:])
 				Expect(err).ToNot(HaveOccurred())
@@ -122,7 +122,7 @@ var _ = Describe("Decoder", func() {
 				buf := bufio.NewReader(bytes.NewReader(zlibPacket))
 				d := xivnet.NewDecoder(8, logger)
 				_, err := d.Decode(buf)
-				Expect(err).To(MatchError("frame is too large: 148 > 8"))
+				Expect(err).To(MatchError("invalid frame length: 148 (max 8)"))
 			})
 		})
 
@@ -132,7 +132,7 @@ var _ = Describe("Decoder", func() {
 				buf := bufio.NewReader(byteBuf)
 				d := xivnet.NewDecoder(32768, logger)
 				_, err := d.Decode(buf)
-				Expect(err).To(MatchError(xivnet.ErrNotEnoughData))
+				Expect(err).To(MatchError("peeking header failed reading 28 bytes from buffer: EOF"))
 			})
 		})
 
@@ -142,7 +142,20 @@ var _ = Describe("Decoder", func() {
 				buf := bufio.NewReader(byteBuf)
 				d := xivnet.NewDecoder(32768, logger)
 				_, err := d.Decode(buf)
-				Expect(err).To(MatchError(xivnet.ErrInvalidHeader))
+				Expect(err).To(MatchError("invalid header: 52520000ff5d46e27f2a644d7b99c475e6f693da590100008a000000"))
+			})
+		})
+
+		Context("with a block that specifies an invalid length", func() {
+			It("returns an error", func() {
+				byteBuf := bytes.NewBuffer(invalidBlockPacket)
+				buf := bufio.NewReader(byteBuf)
+				d := xivnet.NewDecoder(32768, logger)
+				_, err := d.Decode(buf)
+				Expect(err).To(MatchError(
+					"error decoding frame: error decoding blocks: not enough data: expected 32 bytes, got 24\n" +
+						"Data: 000000000000000000000000000000000000000000000000400000000000010000000000000000002000000000000000000000000800000015cd5b0742e08958",
+				))
 			})
 		})
 	})
@@ -153,7 +166,7 @@ var _ = Describe("Decoder", func() {
 				buf := bufio.NewReader(byteBuf)
 				d := xivnet.NewDecoder(32768, logger)
 				_, err := d.CheckHeader(buf)
-				Expect(err).To(MatchError(xivnet.ErrNotEnoughData))
+				Expect(err).To(MatchError("peeking header failed reading 28 bytes from buffer: EOF"))
 			})
 		})
 
@@ -163,7 +176,7 @@ var _ = Describe("Decoder", func() {
 				buf := bufio.NewReader(byteBuf)
 				d := xivnet.NewDecoder(32768, logger)
 				_, err := d.CheckHeader(buf)
-				Expect(err).To(MatchError(xivnet.ErrInvalidHeader))
+				Expect(err).To(MatchError("invalid header: 52520000ff5d46e27f2a644d7b99c475e6f693da590100008a000000"))
 			})
 		})
 	})

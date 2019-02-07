@@ -13,25 +13,17 @@ import (
 	"time"
 )
 
-// ErrNotEnoughData is an error that is returned when there is not ErrNotEnoughData
-// data to process the packet
-var ErrNotEnoughData = errors.New("not enough data in packets buffer")
-
-// ErrInvalidHeader is an error that is returned when the frame header is not
-// something that is recognized by the decoder.
-var ErrInvalidHeader = errors.New("invalid header")
-
 // Decoder implements an FFXIV frame decoder
 type Decoder struct {
-	buf    []byte
-	logger *log.Logger
+	buf     []byte
+	bufSize int
 }
 
 // NewDecoder creates a new instance of a decoder
 func NewDecoder(bufSize int, logger *log.Logger) *Decoder {
 	return &Decoder{
-		buf:    make([]byte, bufSize),
-		logger: logger,
+		buf:     make([]byte, bufSize),
+		bufSize: bufSize,
 	}
 }
 
@@ -41,11 +33,16 @@ func (d *Decoder) CheckHeader(buf *bufio.Reader) ([]byte, error) {
 	// Validation of lengths and stuff
 	header, err := buf.Peek(28)
 	if err != nil {
-		d.logger.Println("Can't read 28 byte header:", err)
-		return nil, ErrNotEnoughData
+		return nil, EOFError{
+			operation:       "peeking header",
+			attemptedLength: 28,
+			wrapped:         err,
+		}
 	}
 	if !isValidHeader(header) {
-		return nil, ErrInvalidHeader
+		return nil, InvalidHeaderError{
+			header: hex.EncodeToString(header),
+		}
 	}
 	return header, nil
 }
@@ -58,28 +55,37 @@ func (d *Decoder) Decode(buf *bufio.Reader) (*Frame, error) {
 		return nil, err
 	}
 	length := binary.LittleEndian.Uint32(header[24:])
-	if length > 8000 {
-		d.logger.Println("Large packet detected:", length)
+	if length > uint32(d.bufSize) {
+		return nil, InvalidFrameLengthError{length: length, maxLength: d.bufSize}
 	}
-	_, err = buf.Peek(int(length))
+	intLength := int(length)
+	_, err = buf.Peek(intLength)
 	if err != nil {
-		d.logger.Println("Can't peek", length, "amount of data:", err)
-		return nil, ErrNotEnoughData
-	}
-	if int(length) > len(d.buf) {
-		return nil, fmt.Errorf("frame is too large: %d > %d", length, len(d.buf))
+		return nil, EOFError{
+			operation:       "peeking data",
+			attemptedLength: intLength,
+			wrapped:         err,
+		}
 	}
 	n, err := buf.Read(d.buf[:length])
 	if err != nil {
-		d.logger.Println("can't read", length, "amount of data", err)
-		return nil, ErrNotEnoughData
+		return nil, EOFError{
+			operation:       "reading data",
+			attemptedLength: intLength,
+			wrapped:         err,
+		}
 	}
 	if n != int(length) {
-		return nil, fmt.Errorf("mismatched read lengths: %d vs %d", n, length)
+		return nil, MismatchedReadLengthsError{
+			readLength: n, expectedLength: intLength,
+		}
 	}
 	f, err := decodeFrame(d.buf[:length], d.buf[length:], length)
 	if err != nil {
-		return nil, fmt.Errorf("%s :: Offending data: %s", err, hex.EncodeToString(d.buf[:length]))
+		return nil, DecodingError{
+			wrapped:   err,
+			debugData: hex.EncodeToString(d.buf[:length]),
+		}
 	}
 	return f, nil
 }
