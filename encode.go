@@ -105,7 +105,10 @@ func (f *Frame) Encode(w io.Writer, timestamp time.Time, compress bool) error {
 	f.Compression = 0x0001
 
 	if compress {
-		f.CompressBlocks()
+		err := f.CompressBlocks()
+		if err != nil {
+			return err
+		}
 		f.Compression = 0x0101
 	}
 

@@ -167,18 +167,12 @@ func decodeBlock(blocksBytes []byte) (*Block, error) {
 
 func isValidHeader(header []byte) bool {
 	preamble := binary.LittleEndian.Uint64(header[0:8])
-	if preamble != 0xe2465dff41a05252 && preamble != 0 {
-		return false
-	}
-	return true
+	return (preamble == 0) || (preamble == 0xe2465dff41a05252)
 }
 
 func strictIsValidHeader(header []byte) bool {
 	preamble := binary.LittleEndian.Uint64(header[0:8])
-	if preamble != 0xe2465dff41a05252 {
-		return false
-	}
-	return true
+	return preamble == 0xe2465dff41a05252
 }
 
 // DiscardDataUntilValid will trim off invalid data on the buffered input
