@@ -3,8 +3,6 @@ package xivnet_test
 import (
 	"bufio"
 	"bytes"
-	"io/ioutil"
-	"log"
 
 	"github.com/ff14wed/xivnet"
 	. "github.com/onsi/ginkgo"
@@ -12,15 +10,11 @@ import (
 )
 
 var _ = Describe("Decoder", func() {
-	var logger *log.Logger
-	BeforeEach(func() {
-		logger = log.New(ioutil.Discard, "", log.LstdFlags)
-	})
 	Describe("Decode", func() {
 		Context("with zlib compressed blocks", func() {
 			It("properly decodes a packet into the correct structures", func() {
 				buf := bufio.NewReader(bytes.NewReader(zlibPacket))
-				d := xivnet.NewDecoder(32768, logger)
+				d := xivnet.NewDecoder(32768)
 				f, err := d.Decode(buf)
 				Expect(err).ToNot(HaveOccurred())
 				Expect(f.Header).To(Equal(expectedZlibFrame.Header))
@@ -40,7 +34,7 @@ var _ = Describe("Decoder", func() {
 			It("correct returns a frame with no blocks", func() {
 				byteBuf := bytes.NewBuffer(zeroBlockPacket)
 				buf := bufio.NewReader(byteBuf)
-				d := xivnet.NewDecoder(32768, logger)
+				d := xivnet.NewDecoder(32768)
 				f, err := d.Decode(buf)
 				Expect(err).ToNot(HaveOccurred())
 				Expect(f.NumBlocks).To(BeZero())
@@ -51,7 +45,7 @@ var _ = Describe("Decoder", func() {
 			It("properly decodes the packets into the correct structures", func() {
 				buf := bufio.NewReader(bytes.NewBuffer(append(zlibPacket, zlibPacket...)))
 
-				d := xivnet.NewDecoder(32768, logger)
+				d := xivnet.NewDecoder(32768)
 				for i := 0; i < 2; i++ {
 					f, err := d.Decode(buf)
 					Expect(err).ToNot(HaveOccurred())
@@ -72,7 +66,7 @@ var _ = Describe("Decoder", func() {
 		Context("with a non-zlib compressed packet and short block data", func() {
 			It("properly decodes a packet into the correct structures", func() {
 				buf := bufio.NewReader(bytes.NewBuffer(nonZlibPacket))
-				d := xivnet.NewDecoder(32768, logger)
+				d := xivnet.NewDecoder(32768)
 				frame, err := d.Decode(buf)
 				Expect(err).ToNot(HaveOccurred())
 				Expect(frame.Header).To(Equal(expectedNonZlibFrame.Header))
@@ -95,7 +89,7 @@ var _ = Describe("Decoder", func() {
 				Expect(err).ToNot(HaveOccurred())
 				buf := bufio.NewReader(byteBuf)
 
-				d := xivnet.NewDecoder(32768, logger)
+				d := xivnet.NewDecoder(32768)
 				_, err = d.Decode(buf)
 				Expect(err).To(MatchError("peeking data failed reading 148 bytes from buffer: EOF"))
 
@@ -120,7 +114,7 @@ var _ = Describe("Decoder", func() {
 		Context("with a decoder that has too small a buffer", func() {
 			It("returns an error", func() {
 				buf := bufio.NewReader(bytes.NewReader(zlibPacket))
-				d := xivnet.NewDecoder(8, logger)
+				d := xivnet.NewDecoder(8)
 				_, err := d.Decode(buf)
 				Expect(err).To(MatchError("invalid frame length: 148 (max 8)"))
 			})
@@ -130,7 +124,7 @@ var _ = Describe("Decoder", func() {
 			It("returns an error", func() {
 				byteBuf := bytes.NewBuffer(nil)
 				buf := bufio.NewReader(byteBuf)
-				d := xivnet.NewDecoder(32768, logger)
+				d := xivnet.NewDecoder(32768)
 				_, err := d.Decode(buf)
 				Expect(err).To(MatchError("peeking header failed reading 28 bytes from buffer: EOF"))
 			})
@@ -140,7 +134,7 @@ var _ = Describe("Decoder", func() {
 			It("returns an error", func() {
 				byteBuf := bytes.NewBuffer(invalidHeaderPacket)
 				buf := bufio.NewReader(byteBuf)
-				d := xivnet.NewDecoder(32768, logger)
+				d := xivnet.NewDecoder(32768)
 				_, err := d.Decode(buf)
 				Expect(err).To(MatchError("invalid header: 52520000ff5d46e27f2a644d7b99c475e6f693da590100008a000000"))
 			})
@@ -150,7 +144,7 @@ var _ = Describe("Decoder", func() {
 			It("returns an error", func() {
 				byteBuf := bytes.NewBuffer(invalidBlockPacket)
 				buf := bufio.NewReader(byteBuf)
-				d := xivnet.NewDecoder(32768, logger)
+				d := xivnet.NewDecoder(32768)
 				_, err := d.Decode(buf)
 				Expect(err).To(MatchError(
 					"error decoding frame: error decoding blocks: not enough data: expected 32 bytes, got 24\n" +
@@ -164,7 +158,7 @@ var _ = Describe("Decoder", func() {
 			It("returns an error", func() {
 				byteBuf := bytes.NewBuffer(nil)
 				buf := bufio.NewReader(byteBuf)
-				d := xivnet.NewDecoder(32768, logger)
+				d := xivnet.NewDecoder(32768)
 				_, err := d.CheckHeader(buf)
 				Expect(err).To(MatchError("peeking header failed reading 28 bytes from buffer: EOF"))
 			})
@@ -174,7 +168,7 @@ var _ = Describe("Decoder", func() {
 			It("returns an error", func() {
 				byteBuf := bytes.NewBuffer(invalidHeaderPacket)
 				buf := bufio.NewReader(byteBuf)
-				d := xivnet.NewDecoder(32768, logger)
+				d := xivnet.NewDecoder(32768)
 				_, err := d.CheckHeader(buf)
 				Expect(err).To(MatchError("invalid header: 52520000ff5d46e27f2a644d7b99c475e6f693da590100008a000000"))
 			})
@@ -185,7 +179,7 @@ var _ = Describe("Decoder", func() {
 			It("does nothing to the buffer", func() {
 				byteBuf := bytes.NewBuffer(nil)
 				buf := bufio.NewReader(byteBuf)
-				d := xivnet.NewDecoder(32768, logger)
+				d := xivnet.NewDecoder(32768)
 				d.DiscardDataUntilValid(buf)
 				Expect(byteBuf.Len()).To(Equal(0))
 			})
@@ -195,7 +189,7 @@ var _ = Describe("Decoder", func() {
 			It("discards the invalid data and allows the next decode operation to succeed with valid data", func() {
 				byteBuf := bytes.NewBuffer(append(invalidHeaderPacket, zeroBlockPacket...))
 				buf := bufio.NewReader(byteBuf)
-				d := xivnet.NewDecoder(32768, logger)
+				d := xivnet.NewDecoder(32768)
 				d.DiscardDataUntilValid(buf)
 				f, err := d.Decode(buf)
 				Expect(err).ToNot(HaveOccurred())

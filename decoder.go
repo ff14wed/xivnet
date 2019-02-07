@@ -9,7 +9,6 @@ import (
 	"errors"
 	"fmt"
 	"io"
-	"log"
 	"time"
 )
 
@@ -20,7 +19,7 @@ type Decoder struct {
 }
 
 // NewDecoder creates a new instance of a decoder
-func NewDecoder(bufSize int, logger *log.Logger) *Decoder {
+func NewDecoder(bufSize int) *Decoder {
 	return &Decoder{
 		buf:     make([]byte, bufSize),
 		bufSize: bufSize,

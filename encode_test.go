@@ -4,8 +4,6 @@ import (
 	"bufio"
 	"bytes"
 	"encoding/binary"
-	"io/ioutil"
-	"log"
 	"time"
 
 	"github.com/ff14wed/xivnet"
@@ -79,8 +77,7 @@ var _ = Describe("Encoder", func() {
 				decoder *xivnet.Decoder
 			)
 			BeforeEach(func() {
-				logger := log.New(ioutil.Discard, "", log.LstdFlags)
-				decoder = xivnet.NewDecoder(32768, logger)
+				decoder = xivnet.NewDecoder(32768)
 			})
 			Context("with zlib compression", func() {
 				It("writes the correct encoding of the frame to the writer", func() {
