@@ -1,7 +1,6 @@
 package xivnet_test
 
 import (
-	"bufio"
 	"bytes"
 	"encoding/binary"
 	"time"
@@ -61,24 +60,19 @@ var _ = Describe("Encoder", func() {
 			})
 
 		})
+
 		Describe("CorrectTimestamps", func() {
 			It("sets the time to the passed in argument on the frame", func() {
 				target := time.Now().Add(-3 * time.Second)
 				incorrectFrame.CorrectTimestamps(target)
 				Expect(incorrectFrame.Time).To(BeTemporally("==", target))
 				for _, b := range incorrectFrame.Blocks {
-					Expect(b.Header.Time).To(BeTemporally("==", target))
+					Expect(b.Time).To(BeTemporally("==", target))
 				}
 			})
 		})
 
 		Describe("Encode", func() {
-			var (
-				decoder *xivnet.Decoder
-			)
-			BeforeEach(func() {
-				decoder = xivnet.NewDecoder(32768)
-			})
 			Context("with zlib compression", func() {
 				It("writes the correct encoding of the frame to the writer", func() {
 					buf := new(bytes.Buffer)
@@ -97,18 +91,14 @@ var _ = Describe("Encoder", func() {
 					// Test that the raw SubjectID is there
 					Expect(buf.Bytes()[44:48]).To(Equal([]byte{0x15, 0xCD, 0x5B, 0x07}))
 
-					decoderBuf := bufio.NewReader(buf)
-					decodedFrame, err := decoder.Decode(decoderBuf)
+					decoder := xivnet.NewDecoder(buf, 32768)
+					decodedFrame, err := decoder.NextFrame()
 					Expect(err).ToNot(HaveOccurred())
 
-					Expect(decodedFrame.Header).To(Equal(expectedZlibFrame.Header))
-					Expect(decodedFrame.Time).To(Equal(expectedZlibFrame.Time))
-					Expect(decodedFrame.NumBlocks).To(Equal(expectedZlibFrame.NumBlocks))
-					Expect(decodedFrame.Compression).To(Equal(uint16(1)))
-					Expect(decodedFrame.Blocks).To(Equal(expectedZlibFrame.Blocks))
-					Expect(decodedFrame.Reserved1).To(Equal(expectedZlibFrame.Reserved1))
-					Expect(decodedFrame.Reserved2).To(Equal(expectedZlibFrame.Reserved2))
-					Expect(decodedFrame.Reserved3).To(Equal(expectedZlibFrame.Reserved3))
+					expectedUncompressedFrame := expectedZlibFrame
+					expectedUncompressedFrame.Length = 272
+					expectedUncompressedFrame.Compression = 0
+					Expect(decodedFrame).To(matchExpectedFrame(expectedUncompressedFrame))
 				})
 			})
 		})
@@ -155,11 +145,11 @@ var _ = Describe("Encoder", func() {
 						0x30, 0x00, 0x00, 0x00, // Length
 						0x15, 0xCD, 0x5B, 0x07, // SubjectID
 						0x15, 0xCD, 0x5B, 0x07, // CurrentID
-						0x0C, 0x00, 0x00, 0x00, // U1
-						0x14, 0x00, 0x42, 0x01, // U2 and Opcode
-						0x22, 0x00, 0x00, 0x00, // U3
+						0x03, 0x00, 0x00, 0x00, // Type and Padding
+						0x14, 0x00, 0x42, 0x01, // Reserved and Opcode
+						0x00, 0x00, 0x22, 0x00, // Padding and ServerID
 						0x3f, 0xe0, 0x89, 0x58, // Time
-						0x00, 0x00, 0x00, 0x00, // U4
+						0x00, 0x00, 0x00, 0x00, // Padding
 						// Block Data begins here
 						0x12, 0x12, 0x67, 0x45, 0x00, 0x00, // Direction, U1, U2
 						0xAB, 0x89, 0xAB, 0x89, 0xAB, 0x89, // PackedPosition

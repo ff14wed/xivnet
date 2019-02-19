@@ -9,38 +9,38 @@ import (
 )
 
 var _ = Describe("Types", func() {
-	Describe("Header", func() {
+	Describe("Preamble", func() {
 		It("marshals to JSON correctly", func() {
-			bytes, err := json.Marshal(&expectedZlibFrame.Header)
+			bytes, err := json.Marshal(&expectedZlibFrame.Preamble)
 			Expect(err).ToNot(HaveOccurred())
-			Expect(string(bytes)).To(Equal(jsonZlibFrameHeader))
+			Expect(string(bytes)).To(Equal(jsonZlibFramePreamble))
 		})
 		It("unmarshals from JSON correctly", func() {
-			var b xivnet.Header
-			err := json.Unmarshal([]byte(jsonZlibFrameHeader), &b)
+			var b xivnet.Preamble
+			err := json.Unmarshal([]byte(jsonZlibFramePreamble), &b)
 			Expect(err).ToNot(HaveOccurred())
-			Expect(b).To(Equal(expectedZlibFrame.Header))
+			Expect(b).To(Equal(expectedZlibFrame.Preamble))
 		})
 		It("errors when the input is invalid hexadecimal", func() {
-			var b xivnet.Header
+			var b xivnet.Preamble
 			err := json.Unmarshal([]byte(`"XX XX"`), &b)
 			Expect(err).To(HaveOccurred())
 		})
 	})
-	Describe("BlockHeader", func() {
+	Describe("IPCHeader", func() {
 		It("marshals to JSON correctly", func() {
-			bytes, err := json.Marshal(&expectedZlibFrame.Blocks[0].Header)
+			bytes, err := json.Marshal(&expectedZlibFrame.Blocks[0].IPCHeader)
 			Expect(err).ToNot(HaveOccurred())
-			Expect(string(bytes)).To(Equal(jsonZlibBlock0Header))
+			Expect(string(bytes)).To(ContainSubstring(jsonZlibBlock0IPCHeader))
 		})
 		It("unmarshals from JSON correctly", func() {
-			var b xivnet.BlockHeader
-			err := json.Unmarshal([]byte(jsonZlibBlock0Header), &b)
+			var b xivnet.IPCHeader
+			err := json.Unmarshal([]byte(`{`+jsonZlibBlock0IPCHeader+`}`), &b)
 			Expect(err).ToNot(HaveOccurred())
-			Expect(b).To(Equal(expectedZlibFrame.Blocks[0].Header))
+			Expect(b).To(Equal(expectedZlibFrame.Blocks[0].IPCHeader))
 		})
 		It("errors when the input is invalid hexadecimal", func() {
-			var b xivnet.BlockHeader
+			var b xivnet.IPCHeader
 			err := json.Unmarshal([]byte(`"XX XX"`), &b)
 			Expect(err).To(HaveOccurred())
 		})
@@ -101,9 +101,9 @@ var _ = Describe("Types", func() {
 		It("marshals to JSON correctly", func() {
 			bytes, err := json.Marshal(&expectedZlibFrame)
 			Expect(err).ToNot(HaveOccurred())
-			Expect(bytes).To(ContainSubstring(`"Header":` + jsonZlibFrameHeader))
+			Expect(bytes).To(ContainSubstring(`"Preamble":` + jsonZlibFramePreamble))
 			Expect(bytes).To(ContainSubstring(`"Length":148`))
-			Expect(bytes).To(ContainSubstring(`"Header":` + jsonZlibBlock0Header))
+			Expect(bytes).To(ContainSubstring(`"Blocks":[` + jsonZlibBlock0Header + jsonZlibBlock0IPCHeader))
 			Expect(bytes).To(ContainSubstring(`"Data":` + jsonZlibBlock0Data))
 		})
 	})

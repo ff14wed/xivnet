@@ -47,11 +47,11 @@ var _ = Describe("Types", func() {
 	Describe("ParseBlock", func() {
 		It("correctly parses raw incoming blocks", func() {
 			b := &xivnet.Block{
-				Length: 12345,
-				Header: xivnet.BlockHeader{
-					SubjectID: 12345,
-					CurrentID: 67890,
-					Opcode:    datatypes.MovementOpcode,
+				Length:    12345,
+				SubjectID: 12345,
+				CurrentID: 67890,
+				IPCHeader: xivnet.IPCHeader{
+					Opcode: datatypes.MovementOpcode,
 				},
 				Data: xivnet.GenericBlockDataFromBytes(movementBlockBytes),
 			}
@@ -60,11 +60,11 @@ var _ = Describe("Types", func() {
 			Expect(err).ToNot(HaveOccurred())
 			Expect(newB).ToNot(Equal(b))
 			Expect(newB).To(Equal(&xivnet.Block{
-				Length: 12345,
-				Header: xivnet.BlockHeader{
-					SubjectID: 12345,
-					CurrentID: 67890,
-					Opcode:    datatypes.MovementOpcode,
+				Length:    12345,
+				SubjectID: 12345,
+				CurrentID: 67890,
+				IPCHeader: xivnet.IPCHeader{
+					Opcode: datatypes.MovementOpcode,
 				},
 				Data: expectedMovementBlockData,
 			}))
@@ -72,11 +72,11 @@ var _ = Describe("Types", func() {
 
 		It("correctly parses raw outgoing blocks", func() {
 			b := &xivnet.Block{
-				Length: 12345,
-				Header: xivnet.BlockHeader{
-					SubjectID: 12345,
-					CurrentID: 67890,
-					Opcode:    datatypes.MyMovementOpcode,
+				Length:    12345,
+				SubjectID: 12345,
+				CurrentID: 67890,
+				IPCHeader: xivnet.IPCHeader{
+					Opcode: datatypes.MyMovementOpcode,
 				},
 				Data: xivnet.GenericBlockDataFromBytes(myMovementBlockBytes),
 			}
@@ -85,11 +85,11 @@ var _ = Describe("Types", func() {
 			Expect(err).ToNot(HaveOccurred())
 			Expect(newB).ToNot(Equal(b))
 			Expect(newB).To(Equal(&xivnet.Block{
-				Length: 12345,
-				Header: xivnet.BlockHeader{
-					SubjectID: 12345,
-					CurrentID: 67890,
-					Opcode:    datatypes.MyMovementOpcode,
+				Length:    12345,
+				SubjectID: 12345,
+				CurrentID: 67890,
+				IPCHeader: xivnet.IPCHeader{
+					Opcode: datatypes.MyMovementOpcode,
 				},
 				Data: expectedMyMovementBlockData,
 			}))
@@ -97,11 +97,11 @@ var _ = Describe("Types", func() {
 
 		It("leaves unknown blocks alone", func() {
 			b := &xivnet.Block{
-				Length: 12345,
-				Header: xivnet.BlockHeader{
-					SubjectID: 12345,
-					CurrentID: 67890,
-					Opcode:    0x9999,
+				Length:    12345,
+				SubjectID: 12345,
+				CurrentID: 67890,
+				IPCHeader: xivnet.IPCHeader{
+					Opcode: 0x9999,
 				},
 				Data: xivnet.GenericBlockDataFromBytes([]byte("abcdefg")),
 			}
@@ -113,11 +113,11 @@ var _ = Describe("Types", func() {
 
 		It("leaves already parsed blocks alone", func() {
 			b := &xivnet.Block{
-				Length: 12345,
-				Header: xivnet.BlockHeader{
-					SubjectID: 12345,
-					CurrentID: 67890,
-					Opcode:    datatypes.MovementOpcode,
+				Length:    12345,
+				SubjectID: 12345,
+				CurrentID: 67890,
+				IPCHeader: xivnet.IPCHeader{
+					Opcode: datatypes.MovementOpcode,
 				},
 				Data: expectedMovementBlockData,
 			}
@@ -129,11 +129,11 @@ var _ = Describe("Types", func() {
 
 		It("returns the untouched block and an error if the parsing failed", func() {
 			b := &xivnet.Block{
-				Length: 12345,
-				Header: xivnet.BlockHeader{
-					SubjectID: 12345,
-					CurrentID: 67890,
-					Opcode:    datatypes.MovementOpcode,
+				Length:    12345,
+				SubjectID: 12345,
+				CurrentID: 67890,
+				IPCHeader: xivnet.IPCHeader{
+					Opcode: datatypes.MovementOpcode,
 				},
 				Data: xivnet.GenericBlockDataFromBytes([]byte("abcdefg")),
 			}

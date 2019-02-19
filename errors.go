@@ -45,20 +45,6 @@ func (e InvalidFrameLengthError) Error() string {
 	return fmt.Sprintf("invalid frame length: %d (max %d)", e.length, e.maxLength)
 }
 
-// MismatchedReadError is returned when somehow the amount of bytes read
-// doesn't match the requested length. We don't expect this error to happen
-// because we have previously already peeked the required amount of data.
-type MismatchedReadLengthsError struct {
-	readLength     int
-	expectedLength int
-}
-
-func (e MismatchedReadLengthsError) Error() string {
-	return fmt.Sprintf(
-		"mismatched read lengths: %d != %d", e.readLength, e.expectedLength,
-	)
-}
-
 // DecodingError is returned whenenever some error occurs while decoding the
 // frame or some block within the frame.
 type DecodingError struct {

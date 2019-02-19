@@ -12,25 +12,35 @@ import (
 	"time"
 )
 
-// Decoder implements an FFXIV frame decoder
+// Decoder implements an FFXIV frame decoder. It is not thread-safe, so consumers
+// need to be sure not to use it concurrently.
 type Decoder struct {
-	buf     []byte
-	bufSize int
+	bufReader *bufio.Reader
+	blockBuf  []byte
 }
 
-// NewDecoder creates a new instance of a decoder
-func NewDecoder(bufSize int) *Decoder {
+// NewDecoder creates a new instance of a frame decoder.
+// bufSize controls the total size of the buffer used to store a single
+// frame. It's recommended to keep this value at least 8192, since this value
+// generally works for all frames (as far as I can tell).
+func NewDecoder(r io.Reader, bufSize int) *Decoder {
 	return &Decoder{
-		buf:     make([]byte, bufSize),
-		bufSize: bufSize,
+		bufReader: bufio.NewReaderSize(r, bufSize),
+
+		// This buffer should be at least big enough to store all uncompressed
+		// blocks
+		blockBuf: make([]byte, bufSize),
 	}
 }
 
 // CheckHeader checks to see whether or not the data in the buffer has a
 // valid header
-func (d *Decoder) CheckHeader(buf *bufio.Reader) ([]byte, error) {
-	// Validation of lengths and stuff
-	header, err := buf.Peek(28)
+func (d *Decoder) CheckHeader() ([]byte, error) {
+	if 28 > d.bufReader.Size() {
+		return nil, InvalidFrameLengthError{length: 28, maxLength: d.bufReader.Size()}
+	}
+	// Validation that the frame at least has
+	header, err := d.bufReader.Peek(28)
 	if err != nil {
 		return nil, EOFError{
 			operation:       "peeking header",
@@ -46,19 +56,19 @@ func (d *Decoder) CheckHeader(buf *bufio.Reader) ([]byte, error) {
 	return header, nil
 }
 
-// Decode returns a single decoded FFXIV frame from the packet data stored in
-// buf
-func (d *Decoder) Decode(buf *bufio.Reader) (*Frame, error) {
-	header, err := d.CheckHeader(buf)
+// NextFrame reads data from the underlying buffer and returns a single decoded
+// FFXIV frame from the provided buffer.
+func (d *Decoder) NextFrame() (*Frame, error) {
+	header, err := d.CheckHeader()
 	if err != nil {
 		return nil, err
 	}
 	length := binary.LittleEndian.Uint32(header[24:])
-	if length > uint32(d.bufSize) {
-		return nil, InvalidFrameLengthError{length: length, maxLength: d.bufSize}
+	if length > uint32(d.bufReader.Size()) {
+		return nil, InvalidFrameLengthError{length: length, maxLength: d.bufReader.Size()}
 	}
 	intLength := int(length)
-	_, err = buf.Peek(intLength)
+	frameBytes, err := d.bufReader.Peek(intLength)
 	if err != nil {
 		return nil, EOFError{
 			operation:       "peeking data",
@@ -66,24 +76,14 @@ func (d *Decoder) Decode(buf *bufio.Reader) (*Frame, error) {
 			wrapped:         err,
 		}
 	}
-	n, err := buf.Read(d.buf[:length])
-	if err != nil {
-		return nil, EOFError{
-			operation:       "reading data",
-			attemptedLength: intLength,
-			wrapped:         err,
-		}
-	}
-	if n != int(length) {
-		return nil, MismatchedReadLengthsError{
-			readLength: n, expectedLength: intLength,
-		}
-	}
-	f, err := decodeFrame(d.buf[:length], d.buf[length:], length)
+	defer func() {
+		_, _ = d.bufReader.Discard(intLength)
+	}()
+	f, err := decodeFrame(frameBytes, d.blockBuf, length)
 	if err != nil {
 		return nil, DecodingError{
 			wrapped:   err,
-			debugData: hex.EncodeToString(d.buf[:length]),
+			debugData: hex.EncodeToString(frameBytes),
 		}
 	}
 	return f, nil
@@ -92,18 +92,19 @@ func (d *Decoder) Decode(buf *bufio.Reader) (*Frame, error) {
 func decodeFrame(frameBytes []byte, blockBuffer []byte, length uint32) (*Frame, error) {
 	// Build the frame
 	frame := &Frame{}
-	copy(frame.Header[:], frameBytes[0:16])
+	copy(frame.Preamble[:], frameBytes[0:16])
 	msecSinceEpoch := time.Duration(binary.LittleEndian.Uint64(frameBytes[16:24])) * time.Millisecond
 	frame.Time = time.Unix(0, 0).Add(msecSinceEpoch)
 	frame.Length = length
-	frame.Reserved1 = binary.LittleEndian.Uint16(frameBytes[28:30])
-	frame.NumBlocks = binary.LittleEndian.Uint16(frameBytes[30:32])
-	frame.Compression = binary.LittleEndian.Uint16(frameBytes[32:34])
+	frame.ConnectionType = binary.LittleEndian.Uint16(frameBytes[28:30])
+	frame.Count = binary.LittleEndian.Uint16(frameBytes[30:32])
+	frame.Reserved1 = frameBytes[32]
+	frame.Compression = frameBytes[33]
 	frame.Reserved2 = binary.LittleEndian.Uint32(frameBytes[34:38])
 	frame.Reserved3 = binary.LittleEndian.Uint16(frameBytes[38:40])
 
 	blockData := frameBytes[40:length]
-	if frame.Compression != 0 && frame.Compression != 1 {
+	if frame.Compression > 0 {
 		r, err := zlib.NewReader(bytes.NewReader(blockData))
 		if err != nil {
 			return nil, fmt.Errorf("error decompressing data: %s", err.Error())
@@ -145,21 +146,23 @@ func decodeBlock(blocksBytes []byte) (*Block, error) {
 	}
 	block := &Block{}
 	block.Length = length
+	block.SubjectID = binary.LittleEndian.Uint32(blocksBytes[4:8])
+	block.CurrentID = binary.LittleEndian.Uint32(blocksBytes[8:12])
+	block.Type = binary.LittleEndian.Uint16(blocksBytes[12:14])
+	block.Pad1 = binary.LittleEndian.Uint16(blocksBytes[14:16])
 	var blockData GenericBlockData
-	if length < 32 {
-		blockData = make([]byte, length-4)
-		_ = blockData.UnmarshalBytes(blocksBytes[4:length])
-	} else {
-		block.Header.SubjectID = binary.LittleEndian.Uint32(blocksBytes[4:8])
-		block.Header.CurrentID = binary.LittleEndian.Uint32(blocksBytes[8:12])
-		block.Header.U1 = binary.LittleEndian.Uint32(blocksBytes[12:16])
-		block.Header.U2 = binary.LittleEndian.Uint16(blocksBytes[16:18])
-		block.Header.Opcode = binary.LittleEndian.Uint16(blocksBytes[18:20])
-		block.Header.Route = binary.LittleEndian.Uint32(blocksBytes[20:24])
-		block.Header.Time = time.Unix(int64(binary.LittleEndian.Uint32(blocksBytes[24:28])), 0)
-		block.Header.U4 = binary.LittleEndian.Uint32(blocksBytes[28:32])
+	if block.Type == BlockTypeIPC {
+		block.Reserved = binary.LittleEndian.Uint16(blocksBytes[16:18])
+		block.Opcode = binary.LittleEndian.Uint16(blocksBytes[18:20])
+		block.Pad2 = binary.LittleEndian.Uint16(blocksBytes[20:22])
+		block.ServerID = binary.LittleEndian.Uint16(blocksBytes[22:24])
+		block.Time = time.Unix(int64(binary.LittleEndian.Uint32(blocksBytes[24:28])), 0)
+		block.Pad3 = binary.LittleEndian.Uint32(blocksBytes[28:32])
 		blockData = make([]byte, length-32)
-		_ = blockData.UnmarshalBytes(blocksBytes[32:length])
+		blockData.UnmarshalBytes(blocksBytes[32:length])
+	} else {
+		blockData = make([]byte, length-16)
+		blockData.UnmarshalBytes(blocksBytes[16:length])
 	}
 	block.Data = &blockData
 	return block, nil
@@ -178,9 +181,9 @@ func strictIsValidHeader(header []byte) bool {
 // DiscardDataUntilValid will trim off invalid data on the buffered input
 // until it reaches a header that is valid or the buffer has insufficient data.
 // This is useful for when the input stream has been corrupted with some invalid bytes.
-func (d *Decoder) DiscardDataUntilValid(buf *bufio.Reader) {
+func (d *Decoder) DiscardDataUntilValid() {
 	for {
-		header, err := buf.Peek(28)
+		header, err := d.bufReader.Peek(28)
 		if err != nil {
 			return
 		}
@@ -188,6 +191,6 @@ func (d *Decoder) DiscardDataUntilValid(buf *bufio.Reader) {
 		if strictIsValidHeader(header) {
 			return
 		}
-		_, _ = buf.Discard(1)
+		_, _ = d.bufReader.Discard(1)
 	}
 }

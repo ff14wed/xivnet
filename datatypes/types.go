@@ -138,7 +138,7 @@ func ParseBlock(block *xivnet.Block, isOut bool) (*xivnet.Block, error) {
 		return block, nil
 	}
 	blockBytes, _ := data.MarshalBytes()
-	bd := NewBlockData(block.Header.Opcode, isOut)
+	bd := NewBlockData(block.Opcode, isOut)
 	if bd == nil {
 		return block, nil
 	}
