@@ -47,6 +47,7 @@ var _ = Describe("Decoder", func() {
 				Expect(f.Blocks).To(BeEmpty())
 			})
 		})
+
 		Context("with multiple frames on the buffer", func() {
 			It("decodes the packets until there is nothing left on the buffer", func() {
 				buf := bytes.NewBuffer(append(zlibPacket, zlibPacket...))
@@ -129,6 +130,25 @@ var _ = Describe("Decoder", func() {
 			})
 		})
 
+		Context("with corrupt data on the buffer", func() {
+			It("reads the first non-corrupted frame on the buffer", func() {
+				byteBuf := bytes.NewBuffer(nil)
+				_, err := byteBuf.Write(zlibPacket[:40])
+				Expect(err).ToNot(HaveOccurred())
+				_, err = byteBuf.Write(zlibPacket)
+				Expect(err).ToNot(HaveOccurred())
+
+				d := xivnet.NewDecoder(byteBuf, 32768)
+				_, err = d.NextFrame()
+				Expect(err.Error()).To(ContainSubstring("error decompressing data: zlib: invalid header"))
+
+				f, err := d.NextFrame()
+				Expect(err).ToNot(HaveOccurred())
+
+				Expect(f).To(matchExpectedFrame(expectedZlibFrame))
+			})
+		})
+
 		Context("with a block that specifies an invalid length", func() {
 			It("returns an error", func() {
 				byteBuf := bytes.NewBuffer(invalidBlockPacket)
@@ -141,6 +161,7 @@ var _ = Describe("Decoder", func() {
 			})
 		})
 	})
+
 	Describe("CheckHeader", func() {
 		Context("with an empty buffer", func() {
 			It("returns an error", func() {
@@ -160,6 +181,7 @@ var _ = Describe("Decoder", func() {
 			})
 		})
 	})
+
 	Describe("DiscardInvalidData", func() {
 		Context("with an empty buffer", func() {
 			It("does nothing to the buffer", func() {
@@ -179,6 +201,15 @@ var _ = Describe("Decoder", func() {
 				Expect(err).ToNot(HaveOccurred())
 				Expect(f.Length).To(Equal(uint32(48)))
 			})
+		})
+
+		It("does nothing when the header is already valid", func() {
+			byteBuf := bytes.NewBuffer(zeroBlockPacket)
+			d := xivnet.NewDecoder(byteBuf, 32768)
+			d.DiscardDataUntilValid()
+			f, err := d.NextFrame()
+			Expect(err).ToNot(HaveOccurred())
+			Expect(f.Length).To(Equal(uint32(48)))
 		})
 	})
 })
