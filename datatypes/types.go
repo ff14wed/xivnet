@@ -3,7 +3,6 @@ package datatypes
 import (
 	"bytes"
 	"encoding/binary"
-	"encoding/gob"
 	"fmt"
 
 	"github.com/ff14wed/xivnet/v2"
@@ -119,12 +118,10 @@ func UnmarshalBlockBytes(data []byte, block xivnet.BlockData) error {
 }
 
 func registerInBlockFactory(opcode uint16, factory func() xivnet.BlockData) {
-	gob.Register(factory())
 	inTypeRegistry[opcode] = factory
 }
 
 func registerOutBlockFactory(opcode uint16, factory func() xivnet.BlockData) {
-	gob.Register(factory())
 	outTypeRegistry[opcode] = factory
 }
 
