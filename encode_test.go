@@ -31,36 +31,6 @@ var _ = Describe("Encoder", func() {
 			}
 		})
 
-		Describe("CorrectLength", func() {
-			Context("with compression", func() {
-				It("sets the correct length of the frame and its blocks", func() {
-					incorrectFrame.CorrectLength()
-					err := incorrectFrame.CompressBlocks()
-					Expect(err).ToNot(HaveOccurred())
-
-					var totalBlockLength uint32
-					for i, b := range incorrectFrame.Blocks {
-						Expect(b.Length).To(Equal(realBlockLengths[i]))
-						totalBlockLength += b.Length
-					}
-
-					Expect(incorrectFrame.Length).To(BeNumerically("<", 40+totalBlockLength))
-				})
-			})
-			Context("without compression", func() {
-				It("sets the correct length of the frame and its blocks", func() {
-					incorrectFrame.CorrectLength()
-					var totalBlockLength uint32
-					for i, b := range incorrectFrame.Blocks {
-						Expect(b.Length).To(Equal(realBlockLengths[i]))
-						totalBlockLength += b.Length
-					}
-					Expect(incorrectFrame.Length).To(Equal(40 + totalBlockLength))
-				})
-			})
-
-		})
-
 		Describe("CorrectTimestamps", func() {
 			It("sets the time to the passed in argument on the frame", func() {
 				target := time.Now().Add(-3 * time.Second)
@@ -81,7 +51,26 @@ var _ = Describe("Encoder", func() {
 
 					Expect(buf.Bytes()).To(Equal(zlibPacket))
 				})
+
+				It("writes the correct length of the frame and its compressed blocks without modifying the original frame", func() {
+					buf := new(bytes.Buffer)
+					err := incorrectFrame.Encode(buf, expectedZlibFrame.Time, true)
+					Expect(err).ToNot(HaveOccurred())
+					Expect(incorrectFrame.Length).To(BeZero())
+
+					decoder := xivnet.NewDecoder(buf, 32768)
+					decodedFrame, err := decoder.NextFrame()
+					Expect(err).ToNot(HaveOccurred())
+
+					var totalBlockLength uint32
+					for i, b := range decodedFrame.Blocks {
+						Expect(b.Length).To(Equal(realBlockLengths[i]))
+						totalBlockLength += b.Length
+					}
+					Expect(decodedFrame.Length).To(BeNumerically("<", 40+totalBlockLength))
+				})
 			})
+
 			Context("without zlib compression", func() {
 				It("writes the correct encoding of the frame to the writer", func() {
 					buf := new(bytes.Buffer)
@@ -100,6 +89,24 @@ var _ = Describe("Encoder", func() {
 					expectedUncompressedFrame.Compression = 0
 					Expect(decodedFrame).To(matchExpectedFrame(expectedUncompressedFrame))
 				})
+
+				It("writes the correct length of the frame and its blocks without modifying the original frame", func() {
+					buf := new(bytes.Buffer)
+					err := incorrectFrame.Encode(buf, expectedZlibFrame.Time, false)
+					Expect(err).ToNot(HaveOccurred())
+					Expect(incorrectFrame.Length).To(BeZero())
+
+					decoder := xivnet.NewDecoder(buf, 32768)
+					decodedFrame, err := decoder.NextFrame()
+					Expect(err).ToNot(HaveOccurred())
+
+					var totalBlockLength uint32
+					for i, b := range decodedFrame.Blocks {
+						Expect(b.Length).To(Equal(realBlockLengths[i]))
+						totalBlockLength += b.Length
+					}
+					Expect(decodedFrame.Length).To(Equal(40 + totalBlockLength))
+				})
 			})
 		})
 	})
@@ -109,15 +116,26 @@ var _ = Describe("Encoder", func() {
 			incorrectBlock  xivnet.Block
 			realBlockLength uint32
 		)
+
 		BeforeEach(func() {
 			incorrectBlock = *expectedZlibFrame.Blocks[0]
 			realBlockLength = incorrectBlock.Length
 			incorrectBlock.Length = 0
 		})
+
 		Describe("CorrectLength", func() {
-			It("sets the correct length of the block", func() {
-				incorrectBlock.CorrectLength()
-				Expect(incorrectBlock.Length).To(Equal(realBlockLength))
+			It("returns the correct length of an IPC type block", func() {
+				Expect(incorrectBlock.CorrectLength()).To(Equal(realBlockLength))
+			})
+
+			Context("with an non IPC type block", func() {
+				BeforeEach(func() {
+					incorrectBlock.Type = xivnet.BlockTypePing
+				})
+
+				It("returns the correct length", func() {
+					Expect(incorrectBlock.CorrectLength()).To(Equal(realBlockLength - 16))
+				})
 			})
 		})
 
@@ -128,11 +146,21 @@ var _ = Describe("Encoder", func() {
 				Expect(err).ToNot(HaveOccurred())
 				Expect(buf.Bytes()).To(Equal(bytesZlibBlock0))
 			})
+
+			It("writes the correct length of the block without modifying the original", func() {
+				buf := new(bytes.Buffer)
+				err := incorrectBlock.Encode(buf)
+				Expect(err).ToNot(HaveOccurred())
+				Expect(buf.Bytes()).To(Equal(bytesZlibBlock0))
+				Expect(incorrectBlock.Length).To(BeZero())
+			})
+
 			Context("with typed block data", func() {
 				var (
 					movement           *datatypes.Movement
 					expectedBlockBytes []byte
 				)
+
 				BeforeEach(func() {
 					movement = &datatypes.Movement{
 						Direction: 0x12,
@@ -156,6 +184,7 @@ var _ = Describe("Encoder", func() {
 						0x67, 0x45, 0x00, 0x00, // U3
 					}
 				})
+
 				It("marshals typed block data to the writer", func() {
 					buf := new(bytes.Buffer)
 					testBlock := *expectedZlibFrame.Blocks[0]
@@ -166,11 +195,6 @@ var _ = Describe("Encoder", func() {
 					Expect(err).ToNot(HaveOccurred())
 					Expect(buf.Bytes()).To(Equal(expectedBlockBytes))
 				})
-			})
-			It("errors for blocks that are too small", func() {
-				buf := new(bytes.Buffer)
-				err := incorrectBlock.Encode(buf)
-				Expect(err).To(MatchError("Block length is too small"))
 			})
 		})
 	})

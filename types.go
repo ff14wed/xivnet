@@ -162,8 +162,6 @@ type Frame struct {
 	Reserved2      uint32    // [34:38]
 	Reserved3      uint16    // [38:40]
 	Blocks         []*Block
-
-	compressedBlockData []byte
 }
 
 // These constants indicate the type of block.

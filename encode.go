@@ -18,30 +18,34 @@ func (f *Frame) CorrectTimestamps(timestamp time.Time) {
 	}
 }
 
-// CorrectLength corrects the length in the FFXIV frame header. This method
-// assumes all the block header lengths are correct.
-func (f *Frame) CorrectLength() {
+// correctLength returns the correct length of the frame header plus all its
+// blocks. This method assumes the blocks are uncompressed.
+func (f Frame) correctLength() uint32 {
 	var blocksLength uint32
 	for _, b := range f.Blocks {
-		b.CorrectLength()
-		blocksLength += b.Length
+		blocksLength += b.CorrectLength()
 	}
-	f.Length = 40 + blocksLength
+	return 40 + blocksLength
 }
 
-// CorrectLength computes the true length of the block and sets its Length field
-func (b *Block) CorrectLength() {
-	b.Length = uint32(32 + binary.Size(b.Data))
+// CorrectLength returns the true length of the block
+func (b Block) CorrectLength() uint32 {
+	if b.Type == BlockTypeIPC {
+		return uint32(32 + binary.Size(b.Data))
+	}
+	return uint32(16 + binary.Size(b.Data))
 }
 
 // Encode writes the byte representation of the block to the output writer
-func (b *Block) Encode(w io.Writer) error {
-	if (b.Length < 32 && b.Type == 3) || b.Length < 16 {
+func (b Block) Encode(w io.Writer) error {
+	correctLength := b.CorrectLength()
+	if (correctLength < 32 && b.Type == 3) || correctLength < 16 {
+		// Error should never happen
 		return errors.New("Block length is too small")
 	}
 	headerLength := 16
-	buf := make([]byte, b.Length)
-	binary.LittleEndian.PutUint32(buf[0:4], b.Length)
+	buf := make([]byte, correctLength)
+	binary.LittleEndian.PutUint32(buf[0:4], correctLength)
 	binary.LittleEndian.PutUint32(buf[4:8], b.SubjectID)
 	binary.LittleEndian.PutUint32(buf[8:12], b.CurrentID)
 	binary.LittleEndian.PutUint16(buf[12:14], b.Type)
@@ -68,7 +72,7 @@ func (b *Block) Encode(w io.Writer) error {
 	if err != nil {
 		return err
 	}
-	copy(buf[headerLength:b.Length], blockData)
+	copy(buf[headerLength:correctLength], blockData)
 
 	_, err = w.Write(buf)
 	if err != nil {
@@ -77,45 +81,45 @@ func (b *Block) Encode(w io.Writer) error {
 	return nil
 }
 
-// CompressBlocks prepares the frame for writing by saving an internal
-// representation of the compressed block bytes
-func (f *Frame) CompressBlocks() error {
+// compressBlocks returns all of the blocks compressed in byte format
+func (f Frame) compressBlocks() ([]byte, error) {
 	buf := new(bytes.Buffer)
 
 	tmpBuf := new(bytes.Buffer)
 	for _, b := range f.Blocks {
 		err := b.Encode(tmpBuf)
 		if err != nil {
-			return err
+			return nil, err
 		}
 	}
 
 	zlibWriter := zlib.NewWriter(buf)
 	_, err := tmpBuf.WriteTo(zlibWriter)
 	if err != nil {
-		return err
+		return nil, err
 	}
 	zlibWriter.Close()
 
-	f.compressedBlockData = buf.Bytes()
-	f.Length = uint32(40 + len(f.compressedBlockData))
-	return nil
+	return buf.Bytes(), nil
 }
 
 // Encode writes the byte representation of the frame to the output writer
 // with the given timestamp
-func (f *Frame) Encode(w io.Writer, timestamp time.Time, compress bool) error {
-	f.CorrectLength()
+func (f Frame) Encode(w io.Writer, timestamp time.Time, compress bool) error {
 	f.CorrectTimestamps(timestamp)
+	f.Length = f.correctLength()
 	f.Count = uint16(len(f.Blocks))
 	f.Reserved1 = 1
 
+	var compressedBlockData []byte
 	if compress {
-		err := f.CompressBlocks()
+		var err error
+		compressedBlockData, err = f.compressBlocks()
 		if err != nil {
 			return err
 		}
 		f.Compression = 1
+		f.Length = uint32(40 + len(compressedBlockData))
 	} else {
 		f.Compression = 0
 	}
@@ -138,7 +142,7 @@ func (f *Frame) Encode(w io.Writer, timestamp time.Time, compress bool) error {
 	}
 
 	if compress {
-		_, err := w.Write(f.compressedBlockData)
+		_, err := w.Write(compressedBlockData)
 		if err != nil {
 			return err
 		}
