@@ -34,9 +34,9 @@ var _ = Describe("Types", func() {
 			})
 		})
 	})
-	Describe("UnmarshalBlockBytes (MyMovement opcode)", func() {
-		It("successfully parses unmarshals block data into a MyMovement struct", func() {
-			bd := datatypes.NewBlockData(datatypes.MyMovementOpcode, true)
+	Describe("UnmarshalBlockBytes (EgressMovement opcode)", func() {
+		It("successfully parses unmarshals block data into a EgressMovement struct", func() {
+			bd := datatypes.NewBlockData(datatypes.EgressMovementOpcode, true)
 			Expect(bd).ToNot(BeNil())
 			Expect(bd).To(BeAssignableToTypeOf(new(datatypes.MyMovement)))
 			Expect(datatypes.UnmarshalBlockBytes(myMovementBlockBytes, bd)).To(Succeed())
@@ -76,7 +76,7 @@ var _ = Describe("Types", func() {
 				SubjectID: 12345,
 				CurrentID: 67890,
 				IPCHeader: xivnet.IPCHeader{
-					Opcode: datatypes.MyMovementOpcode,
+					Opcode: datatypes.EgressMovementOpcode,
 				},
 				Data: xivnet.GenericBlockDataFromBytes(myMovementBlockBytes),
 			}
@@ -89,7 +89,7 @@ var _ = Describe("Types", func() {
 				SubjectID: 12345,
 				CurrentID: 67890,
 				IPCHeader: xivnet.IPCHeader{
-					Opcode: datatypes.MyMovementOpcode,
+					Opcode: datatypes.EgressMovementOpcode,
 				},
 				Data: expectedMyMovementBlockData,
 			}))
