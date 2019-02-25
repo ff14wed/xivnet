@@ -1,7 +1,7 @@
 package datatypes
 
-// Notify3 defines the data array for a notify3 block
-type Notify3 struct {
+// Notify143 defines the data array for a notify3 block
+type Notify143 struct {
 	Type uint16
 	Pad1 uint16
 	P1   uint32
@@ -13,4 +13,4 @@ type Notify3 struct {
 	Pad2 uint32
 }
 
-func (Notify3) IsBlockData() {}
+func (Notify143) IsBlockData() {}

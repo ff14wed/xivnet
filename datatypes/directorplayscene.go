@@ -1,7 +1,7 @@
 package datatypes
 
-// CraftState defines the data array for an crafting state block
-type CraftState struct {
+// DirectorPlayScene defines the data array for a event scene block
+type DirectorPlayScene struct {
 	CharID            uint64
 	U1                [9]uint32
 	CraftAction       uint32
@@ -19,4 +19,4 @@ type CraftState struct {
 	U6                [17]uint32
 }
 
-func (CraftState) IsBlockData() {}
+func (DirectorPlayScene) IsBlockData() {}

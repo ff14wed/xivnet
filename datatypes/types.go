@@ -43,9 +43,9 @@ const (
 
 	EquipChangeOpcode = 0x18B // Updated for 4.5
 
-	EventPlayOpcode   = 0x1AB // Updated for 4.5
-	EventPlay2Opcode  = 0x1AC // Updated for 4.5
-	DirectorPlayScene = 0x1AF // Updated for 4.5
+	EventPlayOpcode         = 0x1AB // Updated for 4.5
+	EventPlay2Opcode        = 0x1AC // Updated for 4.5
+	DirectorPlaySceneOpcode = 0x1AF // Updated for 4.5
 
 	MountOpcode = 0x1E8 // Updated for 4.5
 
@@ -64,9 +64,9 @@ const (
 func init() {
 	registerInBlockFactory(AddStatusOpcode, func() xivnet.BlockData { return new(AddStatus) })
 	registerInBlockFactory(InitZoneOpcode, func() xivnet.BlockData { return new(InitZone) })
-	registerInBlockFactory(Notify142Opcode, func() xivnet.BlockData { return new(Notify) })
-	registerInBlockFactory(Notify143Opcode, func() xivnet.BlockData { return new(Notify3) })
-	registerInBlockFactory(Notify144Opcode, func() xivnet.BlockData { return new(Notify4) })
+	registerInBlockFactory(Notify142Opcode, func() xivnet.BlockData { return new(Notify142) })
+	registerInBlockFactory(Notify143Opcode, func() xivnet.BlockData { return new(Notify143) })
+	registerInBlockFactory(Notify144Opcode, func() xivnet.BlockData { return new(Notify144) })
 	registerInBlockFactory(RemoveEntityOpcode, func() xivnet.BlockData { return new(RemoveEntity) })
 	registerInBlockFactory(UpdateHPMPTPOpcode, func() xivnet.BlockData { return new(UpdateHPMPTP) })
 
@@ -90,7 +90,7 @@ func init() {
 
 	registerInBlockFactory(EquipChangeOpcode, func() xivnet.BlockData { return new(EquipChange) })
 
-	registerInBlockFactory(DirectorPlayScene, func() xivnet.BlockData { return new(CraftState) })
+	registerInBlockFactory(DirectorPlaySceneOpcode, func() xivnet.BlockData { return new(DirectorPlayScene) })
 
 	registerInBlockFactory(MountOpcode, func() xivnet.BlockData { return new(Mount) })
 
@@ -98,7 +98,7 @@ func init() {
 
 	registerInBlockFactory(WaymarkOpcode, func() xivnet.BlockData { return new(Marker) })
 
-	registerInBlockFactory(PrepareZoningOpcode, func() xivnet.BlockData { return new(MapChange) })
+	registerInBlockFactory(PrepareZoningOpcode, func() xivnet.BlockData { return new(PrepareZoning) })
 
 	registerInBlockFactory(GaugeOpcode, func() xivnet.BlockData { return new(Gauge) })
 	registerInBlockFactory(PerformOpcode, func() xivnet.BlockData { return new(Perform) })
