@@ -90,6 +90,8 @@ func init() {
 
 	registerInBlockFactory(EquipChangeOpcode, func() xivnet.BlockData { return new(EquipChange) })
 
+	registerInBlockFactory(EventPlayOpcode, func() xivnet.BlockData { return new(EventPlay) })
+	registerInBlockFactory(EventPlay2Opcode, func() xivnet.BlockData { return new(EventPlay2) })
 	registerInBlockFactory(DirectorPlaySceneOpcode, func() xivnet.BlockData { return new(DirectorPlayScene) })
 
 	registerInBlockFactory(MountOpcode, func() xivnet.BlockData { return new(Mount) })
@@ -142,8 +144,15 @@ func NewBlockData(opcode uint16, isOut bool) xivnet.BlockData {
 	return factory()
 }
 
+type BlockUnmarshaler interface {
+	UnmarshalBytes(data []byte) error
+}
+
 // UnmarshalBlockBytes converts raw bytes to this block data struct
 func UnmarshalBlockBytes(data []byte, block xivnet.BlockData) error {
+	if b, matches := block.(BlockUnmarshaler); matches {
+		return b.UnmarshalBytes(data)
+	}
 	if binary.Size(block) != len(data) {
 		return fmt.Errorf("length mismatch: %d != %d", len(data), binary.Size(block))
 	}

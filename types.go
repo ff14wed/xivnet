@@ -3,53 +3,26 @@ package xivnet
 import (
 	"bytes"
 	"encoding/binary"
-	"encoding/hex"
-	"strconv"
-	"strings"
-	"sync"
 	"time"
+
+	"github.com/ff14wed/xivnet/internal/bytestring"
 )
 
 // These types define the FFXIV packet structures. Some of the fields (like
 // length or compression) aren't really necessary, but they codify some of the
 // fields that need to be parsed in a packet.
 
-var mbufPool *marshalBufferPool
-
-type marshalBufferPool struct {
-	pool *sync.Pool
-}
-
-func newPool() *marshalBufferPool {
-	return &marshalBufferPool{
-		pool: new(sync.Pool),
-	}
-}
-
-func (m *marshalBufferPool) Get() *bytes.Buffer {
-	b := m.pool.Get()
-	if b == nil {
-		return new(bytes.Buffer)
-	}
-	return b.(*bytes.Buffer)
-}
-
-func (m *marshalBufferPool) Put(b *bytes.Buffer) {
-	b.Reset()
-	m.pool.Put(b)
-}
-
 // Preamble defines the type for a 16 byte array
 type Preamble [16]byte
 
 // MarshalJSON returns the marshaled version of the frame magic
 func (p *Preamble) MarshalJSON() ([]byte, error) {
-	return bytesToByteString(p[:])
+	return bytestring.BytesToByteString(p[:])
 }
 
 // UnmarshalJSON returns the unmarshaled version of the frame magic
 func (p *Preamble) UnmarshalJSON(data []byte) error {
-	newB, err := byteStringToBytes(data)
+	newB, err := bytestring.ByteStringToBytes(data)
 	if err != nil {
 		return err
 	}
@@ -86,13 +59,13 @@ func GenericBlockDataFromBytes(blockData []byte) *GenericBlockData {
 }
 
 // MarshalJSON returns the marshaled version of the generic block data
-func (b *GenericBlockData) MarshalJSON() ([]byte, error) {
-	return bytesToByteString(*b)
+func (b GenericBlockData) MarshalJSON() ([]byte, error) {
+	return bytestring.BytesToByteString(b)
 }
 
 // UnmarshalJSON returns the unmarshaled version of the generic block data
 func (b *GenericBlockData) UnmarshalJSON(data []byte) error {
-	newB, err := byteStringToBytes(data)
+	newB, err := bytestring.ByteStringToBytes(data)
 	if err != nil {
 		return err
 	}
@@ -113,39 +86,6 @@ func (b *GenericBlockData) UnmarshalBytes(data []byte) {
 // Length returns the length of the block data
 func (b *GenericBlockData) Length() uint32 {
 	return uint32(len(*b))
-}
-
-func bytesToByteString(b []byte) ([]byte, error) {
-	n := len(b)
-	if n == 0 {
-		return []byte(`""`), nil
-	}
-	if mbufPool == nil {
-		mbufPool = newPool()
-	}
-	marshalBuffer := mbufPool.Get()
-	defer mbufPool.Put(marshalBuffer)
-
-	marshalBuffer.WriteRune('"')
-	if b[0] < 0x10 {
-		marshalBuffer.WriteRune('0')
-	}
-	marshalBuffer.WriteString(strconv.FormatUint(uint64(b[0]), 16))
-	for i := 1; i < n; i++ {
-		marshalBuffer.WriteRune(' ')
-		if b[i] < 0x10 {
-			marshalBuffer.WriteRune('0')
-		}
-		marshalBuffer.WriteString(strconv.FormatUint(uint64(b[i]), 16))
-	}
-	marshalBuffer.WriteRune('"')
-	return marshalBuffer.Bytes(), nil
-}
-
-func byteStringToBytes(b []byte) ([]byte, error) {
-	n := len(b)
-	encodedHex := strings.Replace(string(b[1:n-1]), " ", "", -1)
-	return hex.DecodeString(encodedHex)
 }
 
 // Frame defines the structure for an FFXIV Frame.
