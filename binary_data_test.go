@@ -3,7 +3,7 @@ package xivnet_test
 import (
 	"time"
 
-	"github.com/ff14wed/xivnet/v2"
+	"github.com/ff14wed/xivnet/v3"
 )
 
 var zlibPacket = []byte{

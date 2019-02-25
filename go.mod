@@ -1,4 +1,4 @@
-module github.com/ff14wed/xivnet/v2
+module github.com/ff14wed/xivnet/v3
 
 require (
 	github.com/onsi/ginkgo v1.7.0

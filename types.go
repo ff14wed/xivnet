@@ -5,7 +5,7 @@ import (
 	"encoding/binary"
 	"time"
 
-	"github.com/ff14wed/xivnet/internal/bytestring"
+	"github.com/ff14wed/xivnet/v3/internal/bytestring"
 )
 
 // These types define the FFXIV packet structures. Some of the fields (like

@@ -6,7 +6,7 @@ import (
 	"encoding/json"
 	"fmt"
 
-	"github.com/ff14wed/xivnet/internal/bytestring"
+	"github.com/ff14wed/xivnet/v3/internal/bytestring"
 )
 
 type PlaySceneData interface {
