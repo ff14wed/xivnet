@@ -1,7 +1,7 @@
 package datatypes
 
-// MyAction defines the data array for a my action block
-type MyAction struct {
+// EgressClientTrigger defines the data array for an ClientTrigger block
+type EgressClientTrigger struct {
 	Type uint16 // 3 means P1 is target
 	U1   uint16
 	P1   uint32
@@ -13,4 +13,4 @@ type MyAction struct {
 	P7   uint32
 }
 
-func (MyAction) IsBlockData() {}
+func (EgressClientTrigger) IsBlockData() {}

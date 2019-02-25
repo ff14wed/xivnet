@@ -20,7 +20,7 @@ var expectedMovementBlockData = &datatypes.Movement{
 	U3:        0x4567,
 }
 
-var myMovementBlockBytes = []byte{
+var egressMovementBlockBytes = []byte{
 	219, 15, 73, 64, // Direction
 	0x67, 0x45, 0x00, 0x00, // U1
 	0xAB, 0x89, 0x00, 0x00, // U2
@@ -29,7 +29,7 @@ var myMovementBlockBytes = []byte{
 	0, 0, 47, 68, // Z
 }
 
-var expectedMyMovementBlockData = &datatypes.MyMovement{
+var expectedEgressMovementBlockData = &datatypes.EgressMovement{
 	Direction: math.Pi,
 	U1:        0x4567,
 	U2:        0x89AB,

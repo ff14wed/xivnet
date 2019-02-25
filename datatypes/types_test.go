@@ -38,9 +38,9 @@ var _ = Describe("Types", func() {
 		It("successfully parses unmarshals block data into a EgressMovement struct", func() {
 			bd := datatypes.NewBlockData(datatypes.EgressMovementOpcode, true)
 			Expect(bd).ToNot(BeNil())
-			Expect(bd).To(BeAssignableToTypeOf(new(datatypes.MyMovement)))
-			Expect(datatypes.UnmarshalBlockBytes(myMovementBlockBytes, bd)).To(Succeed())
-			Expect(bd).To(Equal(expectedMyMovementBlockData))
+			Expect(bd).To(BeAssignableToTypeOf(new(datatypes.EgressMovement)))
+			Expect(datatypes.UnmarshalBlockBytes(egressMovementBlockBytes, bd)).To(Succeed())
+			Expect(bd).To(Equal(expectedEgressMovementBlockData))
 		})
 	})
 
@@ -78,7 +78,7 @@ var _ = Describe("Types", func() {
 				IPCHeader: xivnet.IPCHeader{
 					Opcode: datatypes.EgressMovementOpcode,
 				},
-				Data: xivnet.GenericBlockDataFromBytes(myMovementBlockBytes),
+				Data: xivnet.GenericBlockDataFromBytes(egressMovementBlockBytes),
 			}
 
 			newB, err := datatypes.ParseBlock(b, true)
@@ -91,7 +91,7 @@ var _ = Describe("Types", func() {
 				IPCHeader: xivnet.IPCHeader{
 					Opcode: datatypes.EgressMovementOpcode,
 				},
-				Data: expectedMyMovementBlockData,
+				Data: expectedEgressMovementBlockData,
 			}))
 		})
 

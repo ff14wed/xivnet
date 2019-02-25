@@ -1,7 +1,7 @@
 package datatypes
 
-// MyMovement defines the data array for a my movement block
-type MyMovement struct {
+// EgressMovement defines the data array for an outgoing movement block
+type EgressMovement struct {
 	Direction float32 // 0 is South. Range [-pi,pi] <=> Counterclockwise from North
 	U1        uint32
 	U2        uint32
@@ -10,4 +10,4 @@ type MyMovement struct {
 	Z         float32
 }
 
-func (MyMovement) IsBlockData() {}
+func (EgressMovement) IsBlockData() {}

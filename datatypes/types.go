@@ -108,19 +108,24 @@ func init() {
 
 // Opcodes that define the datatypes of outgoing (to server) network blocks
 const (
-	EgressActionOpcode         = 0x138 // Updated for 4.5
-	EgressMovementOpcode       = 0x13F // Updated for 4.5
-	EgressMovement2Opcode      = 0x17E // Updated for 4.5
+	EgressClientTriggerOpcode = 0x138 // Updated for 4.5
+
+	EgressMovementOpcode         = 0x13F // Updated for 4.5
+	EgressInstanceMovementOpcode = 0x17E // Updated for 4.5
+
 	EgressPerformOpcode        = 0x188 // Updated for 4.5
 	EgressIngredientListOpcode = 0x15D // Updated for 4.5
 )
 
 func init() {
-	registerOutBlockFactory(EgressActionOpcode, func() xivnet.BlockData { return new(MyAction) })
-	registerOutBlockFactory(EgressMovementOpcode, func() xivnet.BlockData { return new(MyMovement) })
-	registerOutBlockFactory(EgressMovement2Opcode, func() xivnet.BlockData { return new(MyMovement2) })
+	registerOutBlockFactory(EgressClientTriggerOpcode, func() xivnet.BlockData { return new(EgressClientTrigger) })
+
+	registerOutBlockFactory(EgressMovementOpcode, func() xivnet.BlockData { return new(EgressMovement) })
+	registerOutBlockFactory(EgressInstanceMovementOpcode, func() xivnet.BlockData { return new(EgressInstanceMovement) })
+
 	registerOutBlockFactory(EgressPerformOpcode, func() xivnet.BlockData { return new(Perform) })
-	registerOutBlockFactory(EgressIngredientListOpcode, func() xivnet.BlockData { return new(BeginCrafting) })
+
+	registerOutBlockFactory(EgressIngredientListOpcode, func() xivnet.BlockData { return new(EgressIngredientList) })
 }
 
 // NewBlockData is a factory for BlockData that uses the opcode to
