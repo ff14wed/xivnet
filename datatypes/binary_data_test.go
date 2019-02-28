@@ -7,17 +7,20 @@ import (
 )
 
 var movementBlockBytes = []byte{
-	0x12, 0x12, 0x67, 0x45, 0x00, 0x00, // Direction, U1, U2
+	0x12, 0x12, 0x67, 0x45, 0x01, 0x02, // Direction, U1, U2
 	0xAB, 0x89, 0xAB, 0x89, 0xAB, 0x89, // PackedPosition
 	0x67, 0x45, 0x00, 0x00, // U3
 }
 
 var expectedMovementBlockData = &datatypes.Movement{
-	Direction: 0x12,
-	U1:        0x12,
-	U2:        0x4567,
-	Position:  datatypes.PackedPosition{X: 0x89AB, Y: 0x89AB, Z: 0x89AB},
-	U3:        0x4567,
+	Direction:       0x12,
+	HeadRotation:    0x12,
+	AnimationType:   0x67,
+	AnimationState:  0x45,
+	AnimationSpeed:  0x01,
+	UnknownRotation: 0x02,
+	Position:        datatypes.PackedPosition{X: 0x89AB, Y: 0x89AB, Z: 0x89AB},
+	U3:              0x4567,
 }
 
 var egressMovementBlockBytes = []byte{

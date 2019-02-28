@@ -5,13 +5,13 @@ package datatypes
 type ActionHeader struct {
 	TargetID          uint32 // Target of actions
 	U1                uint32
-	ActionIDName      uint32
+	ActionIDName      uint32 // Action as shown in battle log
 	GlobalCounter     uint32
 	AnimationLockTime float32
 	UnkID1            uint32
 	HiddenAnimation   uint16
 	Direction         uint16 // Quantized direction 0x0000 ~ 0xFFFF, NWSE <=> 0,0x4000,0x8000,0xC000
-	ActionID          uint16
+	ActionID          uint16 // The animation of the action
 	Variation         byte
 	EffectDisplayType byte
 
