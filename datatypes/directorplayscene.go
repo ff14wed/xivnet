@@ -112,9 +112,9 @@ type CraftState struct {
 	CraftAction       uint32
 	U2                uint32
 	StepNum           uint32
-	TotalProgress     uint32
+	Progress          uint32
 	ProgressDelta     int32
-	TotalQuality      uint32
+	Quality           uint32
 	QualityDelta      int32
 	HQChance          uint32
 	Durability        uint32
