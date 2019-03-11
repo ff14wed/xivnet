@@ -2,7 +2,9 @@ package datatypes
 
 // UpdateStatuses defines the data array for an update statuses block
 type UpdateStatuses struct {
-	U1        uint32
+	ClassJob  byte
+	Level1    byte
+	Level     uint16
 	CurrentHP uint32
 	MaxHP     uint32
 	CurrentMP uint16

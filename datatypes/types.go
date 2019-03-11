@@ -22,12 +22,14 @@ const (
 	RemoveEntityOpcode = 0x191 // Unchanged 4.5
 	UpdateHPMPTPOpcode = 0x145 // Unchanged 4.5
 
-	UpdateStatusesOpcode = 0x151 // Updated for 4.5
-	ActionOpcode         = 0x154 // Updated for 4.5
-	AoEAction8Opcode     = 0x157 // Updated for 4.5
-	AoEAction16Opcode    = 0x158 // Updated for 4.5
-	AoEAction24Opcode    = 0x159 // Updated for 4.5
-	AoEAction32Opcode    = 0x15A // Updated for 4.5
+	UpdateStatusesOpcode       = 0x151 // Updated for 4.5
+	UpdateStatusesEurekaOpcode = 0x152 // Updated for 4.5
+
+	ActionOpcode      = 0x154 // Updated for 4.5
+	AoEAction8Opcode  = 0x157 // Updated for 4.5
+	AoEAction16Opcode = 0x158 // Updated for 4.5
+	AoEAction24Opcode = 0x159 // Updated for 4.5
+	AoEAction32Opcode = 0x15A // Updated for 4.5
 
 	PlayerSpawnOpcode = 0x175 // Updated for 4.5
 	NPCSpawnOpcode    = 0x176 // Updated for 4.5
@@ -71,6 +73,8 @@ func init() {
 	registerInBlockFactory(UpdateHPMPTPOpcode, func() xivnet.BlockData { return new(UpdateHPMPTP) })
 
 	registerInBlockFactory(UpdateStatusesOpcode, func() xivnet.BlockData { return new(UpdateStatuses) })
+	registerInBlockFactory(UpdateStatusesEurekaOpcode, func() xivnet.BlockData { return new(UpdateStatusesEureka) })
+
 	registerInBlockFactory(ActionOpcode, func() xivnet.BlockData { return new(Action) })
 	registerInBlockFactory(AoEAction8Opcode, func() xivnet.BlockData { return new(AoEAction8) })
 	registerInBlockFactory(AoEAction16Opcode, func() xivnet.BlockData { return new(AoEAction16) })
