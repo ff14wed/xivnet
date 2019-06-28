@@ -13,8 +13,8 @@ var movementBlockBytes = []byte{
 }
 
 var expectedMovementBlockData = &datatypes.Movement{
-	Direction:       0x12,
 	HeadRotation:    0x12,
+	Direction:       0x12,
 	AnimationType:   0x67,
 	AnimationState:  0x45,
 	AnimationSpeed:  0x01,
