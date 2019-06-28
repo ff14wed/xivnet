@@ -7,7 +7,8 @@ type Casting struct {
 	ActionID     uint32
 	CastTime     float32
 	TargetID     uint32
-	Direction    float32
+	Direction    uint16 // Quantized direction 0x0000 ~ 0xFFFF, NWSE <=> 0,0x4000,0x8000,0xC000
+	U2           uint16
 	UnkID1       uint32
 	Position     PackedPosition
 	U3           uint16
