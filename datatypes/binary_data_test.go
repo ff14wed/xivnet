@@ -26,10 +26,10 @@ var expectedMovementBlockData = &datatypes.Movement{
 var egressMovementBlockBytes = []byte{
 	219, 15, 73, 64, // Direction
 	0x67, 0x45, 0x00, 0x00, // U1
-	0xAB, 0x89, 0x00, 0x00, // U2
 	0, 0, 250, 67, // X
 	0, 0, 22, 68, // Y
 	0, 0, 47, 68, // Z
+	0xAB, 0x89, 0x00, 0x00, // U2
 }
 
 var expectedEgressMovementBlockData = &datatypes.EgressMovement{
