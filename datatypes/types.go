@@ -38,7 +38,7 @@ const (
 	MovementOpcode = 0x182 // Updated for 5.0
 	SetPosOpcode   = 0x184 // Updated for 5.0
 
-	CastingOpcode = 0x187 // Updated for 5.0
+	CastingOpcode = 0x186 // Updated for 5.0
 
 	HateRankingOpcode = 0x189 // Updated for 5.0
 	HateListOpcode    = 0x18A // Updated for 5.0
