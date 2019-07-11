@@ -9,4 +9,4 @@ install:
   - go install github.com/onsi/ginkgo/ginkgo
 
 script:
-  - $HOME/GOPATH/bin/ginkgo -r -p --randomizeAllSpecs --failOnPending --randomizeSuites --race
+  - $GOPATH/bin/ginkgo -r -p --randomizeAllSpecs --failOnPending --randomizeSuites --race
