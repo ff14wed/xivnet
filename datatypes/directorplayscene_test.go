@@ -32,9 +32,9 @@ var _ = Describe("DirectorPlayScene", func() {
 	})
 
 	It("marshals to JSON", func() {
-		b, err := json.Marshal(expectedPlaySceneBlockData)
+		jsonBytes, err := json.Marshal(expectedPlaySceneBlockData)
 		Expect(err).ToNot(HaveOccurred())
-		Expect(b).To(MatchJSON(expectedPlaySceneBlockDataJSON))
+		Expect(jsonBytes).To(MatchJSON(expectedPlaySceneBlockDataJSON))
 	})
 
 	It("unmarshals from JSON", func() {
@@ -48,10 +48,10 @@ var _ = Describe("DirectorPlayScene", func() {
 		var expectedCraftStateBlockData datatypes.DirectorPlayScene
 
 		BeforeEach(func() {
-			playSceneWithCraftingEvent := append(append(
-				playSceneBlockBytes[:10],
-				0x0A,
-			), playSceneBlockBytes[11:]...)
+			playSceneWithCraftingEvent := make([]byte, len(playSceneBlockBytes))
+			copy(playSceneWithCraftingEvent, playSceneBlockBytes[:10])
+			playSceneWithCraftingEvent[10] = 0x0A
+			copy(playSceneWithCraftingEvent[11:], playSceneBlockBytes[11:])
 
 			b = &xivnet.Block{
 				Length:    12345,
@@ -75,9 +75,9 @@ var _ = Describe("DirectorPlayScene", func() {
 		})
 
 		It("marshals to JSON with a CraftState", func() {
-			b, err := json.Marshal(expectedCraftStateBlockData)
+			jsonBytes, err := json.Marshal(expectedCraftStateBlockData)
 			Expect(err).ToNot(HaveOccurred())
-			Expect(b).To(MatchJSON(expectedCraftStateBlockDataJSON))
+			Expect(jsonBytes).To(MatchJSON(expectedCraftStateBlockDataJSON))
 		})
 
 		It("unmarshals from JSON with a CraftState", func() {
