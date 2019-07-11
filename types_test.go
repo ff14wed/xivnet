@@ -31,13 +31,16 @@ var _ = Describe("Types", func() {
 		It("marshals to JSON correctly", func() {
 			bytes, err := json.Marshal(&expectedZlibFrame.Blocks[0].IPCHeader)
 			Expect(err).ToNot(HaveOccurred())
-			Expect(string(bytes)).To(ContainSubstring(jsonZlibBlock0IPCHeader))
+			Expect(string(bytes)).To(ContainSubstring(jsonZlibBlock0IPCHeader[:67]))
 		})
 		It("unmarshals from JSON correctly", func() {
 			var b xivnet.IPCHeader
 			err := json.Unmarshal([]byte(`{`+jsonZlibBlock0IPCHeader+`}`), &b)
 			Expect(err).ToNot(HaveOccurred())
-			Expect(b).To(Equal(expectedZlibFrame.Blocks[0].IPCHeader))
+			expectedIPCHeader := expectedZlibFrame.Blocks[0].IPCHeader
+			Expect(b.Time.Equal(expectedIPCHeader.Time)).To(BeTrue())
+			b.Time = expectedIPCHeader.Time
+			Expect(b).To(Equal(expectedIPCHeader))
 		})
 		It("errors when the input is invalid hexadecimal", func() {
 			var b xivnet.IPCHeader
@@ -103,7 +106,7 @@ var _ = Describe("Types", func() {
 			Expect(err).ToNot(HaveOccurred())
 			Expect(bytes).To(ContainSubstring(`"Preamble":` + jsonZlibFramePreamble))
 			Expect(bytes).To(ContainSubstring(`"Length":148`))
-			Expect(bytes).To(ContainSubstring(`"Blocks":[` + jsonZlibBlock0Header + jsonZlibBlock0IPCHeader))
+			Expect(bytes).To(ContainSubstring(`"Blocks":[` + jsonZlibBlock0Header + jsonZlibBlock0IPCHeader[:67]))
 			Expect(bytes).To(ContainSubstring(`"Data":` + jsonZlibBlock0Data))
 		})
 	})

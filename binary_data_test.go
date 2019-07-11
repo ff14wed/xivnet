@@ -31,7 +31,7 @@ var zlibPacket = []byte{
 
 var jsonZlibFramePreamble string = `"52 52 a0 41 ff 5d 46 e2 7f 2a 64 4d 7b 99 c4 75"`
 var jsonZlibBlock0Header string = `{"Length":56,"SubjectID":123456789,"CurrentID":123456789,"Type":3,"Pad1":0,`
-var jsonZlibBlock0IPCHeader string = `"Reserved":20,"Opcode":322,"Pad2":0,"ServerID":34,"Time":"2017-01-26T03:40:47-08:00","Pad3":0`
+var jsonZlibBlock0IPCHeader string = `"Reserved":20,"Opcode":322,"Pad2":0,"ServerID":34,"Time":"2017-01-26T11:40:47Z","Pad3":0`
 var jsonZlibBlock0Data string = `"00 00 cd e1 00 00 00 00 01 00 00 00 01 00 00 00 00 00 00 00 20 00 00 00"`
 var bytesZlibBlock0 = []byte{
 	0x38, 0x00, 0x00, 0x00, // Length
