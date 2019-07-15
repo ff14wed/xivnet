@@ -16,8 +16,8 @@ type EffectResult struct {
 	U1      uint32
 	ActorID uint32
 
-	MaxHP     uint32
 	CurrentHP uint32
+	MaxHP     uint32
 	CurrentMP uint16
 	CurrentTP uint16
 	MaxMP     uint16
