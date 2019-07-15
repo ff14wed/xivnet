@@ -15,7 +15,7 @@ type EventPlay struct {
 	Pad2    [3]byte
 	P3      uint32
 	P4      uint32
-	U1      uint32
+	P5      uint32
 }
 
 func (EventPlay) IsBlockData() {}
