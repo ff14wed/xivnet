@@ -76,7 +76,7 @@ var expectedPlaySceneBlockData = &datatypes.DirectorPlayScene{
 		ActorID: 123456789,
 		EventID: 1,
 		Scene:   2, Pad1: 3,
-		Flags: 4, P1: 5, P2: 6, P3: 7, P4: 8, U1: 0,
+		Flags: 4, P1: 5, P2: 6, P3: 7, P4: 8, P5: 0,
 	},
 	Data: datatypes.GenericPlaySceneData([120]byte{
 		0xFF, 0x00, 0x00, 0x00, 0x01, 0x00, 0x00, 0x00,
@@ -105,7 +105,7 @@ var expectedPlaySceneBlockDataJSON = `
 	"EventID": 1,
 	"Scene": 2, "Pad1": 3,
 	"Flags": 4, "P1": 5, "P2": 6,
-	"Pad2": [0, 0, 0], "P3": 7, "P4": 8, "U1": 0,
+	"Pad2": [0, 0, 0], "P3": 7, "P4": 8, "P5": 0,
 	"Data": "ff 00 00 00 01 00 00 00 ff 00 00 00 02 00 00 00 00 01 00 00 00 02 00 00 00 03 00 00 00 04 00 00 05 00 00 00 06 00 00 00 f9 ff ff ff 08 00 00 00 09 00 00 00 01 00 00 00 02 00 00 00 03 00 00 00 04 00 00 00 05 00 00 00 06 00 00 00 07 00 00 00 08 00 00 00 09 00 00 00 0a 00 00 00 0b 00 00 00 0c 00 00 00 0d 00 00 00 0e 00 00 00 0f 00 00 00 10 00 00 00 11 00 00 00"
 }`
 
@@ -132,7 +132,7 @@ var expectedCraftStateBlockDataJSON = `
 	"EventID": 655361,
 	"Scene": 2, "Pad1": 3,
 	"Flags": 4, "P1": 5, "P2": 6,
-	"Pad2": [0, 0, 0], "P3": 7, "P4": 8, "U1": 0,
+	"Pad2": [0, 0, 0], "P3": 7, "P4": 8, "P5": 0,
 	"Data": {
 		"U1":                255,
 		"CraftAction":       1,
