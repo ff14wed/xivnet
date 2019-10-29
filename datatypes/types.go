@@ -14,13 +14,13 @@ var outTypeRegistry = make(map[uint16]func() xivnet.BlockData)
 // Opcodes that define the datatypes of incoming (from server) network blocks
 const (
 	// Opcodes that change rarely
-	EffectResultOpcode = 0x141 // Unchanged 5.0
-	InitZoneOpcode     = 0x19B // Updated 5.1
-	Control            = 0x264 // Updated 5.1
-	ControlSelf        = 0x164 // Updated 5.1
-	ControlTarget      = 0x16C // Updated 5.1
-	RemoveEntityOpcode = 0x097 // Updated 5.1
-	UpdateHPMPTPOpcode = 0x32D // Updated 5.1
+	EffectResultOpcode  = 0x141 // Unchanged 5.0
+	InitZoneOpcode      = 0x19B // Updated 5.1
+	ControlOpcode       = 0x264 // Updated 5.1
+	ControlSelfOpcode   = 0x164 // Updated 5.1
+	ControlTargetOpcode = 0x16C // Updated 5.1
+	RemoveEntityOpcode  = 0x097 // Updated 5.1
+	UpdateHPMPTPOpcode  = 0x32D // Updated 5.1
 
 	UpdateStatusesOpcode       = 0x15B // Updated for 5.0
 	UpdateStatusesEurekaOpcode = 0x15C // Updated for 5.0
@@ -66,9 +66,9 @@ const (
 func init() {
 	registerInBlockFactory(EffectResultOpcode, func() xivnet.BlockData { return new(EffectResult) })
 	registerInBlockFactory(InitZoneOpcode, func() xivnet.BlockData { return new(InitZone) })
-	registerInBlockFactory(Notify142Opcode, func() xivnet.BlockData { return new(Notify142) })
-	registerInBlockFactory(Notify143Opcode, func() xivnet.BlockData { return new(Notify143) })
-	registerInBlockFactory(Notify144Opcode, func() xivnet.BlockData { return new(Notify144) })
+	registerInBlockFactory(ControlOpcode, func() xivnet.BlockData { return new(Control) })
+	registerInBlockFactory(ControlSelfOpcode, func() xivnet.BlockData { return new(ControlSelf) })
+	registerInBlockFactory(ControlTargetOpcode, func() xivnet.BlockData { return new(ControlTarget) })
 	registerInBlockFactory(RemoveEntityOpcode, func() xivnet.BlockData { return new(RemoveEntity) })
 	registerInBlockFactory(UpdateHPMPTPOpcode, func() xivnet.BlockData { return new(UpdateHPMPTP) })
 

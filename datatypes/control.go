@@ -1,7 +1,7 @@
 package datatypes
 
-// Notify142 defines the data array for a notify block
-type Notify142 struct {
+// Control defines the data array for a notify block
+type Control struct {
 	Type uint16
 	Pad1 uint16
 	P1   uint32
@@ -30,10 +30,10 @@ Type:503 => Aggro???
 Type:39 => Remove Entity ???
 */
 
-func (Notify142) IsBlockData() {}
+func (Control) IsBlockData() {}
 
-// Notify143 defines the data array for a notify3 block
-type Notify143 struct {
+// ControlSelf defines the data array for a notify3 block
+type ControlSelf struct {
 	Type uint16
 	Pad1 uint16
 	P1   uint32
@@ -45,10 +45,10 @@ type Notify143 struct {
 	Pad2 uint32
 }
 
-func (Notify143) IsBlockData() {}
+func (ControlSelf) IsBlockData() {}
 
-// Notify144 defines the data array for a notify4 block
-type Notify144 struct {
+// ControlTarget defines the data array for a notify4 block
+type ControlTarget struct {
 	Type     uint16
 	Pad1     uint16
 	P1       uint32
@@ -60,4 +60,4 @@ type Notify144 struct {
 	U1       uint32
 }
 
-func (Notify144) IsBlockData() {}
+func (ControlTarget) IsBlockData() {}
