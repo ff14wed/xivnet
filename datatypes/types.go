@@ -15,35 +15,35 @@ var outTypeRegistry = make(map[uint16]func() xivnet.BlockData)
 const (
 	// Opcodes that change rarely
 	EffectResultOpcode = 0x141 // Unchanged 5.0
-	InitZoneOpcode     = 0x19A // Unchanged 5.0
-	Notify142Opcode    = 0x142 // Unchanged 5.0
-	Notify143Opcode    = 0x143 // Unchanged 5.0
-	Notify144Opcode    = 0x144 // Unchanged 5.0
-	RemoveEntityOpcode = 0x191 // Unchanged 5.0
-	UpdateHPMPTPOpcode = 0x145 // Unchanged 5.0
+	InitZoneOpcode     = 0x19B // Updated 5.1
+	Control            = 0x264 // Updated 5.1
+	ControlSelf        = 0x164 // Updated 5.1
+	ControlTarget      = 0x16C // Updated 5.1
+	RemoveEntityOpcode = 0x097 // Updated 5.1
+	UpdateHPMPTPOpcode = 0x32D // Updated 5.1
 
 	UpdateStatusesOpcode       = 0x15B // Updated for 5.0
 	UpdateStatusesEurekaOpcode = 0x15C // Updated for 5.0
 
-	ActionOpcode      = 0x15E // Updated for 5.0
-	AoEAction8Opcode  = 0x161 // Updated for 5.0
-	AoEAction16Opcode = 0x162 // Updated for 5.0
-	AoEAction24Opcode = 0x163 // Updated for 5.0
-	AoEAction32Opcode = 0x164 // Updated for 5.0
+	ActionOpcode      = 0xA7  // Updated for 5.1
+	AoEAction8Opcode  = 0xA9  // Updated for 5.1
+	AoEAction16Opcode = 0x15F // Updated for 5.1
+	AoEAction24Opcode = 0x292 // Updated for 5.1
+	AoEAction32Opcode = 0x268 // Updated for 5.1
 
-	PlayerSpawnOpcode = 0x17F // Updated for 5.0
-	NPCSpawnOpcode    = 0x180 // Updated for 5.0
-	NPCSpawn2Opcode   = 0x181 // Updated for 5.0
+	PlayerSpawnOpcode = 0x386 // Updated for 5.1
+	NPCSpawnOpcode    = 0x10A // Updated for 5.1
+	NPCSpawn2Opcode   = 0x115 // Updated for 5.1
 
-	MovementOpcode = 0x182 // Updated for 5.0
-	SetPosOpcode   = 0x184 // Updated for 5.0
+	MovementOpcode = 0x1BC // Updated for 5.1
+	SetPosOpcode   = 0x311 // Updated for 5.1
 
-	CastingOpcode = 0x186 // Updated for 5.0
+	CastingOpcode = 0x12C // Updated for 5.1
 
-	HateRankingOpcode = 0x189 // Updated for 5.0
-	HateListOpcode    = 0x18A // Updated for 5.0
+	HateRankingOpcode = 0x354 // Updated for 5.1
+	HateListOpcode    = 0x0C7 // Updated for 5.1
 
-	EquipChangeOpcode = 0x196 // Updated for 5.0
+	EquipChangeOpcode = 0x25E // Updated for 5.1
 
 	EventPlayOpcode         = 0x1B5 // Updated for 5.0
 	EventPlay2Opcode        = 0x1B6 // Updated for 5.0
