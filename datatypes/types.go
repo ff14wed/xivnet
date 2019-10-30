@@ -14,16 +14,16 @@ var outTypeRegistry = make(map[uint16]func() xivnet.BlockData)
 // Opcodes that define the datatypes of incoming (from server) network blocks
 const (
 	// Opcodes that change rarely
-	EffectResultOpcode  = 0x141 // Unchanged 5.0
-	InitZoneOpcode      = 0x19B // Updated 5.1
-	ControlOpcode       = 0x264 // Updated 5.1
-	ControlSelfOpcode   = 0x164 // Updated 5.1
-	ControlTargetOpcode = 0x16C // Updated 5.1
-	RemoveEntityOpcode  = 0x097 // Updated 5.1
-	UpdateHPMPTPOpcode  = 0x32D // Updated 5.1
+	EffectResultOpcode  = 0x153 // Updated for 5.1
+	InitZoneOpcode      = 0x19B // Updated for 5.1
+	ControlOpcode       = 0x164 // Updated for 5.1
+	ControlSelfOpcode   = 0x264 // Updated for 5.1
+	ControlTargetOpcode = 0x16C // Updated for 5.1
+	RemoveEntityOpcode  = 0x097 // Updated for 5.1
+	UpdateHPMPTPOpcode  = 0x32D // Updated for 5.1
 
-	UpdateStatusesOpcode       = 0x15B // Updated for 5.0
-	UpdateStatusesEurekaOpcode = 0x15C // Updated for 5.0
+	UpdateStatusesOpcode       = 0x23A // Updated for 5.1
+	UpdateStatusesEurekaOpcode = 0x398 // Updated for 5.1
 
 	ActionOpcode      = 0xA7  // Updated for 5.1
 	AoEAction8Opcode  = 0xA9  // Updated for 5.1
@@ -45,19 +45,19 @@ const (
 
 	EquipChangeOpcode = 0x25E // Updated for 5.1
 
-	EventPlayOpcode         = 0x1B5 // Updated for 5.0
-	EventPlay2Opcode        = 0x1B6 // Updated for 5.0
-	DirectorPlaySceneOpcode = 0x1B9 // Updated for 5.0
+	// EventPlayOpcode         = 0x1B5 // Updated for 5.0
+	EventPlay2Opcode        = 0x22C // Updated for 5.1
+	DirectorPlaySceneOpcode = 0x1E3 // Updated for 5.1
 
-	MountOpcode = 0x1F3 // Updated for 5.0
+	MountOpcode = 0x120 // Updated for 5.1
 
-	WeatherChangeOpcode = 0x210 // Updated for 5.0
+	WeatherChangeOpcode = 0xB6 // Updated for 5.1
 
-	WaymarkOpcode = 0x272 // Updated for 5.0
+	// WaymarkOpcode = 0x272 // Updated for 5.0
 
-	PrepareZoningOpcode = 0x2A4 // Updated for 5.0
+	PrepareZoningOpcode = 0x257 // Updated for 5.1
 
-	GaugeOpcode = 0x2A5 // Updated for 5.0
+	GaugeOpcode = 0x37F // Updated for 5.1
 	// PerformOpcode = 0x2A5 // Updated for 4.5
 
 	// XWorldPartyListOpcode = 0xA1 // Updated 4.18
@@ -94,7 +94,7 @@ func init() {
 
 	registerInBlockFactory(EquipChangeOpcode, func() xivnet.BlockData { return new(EquipChange) })
 
-	registerInBlockFactory(EventPlayOpcode, func() xivnet.BlockData { return new(EventPlay) })
+	// registerInBlockFactory(EventPlayOpcode, func() xivnet.BlockData { return new(EventPlay) })
 	registerInBlockFactory(EventPlay2Opcode, func() xivnet.BlockData { return new(EventPlay2) })
 	registerInBlockFactory(DirectorPlaySceneOpcode, func() xivnet.BlockData { return new(DirectorPlayScene) })
 
@@ -102,7 +102,7 @@ func init() {
 
 	registerInBlockFactory(WeatherChangeOpcode, func() xivnet.BlockData { return new(WeatherChange) })
 
-	registerInBlockFactory(WaymarkOpcode, func() xivnet.BlockData { return new(Marker) })
+	// registerInBlockFactory(WaymarkOpcode, func() xivnet.BlockData { return new(Marker) })
 	registerInBlockFactory(PrepareZoningOpcode, func() xivnet.BlockData { return new(PrepareZoning) })
 
 	registerInBlockFactory(GaugeOpcode, func() xivnet.BlockData { return new(Gauge) })
@@ -113,13 +113,13 @@ func init() {
 
 // Opcodes that define the datatypes of outgoing (to server) network blocks
 const (
-	EgressClientTriggerOpcode = 0x13A // Updated for 5.0
+	EgressClientTriggerOpcode = 0xB1 // Updated for 5.1
 
-	EgressMovementOpcode         = 0x141 // Updated for 5.0
-	EgressInstanceMovementOpcode = 0x180 // Updated for 5.0
+	EgressMovementOpcode         = 0x1EC // Updated for 5.1
+	EgressInstanceMovementOpcode = 0x311 // Updated for 5.1
 
-	EgressPerformOpcode    = 0x18B // Updated for 5.0
-	EgressCraftEventOpcode = 0x15F // Updated for 5.0
+	// EgressPerformOpcode    = 0x18B // Updated for 5.0
+	EgressCraftEventOpcode = 0x2D9 // Updated for 5.1
 )
 
 func init() {
@@ -128,7 +128,7 @@ func init() {
 	registerOutBlockFactory(EgressMovementOpcode, func() xivnet.BlockData { return new(EgressMovement) })
 	registerOutBlockFactory(EgressInstanceMovementOpcode, func() xivnet.BlockData { return new(EgressInstanceMovement) })
 
-	registerOutBlockFactory(EgressPerformOpcode, func() xivnet.BlockData { return new(Perform) })
+	// registerOutBlockFactory(EgressPerformOpcode, func() xivnet.BlockData { return new(Perform) })
 
 	registerOutBlockFactory(EgressCraftEventOpcode, func() xivnet.BlockData { return new(EgressCraftEvent) })
 }
