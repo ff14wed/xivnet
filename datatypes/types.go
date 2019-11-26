@@ -23,6 +23,7 @@ const (
 
 	UpdateStatusesOpcode       = 0x399 // Updated for 5.11
 	UpdateStatusesEurekaOpcode = 0x1C2 // Updated for 5.11
+	UpdateStatusesBossOpcode   = 0x236 // Updated for 5.11
 
 	ActionOpcode      = 0x165 // Updated for 5.11
 	AoEAction8Opcode  = 0xE9  // Updated for 5.11
@@ -44,7 +45,7 @@ const (
 
 	EquipChangeOpcode = 0x170 // Updated for 5.11
 
-	// EventPlayOpcode         = 0x1B5 // Updated for 5.0
+	EventPlayOpcode         = 0x3B6 // Updated for 5.11
 	EventPlay2Opcode        = 0xA8  // Updated for 5.11
 	DirectorPlaySceneOpcode = 0x150 // Updated for 5.11
 
@@ -73,6 +74,7 @@ func init() {
 
 	registerInBlockFactory(UpdateStatusesOpcode, func() xivnet.BlockData { return new(UpdateStatuses) })
 	registerInBlockFactory(UpdateStatusesEurekaOpcode, func() xivnet.BlockData { return new(UpdateStatusesEureka) })
+	registerInBlockFactory(UpdateStatusesBossOpcode, func() xivnet.BlockData { return new(UpdateStatusesBoss) })
 
 	registerInBlockFactory(ActionOpcode, func() xivnet.BlockData { return new(Action) })
 	registerInBlockFactory(AoEAction8Opcode, func() xivnet.BlockData { return new(AoEAction8) })
@@ -93,7 +95,7 @@ func init() {
 
 	registerInBlockFactory(EquipChangeOpcode, func() xivnet.BlockData { return new(EquipChange) })
 
-	// registerInBlockFactory(EventPlayOpcode, func() xivnet.BlockData { return new(EventPlay) })
+	registerInBlockFactory(EventPlayOpcode, func() xivnet.BlockData { return new(EventPlay) })
 	registerInBlockFactory(EventPlay2Opcode, func() xivnet.BlockData { return new(EventPlay2) })
 	registerInBlockFactory(DirectorPlaySceneOpcode, func() xivnet.BlockData { return new(DirectorPlayScene) })
 
