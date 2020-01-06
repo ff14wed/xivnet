@@ -10,7 +10,7 @@ import (
 	. "github.com/onsi/gomega"
 )
 
-var _ = Describe("DirectorPlayScene", func() {
+var _ = Describe("EventPlay32", func() {
 	var b *xivnet.Block
 
 	BeforeEach(func() {
@@ -19,56 +19,56 @@ var _ = Describe("DirectorPlayScene", func() {
 			SubjectID: 12345,
 			CurrentID: 67890,
 			IPCHeader: xivnet.IPCHeader{
-				Opcode: datatypes.DirectorPlaySceneOpcode,
+				Opcode: datatypes.EventPlay32Opcode,
 			},
-			Data: xivnet.GenericBlockDataFromBytes(playSceneBlockBytes),
+			Data: xivnet.GenericBlockDataFromBytes(eventPlay32BlockBytes),
 		}
 	})
 
 	It("parses successfully", func() {
 		newB, err := datatypes.ParseBlock(b, false)
 		Expect(err).ToNot(HaveOccurred())
-		Expect(newB.Data).To(Equal(expectedPlaySceneBlockData))
+		Expect(newB.Data).To(Equal(expectedEventPlay32BlockData))
 	})
 
 	It("marshals to JSON", func() {
-		jsonBytes, err := json.Marshal(expectedPlaySceneBlockData)
+		jsonBytes, err := json.Marshal(expectedEventPlay32BlockData)
 		Expect(err).ToNot(HaveOccurred())
-		Expect(jsonBytes).To(MatchJSON(expectedPlaySceneBlockDataJSON))
+		Expect(jsonBytes).To(MatchJSON(expectedEventPlay32BlockDataJSON))
 	})
 
 	It("unmarshals from JSON", func() {
-		d := &datatypes.DirectorPlayScene{}
-		err := json.Unmarshal([]byte(expectedPlaySceneBlockDataJSON), d)
+		d := &datatypes.EventPlay32{}
+		err := json.Unmarshal([]byte(expectedEventPlay32BlockDataJSON), d)
 		Expect(err).ToNot(HaveOccurred())
-		Expect(d).To(Equal(expectedPlaySceneBlockData))
+		Expect(d).To(Equal(expectedEventPlay32BlockData))
 	})
 
 	Context("with event type 0xA0001", func() {
-		var expectedCraftStateBlockData datatypes.DirectorPlayScene
+		var expectedCraftStateBlockData datatypes.EventPlay32
 
 		BeforeEach(func() {
-			playSceneWithCraftingEvent := make([]byte, len(playSceneBlockBytes))
-			copy(playSceneWithCraftingEvent, playSceneBlockBytes[:10])
-			playSceneWithCraftingEvent[10] = 0x0A
-			copy(playSceneWithCraftingEvent[11:], playSceneBlockBytes[11:])
+			eventPlay32WithCraftingEvent := make([]byte, len(eventPlay32BlockBytes))
+			copy(eventPlay32WithCraftingEvent, eventPlay32BlockBytes[:10])
+			eventPlay32WithCraftingEvent[10] = 0x0A
+			copy(eventPlay32WithCraftingEvent[11:], eventPlay32BlockBytes[11:])
 
 			b = &xivnet.Block{
 				Length:    12345,
 				SubjectID: 12345,
 				CurrentID: 67890,
 				IPCHeader: xivnet.IPCHeader{
-					Opcode: datatypes.DirectorPlaySceneOpcode,
+					Opcode: datatypes.EventPlay32Opcode,
 				},
-				Data: xivnet.GenericBlockDataFromBytes(playSceneWithCraftingEvent),
+				Data: xivnet.GenericBlockDataFromBytes(eventPlay32WithCraftingEvent),
 			}
 
-			expectedCraftStateBlockData = *expectedPlaySceneBlockData
+			expectedCraftStateBlockData = *expectedEventPlay32BlockData
 			expectedCraftStateBlockData.EventID = 0xA0001
 			expectedCraftStateBlockData.Data = expectedCraftState
 		})
 
-		It("parses successfully into a DirectorPlayScene with CraftingState", func() {
+		It("parses successfully into a EventPlay32 with CraftingState", func() {
 			newB, err := datatypes.ParseBlock(b, false)
 			Expect(err).ToNot(HaveOccurred())
 			Expect(newB.Data).To(Equal(&expectedCraftStateBlockData))
@@ -81,7 +81,7 @@ var _ = Describe("DirectorPlayScene", func() {
 		})
 
 		It("unmarshals from JSON with a CraftState", func() {
-			d := &datatypes.DirectorPlayScene{}
+			d := &datatypes.EventPlay32{}
 			err := json.Unmarshal([]byte(expectedCraftStateBlockDataJSON), d)
 			Expect(err).ToNot(HaveOccurred())
 			Expect(d).To(Equal(&expectedCraftStateBlockData))

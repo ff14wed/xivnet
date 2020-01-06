@@ -11,56 +11,61 @@ import (
 var inTypeRegistry = make(map[uint16]func() xivnet.BlockData)
 var outTypeRegistry = make(map[uint16]func() xivnet.BlockData)
 
+const UndefinedOpcode = 0xFFFF
+
 // Opcodes that define the datatypes of incoming (from server) network blocks
 const (
-	EffectResultOpcode  = 0x10B // Updated for 5.15
-	InitZoneOpcode      = 0x1BA // Updated for 5.15
-	ControlOpcode       = 0x12F // Updated for 5.15
-	ControlSelfOpcode   = 0x201 // Updated for 5.15
-	ControlTargetOpcode = 0x1BE // Updated for 5.15
-	RemoveEntityOpcode  = 0x32B // Updated for 5.15
-	UpdateHPMPTPOpcode  = 0x75  // Updated for 5.15
+	EffectResultOpcode  = 0x267 // Updated for 5.18
+	InitZoneOpcode      = 0x7C  // Updated for 5.18
+	ControlOpcode       = 0x3BE // Updated for 5.18
+	ControlSelfOpcode   = 0xE3  // Updated for 5.18
+	ControlTargetOpcode = 0x24D // Updated for 5.18
+	RemoveEntityOpcode  = 0x9B  // Updated for 5.18
+	UpdateHPMPTPOpcode  = 0x125 // Updated for 5.18
 
-	UpdateStatusesOpcode = 0x263 // Updated for 5.15
-	// UpdateStatusesEurekaOpcode = 0x1C2 // Updated for 5.11
-	UpdateStatusesBossOpcode = 0x312 // Updated for 5.15
+	UpdateStatusesOpcode       = 0x183 // Updated for 5.18
+	UpdateStatusesEurekaOpcode = 0x167 // Updated for 5.18
+	UpdateStatusesBossOpcode   = 0x2B5 // Updated for 5.18
 
-	ActionOpcode      = 0x2AA // Updated for 5.15
-	AoEAction8Opcode  = 0xB3  // Updated for 5.15
-	AoEAction16Opcode = 0xE6  // Updated for 5.15
-	AoEAction24Opcode = 0x10A // Updated for 5.15
-	AoEAction32Opcode = 0x1C8 // Updated for 5.15
+	ActionOpcode      = 0x26B // Updated for 5.18
+	AoEAction8Opcode  = 0x33E // Updated for 5.18
+	AoEAction16Opcode = 0x305 // Updated for 5.18
+	AoEAction24Opcode = 0x23F // Updated for 5.18
+	AoEAction32Opcode = 0x352 // Updated for 5.18
 
-	PlayerSpawnOpcode = 0xDC  // Updated for 5.15
-	NPCSpawnOpcode    = 0x219 // Updated for 5.15
-	// NPCSpawn2Opcode   = 0x137 // Updated for 5.11
+	PlayerSpawnOpcode = 0x262 // Updated for 5.18
+	NPCSpawnOpcode    = 0x186 // Updated for 5.18
+	NPCSpawn2Opcode   = 0x10C // Updated for 5.18
 
-	MovementOpcode = 0x1AD // Updated for 5.15
-	SetPosOpcode   = 0x296 // Updated for 5.15
+	MovementOpcode = 0x21B // Updated for 5.18
+	SetPosOpcode   = 0x68  // Updated for 5.18
 
-	CastingOpcode = 0x1EC // Updated for 5.15
+	CastingOpcode = 0x3B1 // Updated for 5.18
 
-	HateRankingOpcode = 0x379 // Updated for 5.15
-	HateListOpcode    = 0x351 // Updated for 5.15
+	HateRankingOpcode = 0x226 // Updated for 5.18
+	HateListOpcode    = 0x361 // Updated for 5.18
 
-	EquipChangeOpcode = 0x29B // Updated for 5.15
+	EquipChangeOpcode = 0x2E6 // Updated for 5.18
 
-	// EventPlayOpcode         = 0x3B6 // Updated for 5.11
-	// EventPlay2Opcode        = 0xA8  // Updated for 5.11
-	// DirectorPlaySceneOpcode = 0x150 // Updated for 5.11
+	EventPlayOpcode   = 0x279 // Updated for 5.18
+	EventPlay4Opcode  = 0x2F7 // Updated for 5.18
+	EventPlay32Opcode = 0x364 // Updated for 5.18
 
-	MountOpcode = 0x3C0 // Updated for 5.15
+	MountOpcode = 0x2F0 // Updated for 5.18
 
-	// WeatherChangeOpcode = 0x2FB // Updated for 5.11
+	WeatherChangeOpcode = 0x285 // Updated for 5.18
 
 	// WaymarkOpcode = 0x272 // Updated for 5.0
+	WaymarkOpcode = UndefinedOpcode
 
-	PrepareZoningOpcode = 0x2B6 // Updated for 5.15
+	PrepareZoningOpcode = 0x35C // Updated for 5.18
 
-	GaugeOpcode = 0x337 // Updated for 5.15
+	GaugeOpcode = 0x16D // Updated for 5.18
 	// PerformOpcode = 0x2A5 // Updated for 4.5
+	PerformOpcode = UndefinedOpcode
 
 	// XWorldPartyListOpcode = 0xA1 // Updated 4.18
+	XWorldPartyListOpcode = UndefinedOpcode
 )
 
 func init() {
@@ -73,7 +78,7 @@ func init() {
 	registerInBlockFactory(UpdateHPMPTPOpcode, func() xivnet.BlockData { return new(UpdateHPMPTP) })
 
 	registerInBlockFactory(UpdateStatusesOpcode, func() xivnet.BlockData { return new(UpdateStatuses) })
-	// registerInBlockFactory(UpdateStatusesEurekaOpcode, func() xivnet.BlockData { return new(UpdateStatusesEureka) })
+	registerInBlockFactory(UpdateStatusesEurekaOpcode, func() xivnet.BlockData { return new(UpdateStatusesEureka) })
 	registerInBlockFactory(UpdateStatusesBossOpcode, func() xivnet.BlockData { return new(UpdateStatusesBoss) })
 
 	registerInBlockFactory(ActionOpcode, func() xivnet.BlockData { return new(Action) })
@@ -84,7 +89,7 @@ func init() {
 
 	registerInBlockFactory(PlayerSpawnOpcode, func() xivnet.BlockData { return new(PlayerSpawn) })
 	registerInBlockFactory(NPCSpawnOpcode, func() xivnet.BlockData { return new(NPCSpawn) })
-	// registerInBlockFactory(NPCSpawn2Opcode, func() xivnet.BlockData { return new(NPCSpawn2) })
+	registerInBlockFactory(NPCSpawn2Opcode, func() xivnet.BlockData { return new(NPCSpawn2) })
 
 	registerInBlockFactory(MovementOpcode, func() xivnet.BlockData { return new(Movement) })
 	registerInBlockFactory(SetPosOpcode, func() xivnet.BlockData { return new(SetPos) })
@@ -95,32 +100,34 @@ func init() {
 
 	registerInBlockFactory(EquipChangeOpcode, func() xivnet.BlockData { return new(EquipChange) })
 
-	// registerInBlockFactory(EventPlayOpcode, func() xivnet.BlockData { return new(EventPlay) })
-	// registerInBlockFactory(EventPlay2Opcode, func() xivnet.BlockData { return new(EventPlay2) })
-	// registerInBlockFactory(DirectorPlaySceneOpcode, func() xivnet.BlockData { return new(DirectorPlayScene) })
+	registerInBlockFactory(EventPlayOpcode, func() xivnet.BlockData { return new(EventPlay) })
+	registerInBlockFactory(EventPlay4Opcode, func() xivnet.BlockData { return new(EventPlay4) })
+	registerInBlockFactory(EventPlay32Opcode, func() xivnet.BlockData { return new(EventPlay32) })
 
 	registerInBlockFactory(MountOpcode, func() xivnet.BlockData { return new(Mount) })
 
-	// registerInBlockFactory(WeatherChangeOpcode, func() xivnet.BlockData { return new(WeatherChange) })
+	registerInBlockFactory(WeatherChangeOpcode, func() xivnet.BlockData { return new(WeatherChange) })
 
-	// registerInBlockFactory(WaymarkOpcode, func() xivnet.BlockData { return new(Marker) })
+	registerInBlockFactory(WaymarkOpcode, func() xivnet.BlockData { return new(Marker) })
 	registerInBlockFactory(PrepareZoningOpcode, func() xivnet.BlockData { return new(PrepareZoning) })
 
 	registerInBlockFactory(GaugeOpcode, func() xivnet.BlockData { return new(Gauge) })
-	// registerInBlockFactory(PerformOpcode, func() xivnet.BlockData { return new(Perform) })
+	registerInBlockFactory(PerformOpcode, func() xivnet.BlockData { return new(Perform) })
 
-	// registerInBlockFactory(XWorldPartyListOpcode, new(XWorldPartyList))
+	registerInBlockFactory(XWorldPartyListOpcode, func() xivnet.BlockData { return new(XWorldPartyList) })
 }
 
 // Opcodes that define the datatypes of outgoing (to server) network blocks
 const (
-	EgressClientTriggerOpcode = 0x371 // Updated for 5.15
+	EgressClientTriggerOpcode = 0x3C0 // Updated for 5.18
 
-	EgressMovementOpcode         = 0x355 // Updated for 5.15
-	EgressInstanceMovementOpcode = 0x32B // Updated for 5.15
+	EgressMovementOpcode         = 0x318 // Updated for 5.18
+	EgressInstanceMovementOpcode = 0x9B  // Updated for 5.18
 
 	// EgressPerformOpcode    = 0x18B // Updated for 5.0
-	// EgressCraftEventOpcode = 0x299 // Updated for 5.11
+	EgressPerformOpcode = 0xFFFF
+
+	EgressCraftEventOpcode = 0x23F // Updated for 5.18
 )
 
 func init() {
@@ -129,9 +136,9 @@ func init() {
 	registerOutBlockFactory(EgressMovementOpcode, func() xivnet.BlockData { return new(EgressMovement) })
 	registerOutBlockFactory(EgressInstanceMovementOpcode, func() xivnet.BlockData { return new(EgressInstanceMovement) })
 
-	// registerOutBlockFactory(EgressPerformOpcode, func() xivnet.BlockData { return new(Perform) })
+	registerOutBlockFactory(EgressPerformOpcode, func() xivnet.BlockData { return new(Perform) })
 
-	// registerOutBlockFactory(EgressCraftEventOpcode, func() xivnet.BlockData { return new(EgressCraftEvent) })
+	registerOutBlockFactory(EgressCraftEventOpcode, func() xivnet.BlockData { return new(EgressCraftEvent) })
 }
 
 // NewBlockData is a factory for BlockData that uses the opcode to

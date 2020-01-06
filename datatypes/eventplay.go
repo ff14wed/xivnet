@@ -1,33 +1,31 @@
 package datatypes
 
+type EventPlayHeader struct {
+	ActorID    uint64
+	EventID    uint32 // 0xA0001 for crafting
+	Scene      uint16
+	Pad1       uint16
+	Flags      uint32
+	P1         uint32
+	ParamCount byte
+	Pad2       [3]byte
+	P2         uint32
+}
+
 // EventPlay defines the data array for a event play block
 // Note: This requires an EventStart block.
-// The event play header might change as we figure out more information about
-// it.
 type EventPlay struct {
-	ActorID uint64
-	EventID uint32 // 0xA0001 for crafting
-	Scene   uint16
-	Pad1    uint16
-	Flags   uint32
-	P1      uint32
-	P2      byte
-	Pad2    [3]byte
-	P3      uint32
-	P4      uint32
-	P5      uint32
+	EventPlayHeader
+	Params [2]uint32
 }
 
 func (EventPlay) IsBlockData() {}
 
-// EventPlay2 defines the data array for a event play block
+// EventPlay4 defines the data array for a event play block with 4 params
 // Note: This requires an EventStart block.
-// The event play header might change as we figure out more information about
-// it.
-type EventPlay2 struct {
-	EventPlay
-	U2 uint32
-	U3 uint32
+type EventPlay4 struct {
+	EventPlayHeader
+	Params [4]uint32
 }
 
-func (EventPlay2) IsBlockData() {}
+func (EventPlay4) IsBlockData() {}
