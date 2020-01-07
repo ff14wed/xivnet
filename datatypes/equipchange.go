@@ -6,7 +6,7 @@ type EquipChange struct {
 	WeaponSub  WeaponGear
 	U1a        byte
 	ClassJob   byte
-	U1c        byte
+	Level      byte
 	U1d        byte
 	Head       Gear
 	Body       Gear
