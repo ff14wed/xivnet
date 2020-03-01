@@ -19,8 +19,6 @@ type EffectResult struct {
 	CurrentHP uint32
 	MaxHP     uint32
 	CurrentMP uint16
-	CurrentTP uint16
-	MaxMP     uint16
 
 	Pad2     byte
 	ClassJob byte
@@ -30,7 +28,6 @@ type EffectResult struct {
 
 	U4      uint16
 	Entries [4]EffectResultEntry
-	U8      uint32
 }
 
 func (EffectResult) IsBlockData() {}

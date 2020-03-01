@@ -70,7 +70,6 @@ type PlayerSpawn struct {
 	DisplayFlags     uint32
 	FateID           uint16
 	CurrentMP        uint16
-	CurrentTP        uint16
 	MaxMP            uint16
 
 	U21a       uint16
@@ -93,7 +92,7 @@ type PlayerSpawn struct {
 
 	MountInfo     MountInfo
 	StatusLoopVFX byte
-	U28c          uint32
+	U28c          uint16
 	U29           uint32
 
 	Statuses [30]StatusEffect
@@ -118,7 +117,7 @@ type PlayerSpawn struct {
 	Model ModelInfo
 
 	FCTag FCTag
-	U30   uint64
+	U30   uint32
 }
 
 func (PlayerSpawn) IsBlockData() {}
