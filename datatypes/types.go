@@ -27,7 +27,7 @@ const (
 	UpdateStatusesEurekaOpcode = 0x32F // Updated for 5.21
 	UpdateStatusesBossOpcode   = 0x359 // Updated for 5.21
 
-	ActionOpcode      = 0x271 // Updated for 5.21
+	ActionOpcode      = 0x371 // Updated for 5.21
 	AoEAction8Opcode  = 0x2DA // Updated for 5.21
 	AoEAction16Opcode = 0x12E // Updated for 5.21
 	AoEAction24Opcode = 0x89  // Updated for 5.21
