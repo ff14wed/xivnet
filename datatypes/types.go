@@ -49,7 +49,7 @@ const (
 
 	EventPlayOpcode   = 0x7F  // Updated for 5.21a
 	EventPlay4Opcode  = 0x3BD // Updated for 5.21a
-	EventPlay32Opcode = 0xD9  // Updated for 5.21a
+	EventPlay32Opcode = 0x3AF // Updated for 5.21a
 
 	MountOpcode = 0x2F1 // Updated for 5.21a
 
