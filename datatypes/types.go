@@ -23,6 +23,8 @@ const (
 	RemoveEntityOpcode  = 0x194 // Updated for 5.25
 	UpdateHPMPTPOpcode  = 0xF8  // Updated for 5.25
 
+	ChatZoneOpcode = 0x161 // Updated for 5.25
+
 	UpdateStatusesOpcode       = 0x1D7 // Updated for 5.25
 	UpdateStatusesEurekaOpcode = 0x25A // Updated for 5.25
 	UpdateStatusesBossOpcode   = 0x1F5 // Updated for 5.25
@@ -77,6 +79,8 @@ func init() {
 	registerInBlockFactory(RemoveEntityOpcode, func() xivnet.BlockData { return new(RemoveEntity) })
 	registerInBlockFactory(UpdateHPMPTPOpcode, func() xivnet.BlockData { return new(UpdateHPMPTP) })
 
+	registerInBlockFactory(ChatZoneOpcode, func() xivnet.BlockData { return new(ChatZone) })
+
 	registerInBlockFactory(UpdateStatusesOpcode, func() xivnet.BlockData { return new(UpdateStatuses) })
 	registerInBlockFactory(UpdateStatusesEurekaOpcode, func() xivnet.BlockData { return new(UpdateStatusesEureka) })
 	registerInBlockFactory(UpdateStatusesBossOpcode, func() xivnet.BlockData { return new(UpdateStatusesBoss) })
@@ -121,6 +125,8 @@ func init() {
 const (
 	EgressClientTriggerOpcode = 0x17D // Updated for 5.25
 
+	EgressChatZoneOpcode = 0x189 // Updated for 5.25
+
 	EgressMovementOpcode         = 0x14D // Updated for 5.25
 	EgressInstanceMovementOpcode = 0x290 // Updated for 5.25
 
@@ -133,12 +139,53 @@ const (
 func init() {
 	registerOutBlockFactory(EgressClientTriggerOpcode, func() xivnet.BlockData { return new(EgressClientTrigger) })
 
+	registerOutBlockFactory(EgressChatZoneOpcode, func() xivnet.BlockData { return new(EgressChatZone) })
+
 	registerOutBlockFactory(EgressMovementOpcode, func() xivnet.BlockData { return new(EgressMovement) })
 	registerOutBlockFactory(EgressInstanceMovementOpcode, func() xivnet.BlockData { return new(EgressInstanceMovement) })
 
 	registerOutBlockFactory(EgressPerformOpcode, func() xivnet.BlockData { return new(Perform) })
 
 	registerOutBlockFactory(EgressCraftEventOpcode, func() xivnet.BlockData { return new(EgressCraftEvent) })
+}
+
+var inChatTypeRegistry = make(map[uint16]func() xivnet.BlockData)
+var outChatTypeRegistry = make(map[uint16]func() xivnet.BlockData)
+
+// Opcodes that define the datatypes of incoming network blocks for chat
+const (
+	ChatFromOpcode          = 0x64
+	ChatOpcode              = 0x65
+	FreeCompanyResultOpcode = 0x12C
+	ChatXWorldOpcode        = 0x72
+)
+
+func init() {
+	registerInChatBlockFactory(ChatFromOpcode, func() xivnet.BlockData { return new(ChatFrom) })
+	registerInChatBlockFactory(ChatOpcode, func() xivnet.BlockData { return new(Chat) })
+	registerInChatBlockFactory(FreeCompanyResultOpcode, func() xivnet.BlockData { return new(FreeCompanyResult) })
+	registerInChatBlockFactory(ChatXWorldOpcode, func() xivnet.BlockData { return new(ChatXWorld) })
+}
+
+// Opcodes that define the datatypes of outgoing network blocks for chat
+const (
+	ChatToOpcode           = 0x64
+	EgressChatOpcode       = 0x65
+	EgressChatXWorldOpcode = 0x6d
+)
+
+func init() {
+	registerOutChatBlockFactory(ChatToOpcode, func() xivnet.BlockData { return new(ChatTo) })
+	registerOutChatBlockFactory(EgressChatOpcode, func() xivnet.BlockData { return new(EgressChat) })
+	registerOutChatBlockFactory(EgressChatXWorldOpcode, func() xivnet.BlockData { return new(EgressChatXWorld) })
+}
+
+func newBlockData(opcode uint16, registry map[uint16]func() xivnet.BlockData) xivnet.BlockData {
+	factory, ok := registry[opcode]
+	if !ok {
+		return nil
+	}
+	return factory()
 }
 
 // NewBlockData is a factory for BlockData that uses the opcode to
@@ -148,11 +195,17 @@ func NewBlockData(opcode uint16, isOut bool) xivnet.BlockData {
 	if isOut {
 		r = outTypeRegistry
 	}
-	factory, ok := r[opcode]
-	if !ok {
-		return nil
+	return newBlockData(opcode, r)
+}
+
+// NewChatBlockData is a factory for BlockData that uses the opcode to
+// determine which Chat BlockData to create
+func NewChatBlockData(opcode uint16, isOut bool) xivnet.BlockData {
+	r := inChatTypeRegistry
+	if isOut {
+		r = outChatTypeRegistry
 	}
-	return factory()
+	return newBlockData(opcode, r)
 }
 
 type BlockUnmarshaler interface {
@@ -178,6 +231,14 @@ func registerOutBlockFactory(opcode uint16, factory func() xivnet.BlockData) {
 	outTypeRegistry[opcode] = factory
 }
 
+func registerInChatBlockFactory(opcode uint16, factory func() xivnet.BlockData) {
+	inChatTypeRegistry[opcode] = factory
+}
+
+func registerOutChatBlockFactory(opcode uint16, factory func() xivnet.BlockData) {
+	outChatTypeRegistry[opcode] = factory
+}
+
 // ParseBlock takes in raw, unparsed blocks and returns a parsed block if
 // possible.
 // isOut toggles whether we should parse this block as an outgoing block (sent
@@ -188,7 +249,18 @@ func ParseBlock(block *xivnet.Block, isOut bool) (*xivnet.Block, error) {
 		return block, nil
 	}
 	blockBytes, _ := data.MarshalBytes()
-	bd := NewBlockData(block.Opcode, isOut)
+
+	var bd xivnet.BlockData
+
+	// This is kind of a hack to check if a packet is a chat type since it's
+	// impossible to otherwise obtain this information without capturing the open
+	// of the game connections.
+	if block.ServerID == 0 && block.SubjectID != 0 {
+		bd = NewChatBlockData(block.Opcode, isOut)
+	} else {
+		bd = NewBlockData(block.Opcode, isOut)
+	}
+
 	if bd == nil {
 		return block, nil
 	}
