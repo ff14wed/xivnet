@@ -19,7 +19,8 @@ var _ = Describe("EventPlay32", func() {
 			SubjectID: 12345,
 			CurrentID: 67890,
 			IPCHeader: xivnet.IPCHeader{
-				Opcode: datatypes.EventPlay32Opcode,
+				ServerID: 123,
+				Opcode:   datatypes.EventPlay32Opcode,
 			},
 			Data: xivnet.GenericBlockDataFromBytes(eventPlay32BlockBytes),
 		}
@@ -58,7 +59,8 @@ var _ = Describe("EventPlay32", func() {
 				SubjectID: 12345,
 				CurrentID: 67890,
 				IPCHeader: xivnet.IPCHeader{
-					Opcode: datatypes.EventPlay32Opcode,
+					ServerID: 123,
+					Opcode:   datatypes.EventPlay32Opcode,
 				},
 				Data: xivnet.GenericBlockDataFromBytes(eventPlay32WithCraftingEvent),
 			}

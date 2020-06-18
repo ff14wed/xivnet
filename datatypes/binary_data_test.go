@@ -141,3 +141,26 @@ var expectedCraftStateBlockDataJSON = `
 		"U6": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17]
 	}
 }`
+
+var chatBlockBytes = func() []byte {
+	first := []byte{
+		0x89, 0x67, 0x45, 0x23, 0x01, 0x00, 0x00, 0x00, // ChannelID
+		0x9A, 0x78, 0x56, 0x34, 0x02, 0x00, 0x00, 0x00, // SpeakerCharacterID
+		0x9A, 0x78, 0x56, 0x34, // SpeakerEntityID
+		0x12, 0x00, // WorldID
+		0x34, // Flags
+	}
+	entName := datatypes.StringToEntityName("Test Char")
+	chatMsg := datatypes.StringToChatMessage("hello")
+	return append(append(append(first, entName[:]...), chatMsg[:]...), 0)
+}()
+
+var expectedChatData = &datatypes.Chat{
+	ChannelID:          0x123456789,
+	SpeakerCharacterID: 0x23456789A,
+	SpeakerEntityID:    0x3456789A,
+	WorldID:            0x12,
+	Flags:              0x34,
+	SpeakerName:        datatypes.StringToEntityName("Test Char"),
+	Message:            datatypes.StringToChatMessage("hello"),
+}

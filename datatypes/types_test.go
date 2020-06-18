@@ -51,7 +51,8 @@ var _ = Describe("Types", func() {
 				SubjectID: 12345,
 				CurrentID: 67890,
 				IPCHeader: xivnet.IPCHeader{
-					Opcode: datatypes.MovementOpcode,
+					ServerID: 123,
+					Opcode:   datatypes.MovementOpcode,
 				},
 				Data: xivnet.GenericBlockDataFromBytes(movementBlockBytes),
 			}
@@ -64,7 +65,8 @@ var _ = Describe("Types", func() {
 				SubjectID: 12345,
 				CurrentID: 67890,
 				IPCHeader: xivnet.IPCHeader{
-					Opcode: datatypes.MovementOpcode,
+					ServerID: 123,
+					Opcode:   datatypes.MovementOpcode,
 				},
 				Data: expectedMovementBlockData,
 			}))
@@ -76,7 +78,8 @@ var _ = Describe("Types", func() {
 				SubjectID: 12345,
 				CurrentID: 67890,
 				IPCHeader: xivnet.IPCHeader{
-					Opcode: datatypes.EgressMovementOpcode,
+					ServerID: 123,
+					Opcode:   datatypes.EgressMovementOpcode,
 				},
 				Data: xivnet.GenericBlockDataFromBytes(egressMovementBlockBytes),
 			}
@@ -89,9 +92,51 @@ var _ = Describe("Types", func() {
 				SubjectID: 12345,
 				CurrentID: 67890,
 				IPCHeader: xivnet.IPCHeader{
-					Opcode: datatypes.EgressMovementOpcode,
+					ServerID: 123,
+					Opcode:   datatypes.EgressMovementOpcode,
 				},
 				Data: expectedEgressMovementBlockData,
+			}))
+		})
+
+		It("correctly parses ServerID == 0 blocks as Chat blocks", func() {
+			By("ensuring that what would otherwise be parsed as a movement block is not parsed")
+			b := &xivnet.Block{
+				Length:    12345,
+				SubjectID: 12345,
+				CurrentID: 67890,
+				IPCHeader: xivnet.IPCHeader{
+					Opcode: datatypes.MovementOpcode,
+				},
+				Data: xivnet.GenericBlockDataFromBytes(movementBlockBytes),
+			}
+
+			newB, err := datatypes.ParseBlock(b, true)
+			Expect(err).ToNot(HaveOccurred())
+			Expect(newB).To(Equal(b))
+
+			By("ensuring chat blocks are parsed correctly")
+			b2 := &xivnet.Block{
+				Length:    12345,
+				SubjectID: 12345,
+				CurrentID: 67890,
+				IPCHeader: xivnet.IPCHeader{
+					Opcode: datatypes.ChatOpcode,
+				},
+				Data: xivnet.GenericBlockDataFromBytes(chatBlockBytes),
+			}
+
+			newB2, err := datatypes.ParseBlock(b2, false)
+			Expect(err).ToNot(HaveOccurred())
+			Expect(newB2).ToNot(Equal(b))
+			Expect(newB2).To(Equal(&xivnet.Block{
+				Length:    12345,
+				SubjectID: 12345,
+				CurrentID: 67890,
+				IPCHeader: xivnet.IPCHeader{
+					Opcode: datatypes.ChatOpcode,
+				},
+				Data: expectedChatData,
 			}))
 		})
 
@@ -101,7 +146,8 @@ var _ = Describe("Types", func() {
 				SubjectID: 12345,
 				CurrentID: 67890,
 				IPCHeader: xivnet.IPCHeader{
-					Opcode: 0x9999,
+					ServerID: 123,
+					Opcode:   0x9999,
 				},
 				Data: xivnet.GenericBlockDataFromBytes([]byte("abcdefg")),
 			}
@@ -117,7 +163,8 @@ var _ = Describe("Types", func() {
 				SubjectID: 12345,
 				CurrentID: 67890,
 				IPCHeader: xivnet.IPCHeader{
-					Opcode: datatypes.MovementOpcode,
+					ServerID: 123,
+					Opcode:   datatypes.MovementOpcode,
 				},
 				Data: expectedMovementBlockData,
 			}
@@ -133,7 +180,8 @@ var _ = Describe("Types", func() {
 				SubjectID: 12345,
 				CurrentID: 67890,
 				IPCHeader: xivnet.IPCHeader{
-					Opcode: datatypes.MovementOpcode,
+					ServerID: 123,
+					Opcode:   datatypes.MovementOpcode,
 				},
 				Data: xivnet.GenericBlockDataFromBytes([]byte("abcdefg")),
 			}
