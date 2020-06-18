@@ -156,6 +156,7 @@ var outChatTypeRegistry = make(map[uint16]func() xivnet.BlockData)
 const (
 	ChatFromOpcode          = 0x64
 	ChatOpcode              = 0x65
+	ChatFromXWorldOpcode    = 0x6F
 	FreeCompanyResultOpcode = 0x12C
 	ChatXWorldOpcode        = 0x72
 )
@@ -163,6 +164,7 @@ const (
 func init() {
 	registerInChatBlockFactory(ChatFromOpcode, func() xivnet.BlockData { return new(ChatFrom) })
 	registerInChatBlockFactory(ChatOpcode, func() xivnet.BlockData { return new(Chat) })
+	registerInChatBlockFactory(ChatFromXWorldOpcode, func() xivnet.BlockData { return new(ChatFromXWorld) })
 	registerInChatBlockFactory(FreeCompanyResultOpcode, func() xivnet.BlockData { return new(FreeCompanyResult) })
 	registerInChatBlockFactory(ChatXWorldOpcode, func() xivnet.BlockData { return new(ChatXWorld) })
 }
