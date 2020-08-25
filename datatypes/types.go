@@ -15,54 +15,54 @@ const UndefinedOpcode = 0xFFFF
 
 // Opcodes that define the datatypes of incoming (from server) network blocks
 const (
-	EffectResultOpcode  = 0x346 // Updated for 5.3
-	InitZoneOpcode      = 0x388 // Updated for 5.3
-	ControlOpcode       = 0x344 // Updated for 5.3
-	ControlSelfOpcode   = 0x212 // Updated for 5.3
-	ControlTargetOpcode = 0x135 // Updated for 5.3
-	RemoveEntityOpcode  = 0x22F // Updated for 5.3
-	UpdateHPMPTPOpcode  = 0x286 // Updated for 5.3
+	EffectResultOpcode  = 0x2c9 // Updated for 5.3a
+	InitZoneOpcode      = 0x22f // Updated for 5.3a
+	ControlOpcode       = 0x124 // Updated for 5.3a
+	ControlSelfOpcode   = 0x2b3 // Updated for 5.3a
+	ControlTargetOpcode = 0x368 // Updated for 5.3a
+	RemoveEntityOpcode  = 0x2c0 // Updated for 5.3a
+	UpdateHPMPTPOpcode  = 0x3d3 // Updated for 5.3a
 
-	ChatZoneOpcode = 0xE4 // Updated for 5.3
+	ChatZoneOpcode = 0xF7 // Updated for 5.3a
 
-	UpdateStatusesOpcode       = 0x172 // Updated for 5.3
-	UpdateStatusesEurekaOpcode = 0xFF  // Updated for 5.3
-	UpdateStatusesBossOpcode   = 0x2D7 // Updated for 5.3
+	UpdateStatusesOpcode       = 0x2f4 // Updated for 5.3a
+	UpdateStatusesEurekaOpcode = 0x6a  // Updated for 5.3a
+	UpdateStatusesBossOpcode   = 0x33a // Updated for 5.3a
 
-	ActionOpcode      = 0xF4  // Updated for 5.3
-	AoEAction8Opcode  = 0xC9  // Updated for 5.3
-	AoEAction16Opcode = 0x3BF // Updated for 5.3
-	AoEAction24Opcode = 0x27E // Updated for 5.3
-	AoEAction32Opcode = 0x17E // Updated for 5.3
+	ActionOpcode      = 0x37d // Updated for 5.3a
+	AoEAction8Opcode  = 0x2cd // Updated for 5.3a
+	AoEAction16Opcode = 0x131 // Updated for 5.3a
+	AoEAction24Opcode = 0x3ab // Updated for 5.3a
+	AoEAction32Opcode = 0x3de // Updated for 5.3a
 
-	PlayerSpawnOpcode = 0x38E // Updated for 5.3
-	NPCSpawnOpcode    = 0x83  // Updated for 5.3
-	NPCSpawn2Opcode   = 0x1CB // Updated for 5.3
+	PlayerSpawnOpcode = 0x75  // Updated for 5.3a
+	NPCSpawnOpcode    = 0x259 // Updated for 5.3a
+	NPCSpawn2Opcode   = 0x9a  // Updated for 5.3a
 
-	MovementOpcode = 0x352 // Updated for 5.3
-	SetPosOpcode   = 0x2A5 // Updated for 5.3
+	MovementOpcode = 0x19a // Updated for 5.3a
+	SetPosOpcode   = 0x2a9 // Updated for 5.3a
 
-	CastingOpcode = 0xE7 // Updated for 5.3
+	CastingOpcode = 0x21e // Updated for 5.3a
 
-	HateRankingOpcode = 0x178 // Updated for 5.3
-	HateListOpcode    = 0x16B // Updated for 5.3
+	HateRankingOpcode = 0x1fe // Updated for 5.3a
+	HateListOpcode    = 0x2f9 // Updated for 5.3a
 
-	EquipChangeOpcode = 0xD8 // Updated for 5.3
+	EquipChangeOpcode = 0x250 // Updated for 5.3a
 
-	EventPlayOpcode   = 0x379 // Updated for 5.3
-	EventPlay4Opcode  = 0x30B // Updated for 5.3
-	EventPlay32Opcode = 0x396 // Updated for 5.3
+	EventPlayOpcode   = 0x381 // Updated for 5.3a
+	EventPlay4Opcode  = 0x37b // Updated for 5.3a
+	EventPlay32Opcode = 0x28a // Updated for 5.3a
 
-	MountOpcode = 0x2E5 // Updated for 5.3
+	MountOpcode = 0x1ff // Updated for 5.3a
 
-	WeatherChangeOpcode = 0x3D6 // Updated for 5.3
+	WeatherChangeOpcode = 0x336 // Updated for 5.3a
 
 	// WaymarkOpcode = 0x272 // Updated for 5.0
 	WaymarkOpcode = UndefinedOpcode
 
-	PrepareZoningOpcode = 0xF9 // Updated for 5.3
+	PrepareZoningOpcode = 0x12d // Updated for 5.3a
 
-	GaugeOpcode = 0x20F // Updated for 5.3
+	GaugeOpcode = 0x2b9 // Updated for 5.3a
 	// PerformOpcode = 0x2A5 // Updated for 4.5
 	PerformOpcode = UndefinedOpcode
 
@@ -123,12 +123,12 @@ func init() {
 
 // Opcodes that define the datatypes of outgoing (to server) network blocks
 const (
-	EgressClientTriggerOpcode = 0x2BE // Updated for 5.3
+	EgressClientTriggerOpcode = 0x352 // Updated for 5.3a
 
-	EgressChatZoneOpcode = 0x1E2 // Updated for 5.3
+	EgressChatZoneOpcode = 0x27A // Updated for 5.3a
 
-	EgressMovementOpcode         = 0x37B // Updated for 5.3
-	EgressInstanceMovementOpcode = 0x245 // Updated for 5.3
+	EgressMovementOpcode         = 0x1E3 // Updated for 5.3a
+	EgressInstanceMovementOpcode = 0x14F // Updated for 5.3a
 
 	// EgressPerformOpcode    = 0x18B // Updated for 5.0
 	EgressPerformOpcode = UndefinedOpcode
