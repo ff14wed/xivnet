@@ -119,7 +119,7 @@ func init() {
 
 // Opcodes that define the datatypes of outgoing (to server) network blocks
 const (
-	EgressClientTriggerOpcode = 0x1D // Updated for 5.35
+	EgressClientTriggerOpcode = 0x1DF // Updated for 5.35
 
 	EgressChatZoneOpcode = 0x21C // Updated for 5.35
 
