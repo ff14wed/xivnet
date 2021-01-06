@@ -21,7 +21,7 @@ const (
 	UpdateStatusesBossOpcode   = 0x1C1 // Updated for 5.4a
 
 	ActionOpcode      = 0x38F // Updated for 5.4a
-	AoEAction8Opcode  = 0x10D // Updated for 5.4a
+	AoEAction8Opcode  = 0x21E // Updated for 5.4a
 	AoEAction16Opcode = 0x248 // Updated for 5.4a
 	AoEAction24Opcode = 0x82  // Updated for 5.4a
 	AoEAction32Opcode = 0x1E3 // Updated for 5.4a
