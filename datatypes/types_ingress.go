@@ -52,7 +52,7 @@ const (
 
 	MountOpcode = 0x148 // Updated for 5.41
 
-	WeatherChangeOpcode = 0x22E // Updated for 5.41
+	WeatherChangeOpcode = 0x27E // Updated for 5.41
 
 	PrepareZoningOpcode = 0x16A // Updated for 5.41
 
