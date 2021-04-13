@@ -31,9 +31,8 @@ type ModelInfo struct {
 	FacePaintColor      byte
 }
 
-// MountInfo enumerates the fields for mount information
-type MountInfo struct {
-	ID    byte
+// ChocoboInfo enumerates the fields for chocobo information
+type ChocoboInfo struct {
 	Head  byte
 	Body  byte
 	Feet  byte
@@ -75,7 +74,7 @@ type PlayerSpawn struct {
 	U21a       uint16
 	ModelChara uint16
 	Direction  uint16 // Quantized direction 0x0000 ~ 0xFFFF, NWSE <=> 0,0x4000,0x8000,0xC000
-	U22        uint16
+	MountID    uint16
 	Minion     uint16
 	Index      byte
 	State      byte // 0-1 for alive, 2 for dead, 3 for persistent emote
@@ -89,9 +88,9 @@ type PlayerSpawn struct {
 	Level     byte
 	ClassJob  byte
 	U26d      byte
-	U27a      byte
+	U27a      uint16
 
-	MountInfo     MountInfo
+	ChocoboInfo   ChocoboInfo
 	StatusLoopVFX byte
 	U28c          uint16
 	U29           uint32
