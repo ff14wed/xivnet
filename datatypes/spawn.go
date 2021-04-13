@@ -75,6 +75,7 @@ type PlayerSpawn struct {
 	U21a       uint16
 	ModelChara uint16
 	Direction  uint16 // Quantized direction 0x0000 ~ 0xFFFF, NWSE <=> 0,0x4000,0x8000,0xC000
+	U22        uint16
 	Minion     uint16
 	Index      byte
 	State      byte // 0-1 for alive, 2 for dead, 3 for persistent emote
@@ -88,12 +89,14 @@ type PlayerSpawn struct {
 	Level     byte
 	ClassJob  byte
 	U26d      byte
-	U27a      uint16
+	U27a      byte
 
 	MountInfo     MountInfo
 	StatusLoopVFX byte
 	U28c          uint16
 	U29           uint32
+	U29b          uint16
+	U29c          byte
 
 	Statuses [30]StatusEffect
 
@@ -117,7 +120,7 @@ type PlayerSpawn struct {
 	Model ModelInfo
 
 	FCTag FCTag
-	U30   uint32
+	U30   uint64
 }
 
 func (PlayerSpawn) IsBlockData() {}
