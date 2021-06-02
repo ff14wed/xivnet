@@ -2,4 +2,4 @@ package xivnet
 
 // FFXIV_PATCH_VERSION defines the exact patch version of FFXIV that this
 // library supports.
-const FFXIV_PATCH_VERSION = "5.55"
+const FFXIV_PATCH_VERSION = "5.55a"
