@@ -6,57 +6,57 @@ var inTypeRegistry = make(map[uint16]func() xivnet.BlockData)
 
 // Opcodes that define the datatypes of incoming (from server) network blocks
 const (
-	EffectResultOpcode  = 0x1E9 // Updated for 5.55a
-	InitZoneOpcode      = 0x21C // Updated for 5.55a
-	ControlOpcode       = 0x1C8 // Updated for 5.55a
-	ControlSelfOpcode   = 0x35A // Updated for 5.55a
-	ControlTargetOpcode = 0x338 // Updated for 5.55a
-	RemoveEntityOpcode  = 0x1C5 // Updated for 5.55a
-	UpdateHPMPTPOpcode  = 0x77  // Updated for 5.55a
+	EffectResultOpcode  = 0x3CF // Updated for 5.57
+	InitZoneOpcode      = 0x1E5 // Updated for 5.57
+	ControlOpcode       = 0x164 // Updated for 5.57
+	ControlSelfOpcode   = 0x356 // Updated for 5.57
+	ControlTargetOpcode = 0x281 // Updated for 5.57
+	RemoveEntityOpcode  = 0x235 // Updated for 5.57
+	UpdateHPMPTPOpcode  = 0x3BE // Updated for 5.57
 
-	ChatZoneOpcode = 0x384 // Updated for 5.55a
+	ChatZoneOpcode = 0x372 // Updated for 5.57
 
-	UpdateStatusesOpcode       = 0x18A // Updated for 5.55a
-	UpdateStatusesEurekaOpcode = 0x36A // Updated for 5.55a
-	UpdateStatusesBossOpcode   = 0x374 // Updated for 5.55a
+	UpdateStatusesOpcode       = 0x192 // Updated for 5.57
+	UpdateStatusesEurekaOpcode = 0x227 // Updated for 5.57
+	UpdateStatusesBossOpcode   = 0x2F6 // Updated for 5.57
 
-	ActionOpcode      = 0x283 // Updated for 5.55a
-	AoEAction8Opcode  = 0x25B // Updated for 5.55a
-	AoEAction16Opcode = 0x15D // Updated for 5.55a
-	AoEAction24Opcode = 0x91  // Updated for 5.55a
-	AoEAction32Opcode = 0x169 // Updated for 5.55a
+	ActionOpcode      = 0x8F  // Updated for 5.57
+	AoEAction8Opcode  = 0x247 // Updated for 5.57
+	AoEAction16Opcode = 0x2C1 // Updated for 5.57
+	AoEAction24Opcode = 0x295 // Updated for 5.57
+	AoEAction32Opcode = 0x34C // Updated for 5.57
 
-	ObjectSpawnOpcode = 0xFE  // Updated for 5.55a
-	PlayerSpawnOpcode = 0x2C1 // Updated for 5.55a
-	NPCSpawnOpcode    = 0xF1  // Updated for 5.55a
-	NPCSpawn2Opcode   = 0x10A // Updated for 5.55a
+	ObjectSpawnOpcode = 0x254 // Updated for 5.57
+	PlayerSpawnOpcode = 0x18D // Updated for 5.57
+	NPCSpawnOpcode    = 0x1CE // Updated for 5.57
+	NPCSpawn2Opcode   = 0x179 // Updated for 5.57
 
-	MovementOpcode = 0x9D  // Updated for 5.55a
-	SetPosOpcode   = 0x266 // Updated for 5.55a
+	MovementOpcode = 0x233 // Updated for 5.57
+	SetPosOpcode   = 0x1A3 // Updated for 5.57
 
-	CastingOpcode = 0xA9 // Updated for 5.55a
+	CastingOpcode = 0x2CC // Updated for 5.57
 
-	HateRankingOpcode = 0x6E  // Updated for 5.55a
-	HateListOpcode    = 0x1F1 // Updated for 5.55a
+	HateRankingOpcode = 0x1E1 // Updated for 5.57
+	HateListOpcode    = 0x184 // Updated for 5.57
 
-	EquipChangeOpcode = 0x264 // Updated for 5.55a
+	EquipChangeOpcode = 0x1DF // Updated for 5.57
 
-	EventPlayOpcode    = 0x369 // Updated for 5.55a
-	EventPlay4Opcode   = 0x247 // Updated for 5.55a
-	EventPlay8Opcode   = 0x227 // Updated for 5.55a
-	EventPlay16Opcode  = 0xC5  // Updated for 5.55a
-	EventPlay32Opcode  = 0x184 // Updated for 5.55a
-	EventPlay64Opcode  = 0x11A // Updated for 5.55a
-	EventPlay128Opcode = 0x1B3 // Updated for 5.55a
-	EventPlay255Opcode = 0x240 // Updated for 5.55a
+	EventPlayOpcode    = 0x36A // Updated for 5.57
+	EventPlay4Opcode   = 0x397 // Updated for 5.57
+	EventPlay8Opcode   = 0xA6  // Updated for 5.57
+	EventPlay16Opcode  = 0x23D // Updated for 5.57
+	EventPlay32Opcode  = 0x204 // Updated for 5.57
+	EventPlay64Opcode  = 0xEF  // Updated for 5.57
+	EventPlay128Opcode = 0x29C // Updated for 5.57
+	EventPlay255Opcode = 0x21B // Updated for 5.57
 
-	MountOpcode = 0x16B // Updated for 5.55a
+	MountOpcode = 0x9C // Updated for 5.57
 
-	WeatherChangeOpcode = 0x386 // Updated for 5.55a
+	WeatherChangeOpcode = 0x157 // Updated for 5.57
 
-	PrepareZoningOpcode = 0xA4 // Updated for 5.55a
+	PrepareZoningOpcode = 0x250 // Updated for 5.57
 
-	GaugeOpcode = 0x3B1 // Updated for 5.55a
+	GaugeOpcode = 0x377 // Updated for 5.57
 
 	WaymarkOpcode         = UndefinedOpcode
 	PerformOpcode         = UndefinedOpcode
