@@ -13,8 +13,9 @@ type EffectResultEntry struct {
 
 // EffectResult defines the data array for an effect result.
 type EffectResult struct {
-	U1      uint32
-	ActorID uint32
+	U1             uint32
+	GlobalSequence uint32
+	ActorID        uint32
 
 	CurrentHP uint32
 	MaxHP     uint32
@@ -28,6 +29,7 @@ type EffectResult struct {
 
 	U4      uint16
 	Entries [4]EffectResultEntry
+	U5      uint32
 }
 
 func (EffectResult) IsBlockData() {}
