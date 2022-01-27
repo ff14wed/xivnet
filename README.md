@@ -1,5 +1,5 @@
 # xivnet
-[![Build Status](https://travis-ci.com/ff14wed/xivnet.svg?branch=master)](https://travis-ci.com/ff14wed/xivnet)
+[![Test](https://github.com/ff14wed/xivnet/actions/workflows/test.yml/badge.svg)](https://github.com/ff14wed/xivnet/actions/workflows/test.yml)
 
 FFXIV Network Handling Library
 
