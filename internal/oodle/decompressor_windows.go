@@ -23,6 +23,7 @@ var oodleDLLOnce struct {
 type DecompressorState struct {
 	state      []byte
 	sharedDict []byte
+	initDict   []byte
 }
 
 func Init(libPath string) (*DecompressorState, error) {
@@ -74,14 +75,18 @@ func Init(libPath string) (*DecompressorState, error) {
 	decompressorState := DecompressorState{
 		state:      make([]byte, stateSize),
 		sharedDict: make([]byte, sharedDictSize),
+		initDict:   make([]byte, 0x8000),
 	}
-	initDict := make([]byte, 0x8000)
 
-	_, err = procCallWrapper(
+	return &decompressorState, nil
+}
+
+func (d *DecompressorState) Decompress(input []byte, outputSize int64) ([]byte, error) {
+	_, err := procCallWrapper(
 		oodleDLLOnce.procOodleNetwork1_Shared_SetWindow,
-		uintptr(unsafe.Pointer(&decompressorState.sharedDict[0])),
+		uintptr(unsafe.Pointer(&d.sharedDict[0])),
 		0x13,
-		uintptr(unsafe.Pointer(&initDict[0])),
+		uintptr(unsafe.Pointer(&d.initDict[0])),
 		0x8000,
 	)
 	if err != nil {
@@ -90,8 +95,8 @@ func Init(libPath string) (*DecompressorState, error) {
 
 	_, err = procCallWrapper(
 		oodleDLLOnce.procOodleNetwork1UDP_Train,
-		uintptr(unsafe.Pointer(&decompressorState.state[0])),
-		uintptr(unsafe.Pointer(&decompressorState.sharedDict[0])),
+		uintptr(unsafe.Pointer(&d.state[0])),
+		uintptr(unsafe.Pointer(&d.sharedDict[0])),
 		0,
 		0,
 		0,
@@ -100,10 +105,6 @@ func Init(libPath string) (*DecompressorState, error) {
 		return nil, err
 	}
 
-	return &decompressorState, nil
-}
-
-func (d *DecompressorState) Decompress(input []byte, outputSize int64) ([]byte, error) {
 	output := make([]byte, outputSize)
 
 	res, _, err := syscall.SyscallN(
@@ -115,7 +116,7 @@ func (d *DecompressorState) Decompress(input []byte, outputSize int64) ([]byte, 
 		uintptr(unsafe.Pointer(&output[0])),
 		uintptr(outputSize),
 	)
-	if err != 0 {
+	if err.(syscall.Errno) != 0 {
 		return nil, err
 	}
 	if res == 0 {
