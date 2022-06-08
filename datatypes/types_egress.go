@@ -8,7 +8,7 @@ var outTypeRegistry = make(map[uint16]func() xivnet.BlockData)
 const (
 	EgressClientTriggerOpcode = 0x2E7 // Updated for 6.15
 
-	EgressChatZoneOpcode = 0x1E9 // Updated for 6.11a
+	EgressChatZoneOpcode = 0x10A // Updated for 6.15
 
 	EgressMovementOpcode         = 0x157 // Updated for 6.15
 	EgressInstanceMovementOpcode = 0x108 // Updated for 6.15
