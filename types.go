@@ -92,16 +92,16 @@ func (b *GenericBlockData) Length() uint32 {
 // More details in Sapphire's `Network/CommonNetwork.h`.
 // The Frame header is encoded as 40 bytes on the wire.
 type Frame struct {
-	Preamble       Preamble  // [0:16] - Used to identify the start of a frame
-	Time           time.Time // [16:24] - Number of milliseconds since the Unix epoch
-	Length         uint32    // [24:28] - Total frame size, including the header
-	ConnectionType uint16    // [28:30] - Connection type (0 lobby, 1 zone, 2 chat)
-	Count          uint16    // [30:32] - Number of blocks in this frame
-	Reserved1      byte      // [32]    - Usually 1
-	Compression    byte      // [33]    - 1 if compressed, 0 if not
-	Reserved2      uint32    // [34:38]
-	Reserved3      uint16    // [38:40]
-	Blocks         []*Block
+	Preamble           Preamble  // [0:16] - Used to identify the start of a frame
+	Time               time.Time // [16:24] - Number of milliseconds since the Unix epoch
+	Length             uint32    // [24:28] - Total frame size, including the header
+	ConnectionType     uint16    // [28:30] - Connection type (0 lobby, 1 zone, 2 chat)
+	Count              uint16    // [30:32] - Number of blocks in this frame
+	Reserved1          byte      // [32]    - Usually 1
+	Compression        byte      // [33]    - 1 if compressed, 0 if not
+	Reserved2          uint16    // [34:36]
+	DecompressedLength uint32    // [36:40]
+	Blocks             []*Block
 }
 
 // These constants indicate the type of block.

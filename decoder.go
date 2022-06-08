@@ -6,9 +6,12 @@ import (
 	"compress/zlib"
 	"encoding/binary"
 	"encoding/hex"
+	"errors"
 	"fmt"
 	"io"
 	"time"
+
+	"github.com/ff14wed/xivnet/v3/internal/oodle"
 )
 
 // Decoder implements an FFXIV frame decoder. It is not thread-safe, so consumers
@@ -16,6 +19,8 @@ import (
 type Decoder struct {
 	frameReader *bufio.Reader
 	blockReader *bufio.Reader
+
+	decompressorState *oodle.DecompressorState
 }
 
 // NewDecoder creates a new instance of a frame decoder.
@@ -27,6 +32,18 @@ func NewDecoder(r io.Reader, bufSize int) *Decoder {
 		frameReader: bufio.NewReaderSize(r, bufSize),
 		blockReader: bufio.NewReaderSize(r, 4096),
 	}
+}
+
+func NewDecoderWithOodle(r io.Reader, bufSize int, oodleLibPath string) (*Decoder, error) {
+	ds, err := oodle.Init(oodleLibPath)
+	if err != nil {
+		return nil, err
+	}
+	return &Decoder{
+		frameReader:       bufio.NewReaderSize(r, bufSize),
+		blockReader:       bufio.NewReaderSize(r, 4096),
+		decompressorState: ds,
+	}, nil
 }
 
 // CheckHeader checks to see whether or not the data in the buffer has a
@@ -75,7 +92,7 @@ func (d *Decoder) NextFrame() (*Frame, error) {
 			wrapped:         err,
 		}
 	}
-	f, err := decodeFrame(frameBytes, d.blockReader, length)
+	f, err := d.decodeFrame(frameBytes, d.blockReader, length)
 	if err != nil {
 		// If there is some sort of decoding error, let's
 		// start discarding data until it's valid
@@ -92,7 +109,7 @@ func (d *Decoder) NextFrame() (*Frame, error) {
 	return f, nil
 }
 
-func decodeFrame(frameBytes []byte, blockReader *bufio.Reader, length uint32) (*Frame, error) {
+func (d *Decoder) decodeFrame(frameBytes []byte, blockReader *bufio.Reader, length uint32) (*Frame, error) {
 	// Build the frame
 	frame := &Frame{}
 	copy(frame.Preamble[:], frameBytes[0:16])
@@ -103,16 +120,25 @@ func decodeFrame(frameBytes []byte, blockReader *bufio.Reader, length uint32) (*
 	frame.Count = binary.LittleEndian.Uint16(frameBytes[30:32])
 	frame.Reserved1 = frameBytes[32]
 	frame.Compression = frameBytes[33]
-	frame.Reserved2 = binary.LittleEndian.Uint32(frameBytes[34:38])
-	frame.Reserved3 = binary.LittleEndian.Uint16(frameBytes[38:40])
+	frame.Reserved2 = binary.LittleEndian.Uint16(frameBytes[34:36])
+	frame.DecompressedLength = binary.LittleEndian.Uint32(frameBytes[36:40])
 
 	blockData := frameBytes[40:length]
-	if frame.Compression > 0 {
+	if frame.Compression == 1 {
 		r, err := zlib.NewReader(bytes.NewReader(blockData))
 		if err != nil {
 			return nil, fmt.Errorf("error decompressing data: %s", err.Error())
 		}
 		blockReader.Reset(r)
+	} else if frame.Compression == 2 {
+		if d.decompressorState == nil {
+			return nil, errors.New("could not decode oodle frame because the oodle decompressor is not initialized")
+		}
+		rawBytes, err := d.decompressorState.Decompress(blockData, int64(frame.DecompressedLength))
+		if err != nil {
+			return nil, fmt.Errorf("error decompressing oodle data: %s", err.Error())
+		}
+		blockReader.Reset(bytes.NewReader(rawBytes))
 	} else {
 		blockReader.Reset(bytes.NewReader(blockData))
 	}

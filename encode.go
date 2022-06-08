@@ -133,8 +133,8 @@ func (f Frame) Encode(w io.Writer, timestamp time.Time, compress bool) error {
 	binary.LittleEndian.PutUint16(buf[30:32], f.Count)
 	buf[32] = f.Reserved1
 	buf[33] = f.Compression
-	binary.LittleEndian.PutUint32(buf[34:38], f.Reserved2)
-	binary.LittleEndian.PutUint16(buf[38:40], f.Reserved3)
+	binary.LittleEndian.PutUint16(buf[34:36], f.Reserved2)
+	binary.LittleEndian.PutUint32(buf[36:40], f.DecompressedLength)
 
 	_, err := w.Write(buf)
 	if err != nil {

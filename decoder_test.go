@@ -12,16 +12,16 @@ import (
 
 func matchExpectedFrame(expectedFrame xivnet.Frame) types.GomegaMatcher {
 	return gstruct.PointTo(gstruct.MatchFields(gstruct.IgnoreExtras, gstruct.Fields{
-		"Preamble":       Equal(expectedFrame.Preamble),
-		"Time":           Equal(expectedFrame.Time),
-		"Length":         Equal(expectedFrame.Length),
-		"ConnectionType": Equal(expectedFrame.ConnectionType),
-		"Count":          Equal(expectedFrame.Count),
-		"Reserved1":      Equal(expectedFrame.Reserved1),
-		"Compression":    Equal(expectedFrame.Compression),
-		"Reserved2":      Equal(expectedFrame.Reserved2),
-		"Reserved3":      Equal(expectedFrame.Reserved3),
-		"Blocks":         Equal(expectedFrame.Blocks),
+		"Preamble":           Equal(expectedFrame.Preamble),
+		"Time":               Equal(expectedFrame.Time),
+		"Length":             Equal(expectedFrame.Length),
+		"ConnectionType":     Equal(expectedFrame.ConnectionType),
+		"Count":              Equal(expectedFrame.Count),
+		"Reserved1":          Equal(expectedFrame.Reserved1),
+		"Compression":        Equal(expectedFrame.Compression),
+		"Reserved2":          Equal(expectedFrame.Reserved2),
+		"DecompressedLength": Equal(expectedFrame.DecompressedLength),
+		"Blocks":             Equal(expectedFrame.Blocks),
 	}))
 }
 
