@@ -72,17 +72,13 @@ func Init(libPath string) (*DecompressorState, error) {
 		return nil, err
 	}
 
-	decompressorState := DecompressorState{
+	d := DecompressorState{
 		state:      make([]byte, stateSize),
 		sharedDict: make([]byte, sharedDictSize),
 		initDict:   make([]byte, 0x8000),
 	}
 
-	return &decompressorState, nil
-}
-
-func (d *DecompressorState) Decompress(input []byte, outputSize int64) ([]byte, error) {
-	_, err := procCallWrapper(
+	_, err = procCallWrapper(
 		oodleDLLOnce.procOodleNetwork1_Shared_SetWindow,
 		uintptr(unsafe.Pointer(&d.sharedDict[0])),
 		0x13,
@@ -101,10 +97,14 @@ func (d *DecompressorState) Decompress(input []byte, outputSize int64) ([]byte, 
 		0,
 		0,
 	)
+
 	if err != nil {
 		return nil, err
 	}
+	return &d, nil
+}
 
+func (d *DecompressorState) Decompress(input []byte, outputSize int64) ([]byte, error) {
 	output := make([]byte, outputSize)
 
 	res, _, err := syscall.SyscallN(
@@ -116,7 +116,7 @@ func (d *DecompressorState) Decompress(input []byte, outputSize int64) ([]byte, 
 		uintptr(unsafe.Pointer(&output[0])),
 		uintptr(outputSize),
 	)
-	if err.(syscall.Errno) != 0 {
+	if err != 0 {
 		return nil, err
 	}
 	if res == 0 {
