@@ -6,13 +6,14 @@ import (
 	"compress/zlib"
 	"encoding/binary"
 	"encoding/hex"
-	"errors"
 	"fmt"
 	"io"
 	"time"
-
-	"github.com/ff14wed/xivnet/v3/internal/oodle"
 )
+
+type OodleImpl interface {
+	Decompress(input []byte, outputLength int64) ([]byte, error)
+}
 
 // Decoder implements an FFXIV frame decoder. It is not thread-safe, so consumers
 // need to be sure not to use it concurrently.
@@ -20,7 +21,7 @@ type Decoder struct {
 	frameReader *bufio.Reader
 	blockReader *bufio.Reader
 
-	decompressorState *oodle.DecompressorState
+	oodleImpl OodleImpl
 }
 
 // NewDecoder creates a new instance of a frame decoder.
@@ -34,16 +35,12 @@ func NewDecoder(r io.Reader, bufSize int) *Decoder {
 	}
 }
 
-func NewDecoderWithOodle(r io.Reader, bufSize int, oodleLibPath string) (*Decoder, error) {
-	ds, err := oodle.Init(oodleLibPath)
-	if err != nil {
-		return nil, err
-	}
+func NewDecoderWithOodle(r io.Reader, bufSize int, oodleImpl OodleImpl) *Decoder {
 	return &Decoder{
-		frameReader:       bufio.NewReaderSize(r, bufSize),
-		blockReader:       bufio.NewReaderSize(r, 4096),
-		decompressorState: ds,
-	}, nil
+		frameReader: bufio.NewReaderSize(r, bufSize),
+		blockReader: bufio.NewReaderSize(r, 4096),
+		oodleImpl:   oodleImpl,
+	}
 }
 
 // CheckHeader checks to see whether or not the data in the buffer has a
@@ -131,10 +128,7 @@ func (d *Decoder) decodeFrame(frameBytes []byte, blockReader *bufio.Reader, leng
 		}
 		blockReader.Reset(r)
 	} else if frame.Compression == 2 {
-		if d.decompressorState == nil {
-			return nil, errors.New("could not decode oodle frame because the oodle decompressor is not initialized")
-		}
-		rawBytes, err := d.decompressorState.Decompress(blockData, int64(frame.DecompressedLength))
+		rawBytes, err := d.oodleImpl.Decompress(blockData, int64(frame.DecompressedLength))
 		if err != nil {
 			return nil, fmt.Errorf("error decompressing oodle data: %s", err.Error())
 		}
