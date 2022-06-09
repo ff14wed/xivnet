@@ -128,6 +128,9 @@ func (d *Decoder) decodeFrame(frameBytes []byte, blockReader *bufio.Reader, leng
 		}
 		blockReader.Reset(r)
 	} else if frame.Compression == 2 {
+		if d.oodleImpl == nil {
+			return nil, fmt.Errorf("error decompressing oodle data: oodle implementation is missing")
+		}
 		rawBytes, err := d.oodleImpl.Decompress(blockData, int64(frame.DecompressedLength))
 		if err != nil {
 			return nil, fmt.Errorf("error decompressing oodle data: %s", err.Error())
