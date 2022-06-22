@@ -101,7 +101,8 @@ type CraftState struct {
 	DurabilityDelta   int32
 	CurrentCondition  uint32
 	PreviousCondition uint32
-	U6                [17]uint32
+	Flags             uint32
+	U6                [16]uint32
 }
 
 func (CraftState) isEventPlay32Data() {}

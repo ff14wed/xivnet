@@ -112,7 +112,8 @@ var expectedCraftState = datatypes.CraftState{
 	DurabilityDelta:   -7,
 	CurrentCondition:  8,
 	PreviousCondition: 9,
-	U6:                [17]uint32{1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17},
+	Flags:             1,
+	U6:                [16]uint32{2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17},
 }
 
 var expectedCraftStateBlockDataJSON = `
@@ -138,7 +139,8 @@ var expectedCraftStateBlockDataJSON = `
 		"DurabilityDelta":   -7,
 		"CurrentCondition":  8,
 		"PreviousCondition": 9,
-		"U6": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17]
+		"Flags": 1,
+		"U6": [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17]
 	}
 }`
 
