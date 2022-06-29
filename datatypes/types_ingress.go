@@ -39,6 +39,8 @@ const (
 	HateRankingOpcode = 0xD7 // Updated for 6.15
 	HateListOpcode    = 0xDC // Updated for 6.15
 
+	PlayerStatsOpcode = 0x366 // Updated for 6.15
+
 	EquipChangeOpcode = 0x193 // Updated for 6.15
 
 	EventPlayOpcode    = 0x72  // Updated for 6.15
@@ -93,6 +95,8 @@ func init() {
 
 	registerInBlockFactory(HateRankingOpcode, func() xivnet.BlockData { return new(HateRanking) })
 	registerInBlockFactory(HateListOpcode, func() xivnet.BlockData { return new(HateList) })
+
+	registerInBlockFactory(PlayerStatsOpcode, func() xivnet.BlockData { return new(PlayerStats) })
 
 	registerInBlockFactory(EquipChangeOpcode, func() xivnet.BlockData { return new(EquipChange) })
 
