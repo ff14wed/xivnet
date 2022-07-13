@@ -6,12 +6,12 @@ var outTypeRegistry = make(map[uint16]func() xivnet.BlockData)
 
 // Opcodes that define the datatypes of outgoing (to server) network blocks
 const (
-	EgressClientTriggerOpcode = 0x2AB // Updated for 6.18
+	EgressClientTriggerOpcode = 0x36A // Updated for 6.18 hotfix
 
-	EgressChatZoneOpcode = 0xA1 // Updated for 6.18
+	EgressChatZoneOpcode = 0x11E // Updated for 6.18 hotfix
 
-	EgressMovementOpcode         = 0x375 // Updated for 6.18
-	EgressInstanceMovementOpcode = 0x355 // Updated for 6.18
+	EgressMovementOpcode         = 0x2D9 // Updated for 6.18 hotfix
+	EgressInstanceMovementOpcode = 0x131 // Updated for 6.18 hotfix
 
 	EgressPerformOpcode    = UndefinedOpcode
 	EgressCraftEventOpcode = UndefinedOpcode
