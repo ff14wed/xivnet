@@ -84,15 +84,16 @@ type PlayerSpawn struct {
 	Subtype    byte // 4 for players, 2 pet, 3 companion, 5 mob, 7 minion
 	Voice      byte
 
+	U27a      uint16
 	EnemyType byte // 0 for friendly, anything else is an enemy
 	Level     byte
 	ClassJob  byte
 	U26d      byte
-	U27a      uint16
+
+	U28c uint16
 
 	ChocoboInfo   ChocoboInfo
 	StatusLoopVFX byte
-	U28c          uint16
 	U29           uint32
 	U29b          uint16
 	U29c          byte
