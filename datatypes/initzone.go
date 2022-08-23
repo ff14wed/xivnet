@@ -15,7 +15,7 @@ type InitZone struct {
 
 	X, Y, Z float32
 
-	U7 [4]uint32
+	U7 [6]uint32
 }
 
 func (InitZone) IsBlockData() {}

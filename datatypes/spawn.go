@@ -76,13 +76,13 @@ type PlayerSpawn struct {
 	Direction  uint16 // Quantized direction 0x0000 ~ 0xFFFF, NWSE <=> 0,0x4000,0x8000,0xC000
 	MountID    uint16
 	Minion     uint16
+	U25c       uint16
 	Index      byte
 	State      byte // 0-1 for alive, 2 for dead, 3 for persistent emote
 	Emote      byte // Applies for when State is 3
 	Type       byte // 1 for player, 2 for NPC, else furniture
 	Subtype    byte // 4 for players, 2 pet, 3 companion, 5 mob, 7 minion
 	Voice      byte
-	U25c       uint16
 
 	EnemyType byte // 0 for friendly, anything else is an enemy
 	Level     byte
