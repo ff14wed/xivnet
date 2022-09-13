@@ -6,59 +6,59 @@ var inTypeRegistry = make(map[uint16]func() xivnet.BlockData)
 
 // Opcodes that define the datatypes of incoming (from server) network blocks
 const (
-	EffectResultOpcode  = 0x263 // Updated for 6.2 Hotfix
-	InitZoneOpcode      = 0xE1  // Updated for 6.2 Hotfix
-	ControlOpcode       = 0x2A7 // Updated for 6.2 Hotfix
-	ControlSelfOpcode   = 0x23C // Updated for 6.2 Hotfix
-	ControlTargetOpcode = 0x118 // Updated for 6.2 Hotfix
-	RemoveEntityOpcode  = 0xAA  // Updated for 6.2 Hotfix
-	UpdateHPMPTPOpcode  = 0x102 // Updated for 6.2 Hotfix
+	EffectResultOpcode  = 0x12f // Updated for 6.21
+	InitZoneOpcode      = 0x36A // Updated for 6.21
+	ControlOpcode       = 0x335 // Updated for 6.21
+	ControlSelfOpcode   = 0x2ED // Updated for 6.21
+	ControlTargetOpcode = 0x212 // Updated for 6.21
+	RemoveEntityOpcode  = 0x223 // Updated for 6.21
+	UpdateHPMPTPOpcode  = 0x193 // Updated for 6.21
 
-	ChatZoneOpcode = 0xB7 // Updated for 6.2 Hotfix
+	ChatZoneOpcode = 0x2EC // Updated for 6.21
 
-	UpdateStatusesOpcode       = 0x265 // Updated for 6.2 Hotfix
-	UpdateStatusesEurekaOpcode = 0x363 // Updated for 6.2 Hotfix
-	UpdateStatusesBossOpcode   = 0x264 // Updated for 6.2 Hotfix
+	UpdateStatusesOpcode       = 0xFA  // Updated for 6.21
+	UpdateStatusesEurekaOpcode = 0x160 // Updated for 6.21
+	UpdateStatusesBossOpcode   = 0x169 // Updated for 6.21
 
-	ActionOpcode      = 0x94  // Updated for 6.2 Hotfix
-	AoEAction8Opcode  = 0x2BB // Updated for 6.2 Hotfix
-	AoEAction16Opcode = 0x267 // Updated for 6.2 Hotfix
-	AoEAction24Opcode = 0x373 // Updated for 6.2 Hotfix
-	AoEAction32Opcode = 0x3AC // Updated for 6.2 Hotfix
+	ActionOpcode      = 0x1CD // Updated for 6.21
+	AoEAction8Opcode  = 0x35C // Updated for 6.21
+	AoEAction16Opcode = 0xB0  // Updated for 6.21
+	AoEAction24Opcode = 0x276 // Updated for 6.21
+	AoEAction32Opcode = 0x1F5 // Updated for 6.21
 
-	ObjectSpawnOpcode = 0x2F7 // Updated for 6.2 Hotfix
-	PlayerSpawnOpcode = 0x334 // Updated for 6.2 Hotfix
-	NPCSpawnOpcode    = 0x19B // Updated for 6.2 Hotfix
-	NPCSpawn2Opcode   = 0x31A // Updated for 6.2 Hotfix
+	ObjectSpawnOpcode = 0x281 // Updated for 6.21
+	PlayerSpawnOpcode = 0x29D // Updated for 6.21
+	NPCSpawnOpcode    = 0x2E4 // Updated for 6.21
+	NPCSpawn2Opcode   = 0x3AA // Updated for 6.21
 
-	MovementOpcode = 0xB3  // Updated for 6.2 Hotfix
-	SetPosOpcode   = 0x1BA // Updated for 6.2 Hotfix
+	MovementOpcode = 0x39F // Updated for 6.21
+	SetPosOpcode   = 0xC6  // Updated for 6.21
 
-	CastingOpcode = 0x26C // Updated for 6.2 Hotfix
+	CastingOpcode = 0x2E8 // Updated for 6.21
 
-	HateRankingOpcode = 0xF3  // Updated for 6.2 Hotfix
-	HateListOpcode    = 0x1B7 // Updated for 6.2 Hotfix
+	HateRankingOpcode = 0x225 // Updated for 6.21
+	HateListOpcode    = 0x39B // Updated for 6.21
 
-	PlayerStatsOpcode = 0x26B // Updated for 6.2 Hotfix
+	PlayerStatsOpcode = 0x347 // Updated for 6.21
 
-	EquipChangeOpcode = 0xA1 // Updated for 6.2 Hotfix
+	EquipChangeOpcode = 0x17B // Updated for 6.21
 
-	EventPlayOpcode    = 0x2FD // Updated for 6.2 Hotfix
-	EventPlay4Opcode   = 0x380 // Updated for 6.2 Hotfix
-	EventPlay8Opcode   = 0x107 // Updated for 6.2 Hotfix
-	EventPlay16Opcode  = 0x2A4 // Updated for 6.2 Hotfix
-	EventPlay32Opcode  = 0xC1  // Updated for 6.2 Hotfix
-	EventPlay64Opcode  = 0x2FB // Updated for 6.2 Hotfix
-	EventPlay128Opcode = 0x129 // Updated for 6.2 Hotfix
-	EventPlay255Opcode = 0x2CD // Updated for 6.2 Hotfix
+	EventPlayOpcode    = 0x2DB // Updated for 6.21
+	EventPlay4Opcode   = 0x103 // Updated for 6.21
+	EventPlay8Opcode   = 0x68  // Updated for 6.21
+	EventPlay16Opcode  = 0x106 // Updated for 6.21
+	EventPlay32Opcode  = 0x2F9 // Updated for 6.21
+	EventPlay64Opcode  = 0xC4  // Updated for 6.21
+	EventPlay128Opcode = 0x218 // Updated for 6.21
+	EventPlay255Opcode = 0xEC  // Updated for 6.21
 
-	MountOpcode = 0x253 // Updated for 6.2 Hotfix
+	MountOpcode = 0x2CF // Updated for 6.21
 
-	WeatherChangeOpcode = 0x281 // Updated for 6.2 Hotfix
+	WeatherChangeOpcode = 0x162 // Updated for 6.21
 
-	PrepareZoningOpcode = 0xA0 // Updated for 6.2 Hotfix
+	PrepareZoningOpcode = 0x121 // Updated for 6.21
 
-	GaugeOpcode = 0x2AB // Updated for 6.2 Hotfix
+	GaugeOpcode = 0x21C // Updated for 6.21
 
 	WaymarkOpcode         = UndefinedOpcode
 	PerformOpcode         = UndefinedOpcode
