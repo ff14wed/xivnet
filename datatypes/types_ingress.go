@@ -6,59 +6,59 @@ var inTypeRegistry = make(map[uint16]func() xivnet.BlockData)
 
 // Opcodes that define the datatypes of incoming (from server) network blocks
 const (
-	EffectResultOpcode  = 0x34B // Updated for 6.28
-	InitZoneOpcode      = 0x3E5 // Updated for 6.28
-	ControlOpcode       = 0x2D3 // Updated for 6.28
-	ControlSelfOpcode   = 0x29B // Updated for 6.28
-	ControlTargetOpcode = 0x253 // Updated for 6.28
-	RemoveEntityOpcode  = 0xD4  // Updated for 6.28
-	UpdateHPMPTPOpcode  = 0x2DC // Updated for 6.28
+	EffectResultOpcode  = 0x1F0 // Updated for 6.28a
+	InitZoneOpcode      = 0xF0  // Updated for 6.28a
+	ControlOpcode       = 0x197 // Updated for 6.28a
+	ControlSelfOpcode   = 0x238 // Updated for 6.28a
+	ControlTargetOpcode = 0x28B // Updated for 6.28a
+	RemoveEntityOpcode  = 0x212 // Updated for 6.28a
+	UpdateHPMPTPOpcode  = 0x2A2 // Updated for 6.28a
 
-	ChatZoneOpcode = 0x1A8 // Updated for 6.28
+	ChatZoneOpcode = 0x39B // Updated for 6.28a
 
-	UpdateStatusesOpcode       = 0x90  // Updated for 6.28
-	UpdateStatusesEurekaOpcode = 0xC5  // Updated for 6.28
-	UpdateStatusesBossOpcode   = 0x36D // Updated for 6.28
+	UpdateStatusesOpcode       = 0x19B // Updated for 6.28a
+	UpdateStatusesEurekaOpcode = 0x18C // Updated for 6.28a
+	UpdateStatusesBossOpcode   = 0x34D // Updated for 6.28a
 
-	ActionOpcode      = 0x130 // Updated for 6.28
-	AoEAction8Opcode  = 0x1DF // Updated for 6.28
-	AoEAction16Opcode = 0x202 // Updated for 6.28
-	AoEAction24Opcode = 0xBD  // Updated for 6.28
-	AoEAction32Opcode = 0x14C // Updated for 6.28
+	ActionOpcode      = 0x395 // Updated for 6.28a
+	AoEAction8Opcode  = 0x311 // Updated for 6.28a
+	AoEAction16Opcode = 0x351 // Updated for 6.28a
+	AoEAction24Opcode = 0x3C2 // Updated for 6.28a
+	AoEAction32Opcode = 0x6A  // Updated for 6.28a
 
-	ObjectSpawnOpcode = 0xBE  // Updated for 6.28
-	PlayerSpawnOpcode = 0x2C2 // Updated for 6.28
-	NPCSpawnOpcode    = 0x3CD // Updated for 6.28
-	NPCSpawn2Opcode   = 0x7C  // Updated for 6.28
+	ObjectSpawnOpcode = 0x265 // Updated for 6.28a
+	PlayerSpawnOpcode = 0xDD  // Updated for 6.28a
+	NPCSpawnOpcode    = 0x359 // Updated for 6.28a
+	NPCSpawn2Opcode   = 0x190 // Updated for 6.28a
 
-	MovementOpcode = 0xC2  // Updated for 6.28
-	SetPosOpcode   = 0x22E // Updated for 6.28
+	MovementOpcode = 0x384 // Updated for 6.28a
+	SetPosOpcode   = 0x329 // Updated for 6.28a
 
-	CastingOpcode = 0x398 // Updated for 6.28
+	CastingOpcode = 0x2AD // Updated for 6.28a
 
-	HateRankingOpcode = 0x1AE // Updated for 6.28
-	HateListOpcode    = 0x26A // Updated for 6.28
+	HateRankingOpcode = 0x328 // Updated for 6.28a
+	HateListOpcode    = 0x26C // Updated for 6.28a
 
-	PlayerStatsOpcode = 0x313 // Updated for 6.28
+	PlayerStatsOpcode = 0x86 // Updated for 6.28a
 
-	EquipChangeOpcode = 0x360 // Updated for 6.28
+	EquipChangeOpcode = 0x170 // Updated for 6.28a
 
-	EventPlayOpcode    = 0xc9  // Updated for 6.28
-	EventPlay4Opcode   = 0x321 // Updated for 6.28
-	EventPlay8Opcode   = 0x9b  // Updated for 6.28
-	EventPlay16Opcode  = 0x1c2 // Updated for 6.28
-	EventPlay32Opcode  = 0x28d // Updated for 6.28
-	EventPlay64Opcode  = 0x6b  // Updated for 6.28
-	EventPlay128Opcode = 0x200 // Updated for 6.28
-	EventPlay255Opcode = 0x314 // Updated for 6.28
+	EventPlayOpcode    = 0x38C // Updated for 6.28a
+	EventPlay4Opcode   = 0x274 // Updated for 6.28a
+	EventPlay8Opcode   = 0x2D9 // Updated for 6.28a
+	EventPlay16Opcode  = 0x1AB // Updated for 6.28a
+	EventPlay32Opcode  = 0x203 // Updated for 6.28a
+	EventPlay64Opcode  = 0x38D // Updated for 6.28a
+	EventPlay128Opcode = 0x35F // Updated for 6.28a
+	EventPlay255Opcode = 0x11D // Updated for 6.28a
 
-	MountOpcode = 0x2A8 // Updated for 6.28
+	MountOpcode = 0xA2 // Updated for 6.28a
 
-	WeatherChangeOpcode = 0xF9 // Updated for 6.28
+	WeatherChangeOpcode = 0x31B // Updated for 6.28a
 
-	PrepareZoningOpcode = 0x281 // Updated for 6.28
+	PrepareZoningOpcode = 0x2DB // Updated for 6.28a
 
-	GaugeOpcode = 0x11E // Updated for 6.28
+	GaugeOpcode = 0x382 // Updated for 6.28a
 
 	WaymarkOpcode         = UndefinedOpcode
 	PerformOpcode         = UndefinedOpcode
