@@ -6,62 +6,62 @@ var inTypeRegistry = make(map[uint16]func() xivnet.BlockData)
 
 // Opcodes that define the datatypes of incoming (from server) network blocks
 const (
-	EffectResultOpcode  = 0x1F0 // Updated for 6.28a
-	InitZoneOpcode      = 0xF0  // Updated for 6.28a
-	ControlOpcode       = 0x197 // Updated for 6.28a
-	ControlSelfOpcode   = 0x238 // Updated for 6.28a
-	ControlTargetOpcode = 0x28B // Updated for 6.28a
-	RemoveEntityOpcode  = 0x212 // Updated for 6.28a
-	UpdateHPMPTPOpcode  = 0x2A2 // Updated for 6.28a
+	EffectResultOpcode  = 0x1C8 // Updated for 6.3
+	InitZoneOpcode      = 0x28A // Updated for 6.3
+	ControlOpcode       = 0x131 // Updated for 6.3
+	ControlSelfOpcode   = 0x1A8 // Updated for 6.3
+	ControlTargetOpcode = 0x8F  // Updated for 6.3
+	RemoveEntityOpcode  = 0x208 // Updated for 6.3
+	UpdateHPMPTPOpcode  = 0x15B // Updated for 6.3
 
-	ChatZoneOpcode = 0x39B // Updated for 6.28a
+	ChatZoneOpcode = 0x9B // Updated for 6.3
 
-	UpdateStatusesOpcode       = 0x19B // Updated for 6.28a
-	UpdateStatusesEurekaOpcode = 0x18C // Updated for 6.28a
-	UpdateStatusesBossOpcode   = 0x34D // Updated for 6.28a
+	UpdateStatusesOpcode       = 0x192 // Updated for 6.3
+	UpdateStatusesEurekaOpcode = 0x21F // Updated for 6.3
+	UpdateStatusesBossOpcode   = 0x3DE // Updated for 6.3
 
-	ActionOpcode      = 0x395 // Updated for 6.28a
-	AoEAction8Opcode  = 0x311 // Updated for 6.28a
-	AoEAction16Opcode = 0x351 // Updated for 6.28a
-	AoEAction24Opcode = 0x3C2 // Updated for 6.28a
-	AoEAction32Opcode = 0x6A  // Updated for 6.28a
+	ActionOpcode      = 0x1E6 // Updated for 6.3
+	AoEAction8Opcode  = 0x31B // Updated for 6.3
+	AoEAction16Opcode = 0x3BE // Updated for 6.3
+	AoEAction24Opcode = 0x2C4 // Updated for 6.3
+	AoEAction32Opcode = 0x214 // Updated for 6.3
 
-	ObjectSpawnOpcode = 0x265 // Updated for 6.28a
-	PlayerSpawnOpcode = 0xDD  // Updated for 6.28a
-	NPCSpawnOpcode    = 0x359 // Updated for 6.28a
-	NPCSpawn2Opcode   = 0x190 // Updated for 6.28a
+	ObjectSpawnOpcode = 0xFF  // Updated for 6.3
+	PlayerSpawnOpcode = 0x321 // Updated for 6.3
+	NPCSpawnOpcode    = 0x166 // Updated for 6.3
+	NPCSpawn2Opcode   = 0xC8  // Updated for 6.3
 
-	MovementOpcode = 0x384 // Updated for 6.28a
-	SetPosOpcode   = 0x329 // Updated for 6.28a
+	MovementOpcode = 0x183 // Updated for 6.3
+	SetPosOpcode   = 0x181 // Updated for 6.3
 
-	CastingOpcode = 0x2AD // Updated for 6.28a
+	CastingOpcode = 0xB0 // Updated for 6.3
 
-	HateRankingOpcode = 0x328 // Updated for 6.28a
-	HateListOpcode    = 0x26C // Updated for 6.28a
+	HateRankingOpcode = 0xB8 // Updated for 6.3
+	HateListOpcode    = 0xC0 // Updated for 6.3
 
-	PlayerStatsOpcode = 0x86 // Updated for 6.28a
+	PlayerStatsOpcode = 0xE6 // Updated for 6.3
 
-	EquipChangeOpcode = 0x170 // Updated for 6.28a
+	EquipChangeOpcode = 0x169 // Updated for 6.3
 
-	EventPlayOpcode    = 0x38C // Updated for 6.28a
-	EventPlay4Opcode   = 0x274 // Updated for 6.28a
-	EventPlay8Opcode   = 0x2D9 // Updated for 6.28a
-	EventPlay16Opcode  = 0x1AB // Updated for 6.28a
-	EventPlay32Opcode  = 0x203 // Updated for 6.28a
-	EventPlay64Opcode  = 0x38D // Updated for 6.28a
-	EventPlay128Opcode = 0x35F // Updated for 6.28a
-	EventPlay255Opcode = 0x11D // Updated for 6.28a
+	EventPlayOpcode    = 0x36B // Updated for 6.3
+	EventPlay4Opcode   = 0x3D6 // Updated for 6.3
+	EventPlay8Opcode   = 0x161 // Updated for 6.3
+	EventPlay16Opcode  = 0x158 // Updated for 6.3
+	EventPlay32Opcode  = 0x3CB // Updated for 6.3
+	EventPlay64Opcode  = 0x223 // Updated for 6.3
+	EventPlay128Opcode = 0x26E // Updated for 6.3
+	EventPlay255Opcode = 0x135 // Updated for 6.3
 
-	MountOpcode = 0xA2 // Updated for 6.28a
+	MountOpcode = 0x219 // Updated for 6.3
 
-	WeatherChangeOpcode = 0x31B // Updated for 6.28a
+	WeatherChangeOpcode = 0x344 // Updated for 6.3
 
-	PrepareZoningOpcode = 0x2DB // Updated for 6.28a
+	PrepareZoningOpcode = 0x19D // Updated for 6.3
 
-	GaugeOpcode = 0x382 // Updated for 6.28a
+	GaugeOpcode = 0xF9 // Updated for 6.3
 
-	WaymarkOpcode         = UndefinedOpcode
-	PerformOpcode         = UndefinedOpcode
+	WaymarkOpcode         = 0x235 // Updated for 6.3
+	PerformOpcode         = 0x3CA // Updated for 6.3
 	XWorldPartyListOpcode = UndefinedOpcode
 )
 
