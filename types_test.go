@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 
 	"github.com/ff14wed/xivnet/v3"
-	. "github.com/onsi/ginkgo"
+	. "github.com/onsi/ginkgo/v2"
 	. "github.com/onsi/gomega"
 )
 
