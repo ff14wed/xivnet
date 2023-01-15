@@ -2,7 +2,7 @@ package datatypes
 
 // Mount defines the data array for a getting on mount block
 type Mount struct {
-	ID    byte
+	ID    uint16
 	Color byte
 	U1    byte
 	U2    byte

@@ -103,7 +103,12 @@ func init() {
 
 	registerInBlockFactory(EventPlayOpcode, func() xivnet.BlockData { return new(EventPlay) })
 	registerInBlockFactory(EventPlay4Opcode, func() xivnet.BlockData { return new(EventPlay4) })
+	registerInBlockFactory(EventPlay8Opcode, func() xivnet.BlockData { return new(EventPlay8) })
+	registerInBlockFactory(EventPlay16Opcode, func() xivnet.BlockData { return new(EventPlay16) })
 	registerInBlockFactory(EventPlay32Opcode, func() xivnet.BlockData { return new(EventPlay32) })
+	registerInBlockFactory(EventPlay64Opcode, func() xivnet.BlockData { return new(EventPlay64) })
+	registerInBlockFactory(EventPlay128Opcode, func() xivnet.BlockData { return new(EventPlay128) })
+	registerInBlockFactory(EventPlay255Opcode, func() xivnet.BlockData { return new(EventPlay255) })
 
 	registerInBlockFactory(MountOpcode, func() xivnet.BlockData { return new(Mount) })
 

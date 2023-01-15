@@ -10,7 +10,7 @@ import (
 	. "github.com/onsi/gomega"
 )
 
-var _ = Describe("EventPlay32", func() {
+var _ = Describe("EventPlay", func() {
 	var b *xivnet.Block
 
 	BeforeEach(func() {
@@ -45,6 +45,11 @@ var _ = Describe("EventPlay32", func() {
 		Expect(d).To(Equal(expectedEventPlay32BlockData))
 	})
 
+	It("random data fails to unmarshal to a craft state", func() {
+		_, err := datatypes.UnmarshalCraftState(expectedEventPlay32BlockData)
+		Expect(err).To(MatchError(ContainSubstring("not a craft state")))
+	})
+
 	Context("with event type 0xA0001", func() {
 		var expectedCraftStateBlockData datatypes.EventPlay32
 
@@ -67,26 +72,32 @@ var _ = Describe("EventPlay32", func() {
 
 			expectedCraftStateBlockData = *expectedEventPlay32BlockData
 			expectedCraftStateBlockData.EventID = 0xA0001
-			expectedCraftStateBlockData.Data = expectedCraftState
 		})
 
-		It("parses successfully into a EventPlay32 with CraftingState", func() {
+		It("parses successfully into a EventPlay32", func() {
 			newB, err := datatypes.ParseBlock(b, false)
 			Expect(err).ToNot(HaveOccurred())
 			Expect(newB.Data).To(Equal(&expectedCraftStateBlockData))
 		})
 
-		It("marshals to JSON with a CraftState", func() {
-			jsonBytes, err := json.Marshal(expectedCraftStateBlockData)
+		It("marshals the data to a CraftState", func() {
+			cs, err := datatypes.UnmarshalCraftState(&expectedCraftStateBlockData)
 			Expect(err).ToNot(HaveOccurred())
-			Expect(jsonBytes).To(MatchJSON(expectedCraftStateBlockDataJSON))
+			Expect(cs).To(Equal(&expectedCraftState))
+
+			data, err := datatypes.MarshalCraftState(cs)
+			Expect(err).ToNot(HaveOccurred())
+			Expect(data).To(Equal(expectedCraftStateBlockData.Data[:]))
 		})
 
-		It("unmarshals from JSON with a CraftState", func() {
-			d := &datatypes.EventPlay32{}
-			err := json.Unmarshal([]byte(expectedCraftStateBlockDataJSON), d)
+		It("marshals into a CraftState from an EventPlay64", func() {
+			eventPlay64 := &datatypes.EventPlay64{
+				EventPlayHeader: expectedEventPlay32BlockData.EventPlayHeader,
+			}
+			copy(eventPlay64.Data[:], expectedEventPlay32BlockData.Data[:])
+			cs, err := datatypes.UnmarshalCraftState(&expectedCraftStateBlockData)
 			Expect(err).ToNot(HaveOccurred())
-			Expect(d).To(Equal(&expectedCraftStateBlockData))
+			Expect(cs.Progress).To(Equal(uint32(256)))
 		})
 	})
 })

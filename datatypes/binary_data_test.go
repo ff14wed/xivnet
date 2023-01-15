@@ -78,12 +78,12 @@ var expectedEventPlay32BlockData = &datatypes.EventPlay32{
 		Scene:   2, Pad1: 3,
 		Flags: 4, P1: 5, ParamCount: 6, P2: 7,
 	},
-	Data: datatypes.GenericEventPlay32Data([32]uint32{
+	Data: [32]uint32{
 		8, 0, 0xFF, 1, 0xFF, 2, 0x100, 0x200, 0x300,
 		0x400, 5, 6, 0xFFFFFFF9, 8, 9,
 		1, 2, 3, 4, 5, 6, 7, 8, 9, 0xA, 0xB, 0xC, 0xD,
 		0xE, 0xF, 0x10, 0x11,
-	}),
+	},
 }
 
 var expectedEventPlay32BlockDataJSON = `
@@ -112,37 +112,10 @@ var expectedCraftState = datatypes.CraftState{
 	DurabilityDelta:   -7,
 	CurrentCondition:  8,
 	PreviousCondition: 9,
-	Flags:             1,
-	U6:                [16]uint32{2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17},
+	U5:                1,
+	Flags:             2,
+	U6:                [15]uint32{3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17},
 }
-
-var expectedCraftStateBlockDataJSON = `
-{
-	"ActorID":123456789,
-	"EventID": 655361,
-	"Scene": 2, "Pad1": 3,
-	"Flags": 4, "P1": 5, "ParamCount": 6,
-	"Pad2": [0, 0, 0], "P2": 7,
-	"Data": {
-		"U1":                8,
-		"U3":                0,
-		"U4":                255,
-		"CraftAction":       1,
-		"U2":                255,
-		"StepNum":           2,
-		"Progress":          256,
-		"ProgressDelta":     512,
-		"Quality":           768,
-		"QualityDelta":      1024,
-		"HQChance":          5,
-		"Durability":        6,
-		"DurabilityDelta":   -7,
-		"CurrentCondition":  8,
-		"PreviousCondition": 9,
-		"Flags": 1,
-		"U6": [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17]
-	}
-}`
 
 var chatBlockBytes = func() []byte {
 	first := []byte{
